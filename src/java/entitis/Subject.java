@@ -24,21 +24,30 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @NamedQueries({
     @NamedQuery(
-    name= "findAllSubjects", query="SELECT s FROM Subject s"),
+        name = "findAllSubjects", 
+        query = "SELECT s FROM Subject s"),
+    //Mirar
     @NamedQuery(
-    name= "findByName", query="SELECT s FROM Subject where s.name LIKE :subjectName"),
+        name = "findYourSubjects", 
+        query = "SELECT s FROM Subject s WHERE s.teacher = :teacher"),
     @NamedQuery(
-    name= "findByHours", query="SELECT S FROM Subject where s.hours=: subjectHours"),
+        name = "findByName", 
+        query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName"),
     @NamedQuery(
-    name= "findByLanguage", query="SELECT S FROM Subject where s.language LIKE : subjectlanguage"),
+        name = "findByHours", 
+        query = "SELECT s FROM Subject s WHERE s.hours = :subjectHours"),
     @NamedQuery(
-    name= "findByDateInit", query="SELECT S FROM Subject where s.dateInit=: subjectDateInit"),
+        name = "findByLanguage", 
+        query = "SELECT s FROM Subject s WHERE s.language LIKE :subjectLanguage"),
     @NamedQuery(
-    name= "findByDateEnd", query="SELECT S FROM Subject where s.dateEnd=: subjectDateEnd"),
+        name = "findByDateInit", 
+        query = "SELECT s FROM Subject s WHERE s.dateInit = :subjectDateInit"),
     @NamedQuery(
-    name= "findByTeacherName", query="SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
-    
-    
+        name = "findByDateEnd", 
+        query = "SELECT s FROM Subject s WHERE s.dateEnd = :subjectDateEnd"),
+    @NamedQuery(
+        name = "findByTeacherName", 
+        query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
 })
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")

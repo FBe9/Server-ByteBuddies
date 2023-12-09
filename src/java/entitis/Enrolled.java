@@ -5,6 +5,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -12,6 +14,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Entity representing the enrollment of a student in a subject.
  * @author Irati.
  */
+@NamedQueries({
+    @NamedQuery(
+    name= "findMatriculated", query="SELECT e FROM Enrolled e WHERE e.isMatriculate = true"),
+    
+})
 @Entity
 @Table(name = "enrolled", schema = "bytebuddiesbd")
 @XmlRootElement
