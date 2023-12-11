@@ -1,4 +1,4 @@
-package entitis;
+package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -6,15 +6,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing subjects for a teacher and costumer. It has the following fields:
@@ -26,10 +29,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
         name = "findAllSubjects", 
         query = "SELECT s FROM Subject s"),
-    //Mirar
-    @NamedQuery(
-        name = "findYourSubjects", 
-        query = "SELECT s FROM Subject s WHERE s.teacher = :teacher"),
     @NamedQuery(
         name = "findByName", 
         query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName"),
@@ -38,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
         query = "SELECT s FROM Subject s WHERE s.hours = :subjectHours"),
     @NamedQuery(
         name = "findByLanguage", 
-        query = "SELECT s FROM Subject s WHERE s.language LIKE :subjectLanguage"),
+        query = "SELECT s FROM Subject s WHERE s.languageType LIKE :subjectLanguage"),
     @NamedQuery(
         name = "findByDateInit", 
         query = "SELECT s FROM Subject s WHERE s.dateInit = :subjectDateInit"),
@@ -99,14 +98,17 @@ public class Subject implements Serializable {
     /**
      * Relational field containing units of the subject.
      */
+    @OneToMany(fetch=EAGER, mappedBy="subject")
     private Set<Unit> units;
     /**
      * Relational field containing students of the subject.
      */
+    @OneToMany(fetch=EAGER, mappedBy="student")
     private Set<Student> students;
     /**
      * Relational field containing exams of the subject.
      */
+    @OneToMany(fetch=EAGER, mappedBy="subject")
     private Set<Exam> exams;
 
      //Setters and Getters
@@ -259,6 +261,7 @@ public class Subject implements Serializable {
      *
      * @return the set of units
      */
+    @XmlTransient
     public Set<Unit> getUnits() {
         return units;
     }
