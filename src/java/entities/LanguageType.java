@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
 /**
  *
  * @author Nerea
  */
-public enum StudiesType {
-    HIGHERLEVELTRAININGCYCLES,
-    UNIVERSITYDEGREECYCLES,
-    MASTER,
-    DOCTORATE,
-    OTHER,
+public enum LanguageType {
+    ENGLISH,
+    SPANISH,
+    BASQUE
 }

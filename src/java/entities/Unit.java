@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -18,22 +18,21 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
 @Entity
-@Table(name = "subject", schema = "bytebuddiesbd")
+@Table(name = "unit", schema = "bytebuddiesbd")
 @XmlRootElement
-public class Subject implements Serializable{
+public class Unit implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    private Integer hours;
-    private LevelType levelType;
-    private LanguageType languageType;
+    private String description;
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -42,10 +41,9 @@ public class Subject implements Serializable{
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
-    private Teacher teacher;
-    private Set<Unit> units;
-    private Set<Student> students;
-    private Set<Exam> exams;
+    private Integer hours;
+    private Set<Exercise> exercises;
+    private Subject subject;
     
     //Setters and Getters
     public Integer getId() {
@@ -60,23 +58,11 @@ public class Subject implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-    public Integer getHours() {
-        return hours;
+    public String getDescription() {
+        return description;
     }
-    public void setHours(Integer hours) {
-        this.hours = hours;
-    }
-    public LevelType getLevelType() {
-        return levelType;
-    }
-    public void setLevelType(LevelType levelType) {
-        this.levelType = levelType;
-    }
-    public LanguageType getLanguageType() {
-        return languageType;
-    }
-    public void setLanguageType(LanguageType languageType) {
-        this.languageType = languageType;
+    public void setDescription(String description) {
+        this.description = description;
     }
     public Date getDateInit() {
         return dateInit;
@@ -90,50 +76,40 @@ public class Subject implements Serializable{
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
-    public Teacher getTeacher() {
-        return teacher;
+    public Integer getHours() {
+        return hours;
     }
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setHours(Integer hours) {
+        this.hours = hours;
     }
-    public Set<Unit> getUnits() {
-        return units;
+    public Set<Exercise> getExercises() {
+        return exercises;
     }
-    public void setUnits(Set<Unit> units) {
-        this.units = units;
+    public void setExercises(Set<Exercise> exercises) {
+        this.exercises = exercises;
     }
-    public Set<Student> getStudents() {
-        return students;
+    public Subject getSubject() {
+        return subject;
     }
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
-    public Set<Exam> getExams() {
-        return exams;
-    }
-    public void setExams(Set<Exam> exams) {
-        this.exams = exams;
-    }   
-   
-    //Constructors
     
-    public Subject(Integer id, String name, Integer hours, LevelType levelType, LanguageType languageType, Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Student> students, Set<Exam> exams) {
+    //Constructors
+    public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
         this.name = name;
-        this.hours = hours;
-        this.levelType = levelType;
-        this.languageType = languageType;
+        this.description = description;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
-        this.teacher = teacher;
-        this.units = units;
-        this.students = students;
-        this.exams = exams;
+        this.hours = hours;
+        this.exercises = exercises;
+        this.subject = subject;
     }
-    public Subject() {
-    }
+    public Unit() {
+    }   
     
-    @Override
+      @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -143,12 +119,10 @@ public class Subject implements Serializable{
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Subject)) {
+        if (!(object instanceof Unit)) {
             return false;
         }
-        Subject other = (Subject) object;
+        Unit other = (Unit) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
-
-    
 }

@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
 /**
  *
  * @author Nerea
  */
-public enum CallType {
-    FIRST,
-    SECOND,
-    THIRD,
-    FOURTH,
-    FIFTH,
+public enum LevelType {
+    BEGGINER,
+    MEDIUM,
+    EXPERIENCED
 }
