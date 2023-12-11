@@ -58,6 +58,22 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "unit", schema = "bytebuddiesbd")
 @XmlRootElement
 public class Unit implements Serializable {
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlRootElement;
+
+
+/**
+ *
+ * @author Nerea
+ */
+@Entity
+@Table(name = "unit", schema = "bytebuddiesbd")
+@XmlRootElement
+public class Unit implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,7 +93,7 @@ public class Unit implements Serializable {
     private Set<Exercise> exercises;
     @ManyToOne
     private Subject subject;
-
+  
     //Setters and Getters
     public Integer getId() {
         return id;
@@ -177,5 +193,6 @@ public class Unit implements Serializable {
             return false;
         }
         return true;
+
     }
 }
