@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,33 +22,54 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing subjects for a teacher and costumer. It has the following fields:
- * subject id, name, hours, level, language, init date and end date. It also contains field for getting
- * the students, units, exams and teacher releated to it.
+ * Entity representing subjects for a teacher and costumer. It has the following
+ * fields: subject id, name, hours, level, language, init date and end date. It
+ * also contains field for getting the students, units, exams and teacher
+ * releated to it.
+ *
  * @author Irati
  */
 @NamedQueries({
     @NamedQuery(
-        name = "findAllSubjects", 
-        query = "SELECT s FROM Subject s"),
+            name = "findAllSubjects",
+            query = "SELECT s FROM Subject s")
+    ,
     @NamedQuery(
-        name = "findByName", 
-        query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName"),
+            name = "findByName",
+            query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName")
+    ,
     @NamedQuery(
-        name = "findByHours", 
-        query = "SELECT s FROM Subject s WHERE s.hours = :subjectHours"),
+            name = "findByHours",
+            query = "SELECT s FROM Subject s WHERE s.hours = :subjectHours")
+    ,
     @NamedQuery(
-        name = "findByLanguage", 
-        query = "SELECT s FROM Subject s WHERE s.languageType LIKE :subjectLanguage"),
+            name = "findByLanguage",
+            query = "SELECT s FROM Subject s WHERE s.languageType LIKE :subjectLanguage")
+    ,
     @NamedQuery(
-        name = "findByDateInit", 
-        query = "SELECT s FROM Subject s WHERE s.dateInit = :subjectDateInit"),
+            name = "findByDateInit",
+            query = "SELECT s FROM Subject s WHERE s.dateInit = :subjectDateInit")
+    ,
     @NamedQuery(
-        name = "findByDateEnd", 
-        query = "SELECT s FROM Subject s WHERE s.dateEnd = :subjectDateEnd"),
+            name = "findByDateEnd",
+            query = "SELECT s FROM Subject s WHERE s.dateEnd = :subjectDateEnd")
+    ,
     @NamedQuery(
-        name = "findByTeacherName", 
-        query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
+            name = "findByTeacherName",
+            query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
+    ,
+    @NamedQuery(
+            name = "findSubjectsWithXUnits",
+            query = "SELECT s FROM Subject s JOIN FETCH s.units u GROUP BY s HAVING COUNT(u) :comparisonOperator :numUnits")
+    ,
+    @NamedQuery(
+            name = "findSubjectsWithExamsDuration",
+            query = "SELECT s FROM Subject s JOIN FETCH s.exams e GROUP BY s HAVING COUNT(e) :comparisonOperator :numExamDuration")
+    ,
+    @NamedQuery(
+            name = "findSubjectsWithStudentsCount",
+            query = "SELECT s FROM Subject s JOIN FETCH s.students stu GROUP BY s HAVING COUNT(stu) :comparisonOperator :numStudents")
+
 })
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")
@@ -98,20 +121,20 @@ public class Subject implements Serializable {
     /**
      * Relational field containing units of the subject.
      */
-    @OneToMany(fetch=EAGER, mappedBy="subject")
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Unit> units;
     /**
      * Relational field containing students of the subject.
      */
-    @OneToMany(fetch=EAGER, mappedBy="student")
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
     private Set<Student> students;
     /**
      * Relational field containing exams of the subject.
      */
-    @OneToMany(fetch=EAGER, mappedBy="subject")
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Exam> exams;
 
-     //Setters and Getters
+    //Setters and Getters
     /**
      * Gets the subject ID.
      *
@@ -280,6 +303,7 @@ public class Subject implements Serializable {
      *
      * @return the set of students
      */
+    @XmlTransient
     public Set<Student> getStudents() {
         return students;
     }
@@ -298,6 +322,7 @@ public class Subject implements Serializable {
      *
      * @return the set of exams
      */
+    @XmlTransient
     public Set<Exam> getExams() {
         return exams;
     }
@@ -310,7 +335,7 @@ public class Subject implements Serializable {
     public void setExams(Set<Exam> exams) {
         this.exams = exams;
     }
-    
+
     //Constructors
     /**
      * Creates a new instance of the Subject class with specified attributes.
@@ -347,7 +372,7 @@ public class Subject implements Serializable {
      */
     public Subject() {
     }
-    
+
     /**
      * Computes the hash code for this object.
      *
@@ -386,6 +411,5 @@ public class Subject implements Serializable {
                 + ", languageType=" + languageType + ", dateInit=" + dateInit + ", dateEnd=" + dateEnd
                 + ", teacher=" + teacher + ", units=" + units + ", students=" + students + ", exams=" + exams + '}';
     }
-
 
 }
