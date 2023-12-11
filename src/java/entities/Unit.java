@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -19,100 +18,98 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
 @Entity
-@Table(name = "exam", schema = "bytebuddiesbd")
+@Table(name = "unit", schema = "bytebuddiesbd")
 @XmlRootElement
-public class Exam implements Serializable {
-
+public class Unit implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String name;
     private String description;
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
-    private Integer duration;
-    private File file;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @JsonSerialize(as = Date.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+    private Date dateEnd;
+    private Integer hours;
+    private Set<Exercise> exercises;
     private Subject subject;
-    private Set<Mark> marks;
-
+    
     //Setters and Getters
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public Date getDateInit() {
         return dateInit;
     }
-
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
-
-    public Integer getDuration() {
-        return duration;
+    public Date getDateEnd() {
+        return dateEnd;
     }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
     }
-
-    public File getFile() {
-        return file;
+    public Integer getHours() {
+        return hours;
     }
-
-    public void setFile(File file) {
-        this.file = file;
+    public void setHours(Integer hours) {
+        this.hours = hours;
     }
-
+    public Set<Exercise> getExercises() {
+        return exercises;
+    }
+    public void setExercises(Set<Exercise> exercises) {
+        this.exercises = exercises;
+    }
     public Subject getSubject() {
         return subject;
     }
-
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
-    public Set<Mark> getMarks() {
-        return marks;
-    }
-
-    public void setMarks(Set<Mark> marks) {
-        this.marks = marks;
-    }
-
-    //Constructor
-    public Exam(Integer id, String description, Date dateInit, Integer duration, File file, Subject subject, Set<Mark> marks) {
+    
+    //Constructors
+    public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
+        this.name = name;
         this.description = description;
         this.dateInit = dateInit;
-        this.duration = duration;
-        this.file = file;
+        this.dateEnd = dateEnd;
+        this.hours = hours;
+        this.exercises = exercises;
         this.subject = subject;
-        this.marks = marks;
     }
-    public Exam() {
-    }
+    public Unit() {
+    }   
     
-    @Override
+      @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -122,11 +119,10 @@ public class Exam implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Exam)) {
+        if (!(object instanceof Unit)) {
             return false;
         }
-        Exam other = (Exam) object;
+        Unit other = (Unit) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
-
 }
