@@ -1,4 +1,4 @@
-package entitis;
+package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,17 +20,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * Unit Entity class 
+ * 
  * @author Nerea
  */
 @NamedQueries({ 
+    @NamedQuery(
+            name = "findUnitByID", query = "SELECT u FROM Unit u WHERE u.id = :id"
+    ),
     //Find all Units
     @NamedQuery(
-            name = "findAllUnits", query = "SELECT u FROM Unit u WHERE u.subject = :subject"
+            name = "findAllUnits", query = "SELECT u FROM Unit u"
     ),
     //Find Unit by Name
     @NamedQuery(
-            name = "findUnitByName", query = "SELECT u FROM Unit u WHERE u.name = :name"
+            name = "findUnitByName", query = "SELECT u FROM Unit u WHERE u.name LIKE :name"
     ),
     //Find Unit by DateInit
     @NamedQuery(
@@ -37,7 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     //Find Unit by DateFin 
     @NamedQuery(
-            name = "findUnitsByDateFin", query = "SELECT u FROM Unit u WHERE u.dateEnd = :dateEnd"
+            name = "findUnitsByDateEnd", query = "SELECT u FROM Unit u WHERE u.dateEnd = :dateEnd"
     ),
     //Find Unit by Hours
     @NamedQuery(
@@ -45,7 +50,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     //Find Unit by Subject
     @NamedQuery(
-            name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name = :subjectName"
+            name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name LIKE :subjectName"
     )
     })
 
@@ -53,7 +58,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "unit", schema = "bytebuddiesbd")
 @XmlRootElement
 public class Unit implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -69,7 +73,7 @@ public class Unit implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
     private Integer hours;
-    @OneToMany(mappedBy = "unit")
+    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
     private Set<Exercise> exercises;
     @ManyToOne
     private Subject subject;
@@ -150,17 +154,18 @@ public class Unit implements Serializable {
         this.exercises = exercises;
         this.subject = subject;
     }
-
     public Unit() {
     }
-
+    
+    //HasCode
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
+    //Equals
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
