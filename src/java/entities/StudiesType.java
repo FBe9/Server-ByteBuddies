@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
 /**
  *
  * @author Nerea
  */
-public enum UserType {
-    TEACHER,
-    STUDENT
+public enum StudiesType {
+    HIGHERLEVELTRAININGCYCLES,
+    UNIVERSITYDEGREECYCLES,
+    MASTER,
+    DOCTORATE,
+    OTHER,
 }

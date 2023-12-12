@@ -3,20 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package entitis;
+package entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -24,95 +20,95 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author 2dam
  */
 @Entity
-@Table(name = "exam", schema = "bytebuddiesbd")
+@Table(name = "exercise", schema = "bytebuddiesbd")
 @XmlRootElement
-public class Exam implements Serializable {
-
+public class Exercise implements Serializable{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    private String name;
     private String description;
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @JsonSerialize(as = Date.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
-    private Date dateInit;
-    private Integer duration;
+    private LevelType levelType;
     private File file;
-    private Subject subject;
-    private Set<Mark> marks;
-
+    private File fileSolution;
+    private Date deadline;
+    private Integer hours;
+    private Unit unit;
+    
     //Setters and Getters
+
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public Date getDateInit() {
-        return dateInit;
+    public LevelType getLevelType() {
+        return levelType;
     }
-
-    public void setDateInit(Date dateInit) {
-        this.dateInit = dateInit;
+    public void setLevelType(LevelType levelType) {
+        this.levelType = levelType;
     }
-
-    public Integer getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
-
     public File getFile() {
         return file;
     }
-
     public void setFile(File file) {
         this.file = file;
     }
-
-    public Subject getSubject() {
-        return subject;
+    public File getFileSolution() {
+        return fileSolution;
     }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setFileSolution(File fileSolution) {
+        this.fileSolution = fileSolution;
     }
-
-    public Set<Mark> getMarks() {
-        return marks;
+    public Date getDeadline() {
+        return deadline;
     }
-
-    public void setMarks(Set<Mark> marks) {
-        this.marks = marks;
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
     }
-
-    //Constructor
-    public Exam(Integer id, String description, Date dateInit, Integer duration, File file, Subject subject, Set<Mark> marks) {
-        this.id = id;
-        this.description = description;
-        this.dateInit = dateInit;
-        this.duration = duration;
-        this.file = file;
-        this.subject = subject;
-        this.marks = marks;
+    public Integer getHours() {
+        return hours;
     }
-    public Exam() {
+    public void setHours(Integer hours) {
+        this.hours = hours;
+    }
+    public Unit getUnit() {
+        return unit;
+    }
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
     
-    @Override
+    //Constructors
+    public Exercise(Integer id, String name, String description, LevelType levelType, File file, File fileSolution, Date deadline, Integer hours, Unit unit) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.levelType = levelType;
+        this.file = file;
+        this.fileSolution = fileSolution;
+        this.deadline = deadline;
+        this.hours = hours;
+        this.unit = unit;
+    }
+    public Exercise() {
+    }
+    
+     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -122,11 +118,10 @@ public class Exam implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Exam)) {
+        if (!(object instanceof Exercise)) {
             return false;
         }
-        Exam other = (Exam) object;
+        Exercise other = (Exercise) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
-
 }
