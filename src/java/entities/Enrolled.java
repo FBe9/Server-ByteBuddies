@@ -12,21 +12,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Entity representing the enrollment of a student in a subject.
+ *
  * @author Irati.
  */
 @NamedQueries({
     @NamedQuery(
-    name= "findMatriculated", query="SELECT e FROM Enrolled e WHERE e.isMatriculate = true"),
-    
+            name = "findMatriculated", 
+            query = "SELECT e.subject FROM Enrolled e WHERE e.student.id = :studentId AND e.isMatriculate = true")
+    ,
+    @NamedQuery(
+            name = "findAllEnrollments",
+            query = "Select e From Enrolled e")
+
 })
 @Entity
 @Table(name = "enrolled", schema = "bytebuddiesbd")
 @XmlRootElement
 public class Enrolled implements Serializable {
-     private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 1L;
 
     /**
-     * Composite key for the enrollment, consisting of the subject ID and student ID.
+     * Composite key for the enrollment, consisting of the subject ID and
+     * student ID.
      */
     @EmbeddedId
     private EnrolledId id;
@@ -106,7 +114,8 @@ public class Enrolled implements Serializable {
     }
 
     /**
-     * Gets the flag indicating whether the student is matriculated in the subject.
+     * Gets the flag indicating whether the student is matriculated in the
+     * subject.
      *
      * @return true if the student is matriculated, false otherwise
      */
@@ -115,7 +124,8 @@ public class Enrolled implements Serializable {
     }
 
     /**
-     * Sets the flag indicating whether the student is matriculated in the subject.
+     * Sets the flag indicating whether the student is matriculated in the
+     * subject.
      *
      * @param isMatriculate true if the student is matriculated, false otherwise
      */
@@ -134,4 +144,14 @@ public class Enrolled implements Serializable {
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
+    /**
+     * Converts this object to a string representation.
+     *
+     * @return the string representation of the object
+     */
+    @Override
+    public String toString() {
+        return "Enrolled{" + "id=" + id + ", subject=" + subject + ", student=" + student + ", isMatriculate=" + isMatriculate + '}';
+    }
+    
 }

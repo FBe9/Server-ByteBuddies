@@ -11,15 +11,18 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
+ * This is the stateless EJB that implements the SubjectInterface.
  *
- * @author irati
+ * @author Irati
  */
+@Stateless
 public class EJBSubjectManager implements SubjectInterface {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
@@ -34,9 +37,13 @@ public class EJBSubjectManager implements SubjectInterface {
     @Override
     public void createSubject(Subject subject) throws CreateErrorException {
         try {
-            em.persist(subject);
-        } catch (Exception ex) {
-            throw new CreateErrorException(ex.getMessage());
+            em.createNamedQuery("findByName").setParameter("subjectName", subject.getName()).getSingleResult();
+        } catch (NoResultException ex) {
+            try {
+                em.persist(subject);
+            } catch (Exception e) {
+                throw new CreateErrorException(e.getMessage());
+            }
         }
     }
 
@@ -81,14 +88,14 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findAllSubjects() throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findAllSubjects() throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<>(em.createNamedQuery("findAllSubjects").getResultList());
-            return subjects;
+            subjects = em.createNamedQuery("findAllSubjects").getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -99,32 +106,15 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findSubjectsByName(String name) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsByName(String name) throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<>(em.createNamedQuery("findByName").setParameter("subjectName", "%" + name + "%").getResultList());
-            return subjects;
-        } catch (Exception ex) {
-            throw new FindErrorException(ex.getMessage());
-        }
-    }
+            subjects = em.createNamedQuery("findByName").setParameter("subjectName", "%" + name + "%").getResultList();
 
-    /**
-     * Method to search subjects by hours.
-     *
-     * @param hours integer hours to make the search.
-     * @return a collection of subjects.
-     * @throws FindErrorException if there is an error during reading.
-     */
-    @Override
-    public Set<Subject> findSubjectsByHours(Integer hours) throws FindErrorException {
-        Set<Subject> subjects;
-        try {
-            subjects = new HashSet<>( em.createNamedQuery("findByHours").setParameter("subjectHours", hours).getResultList());
-            return subjects;
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -135,14 +125,14 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findSubjectsByTeacher(String name) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsByTeacher(String name) throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<>( em.createNamedQuery("findByTeacherName").setParameter("teacherName", "%" + name + "%").getResultList());
-            return subjects;
+            subjects = em.createNamedQuery("findByTeacherName").setParameter("teacherName", "%" + name + "%").getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -153,14 +143,14 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findSubjectsByInitDate(Date date) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsByInitDate(Date date) throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<> (em.createNamedQuery("findByDateInit").setParameter("subjectDateInit", date).getResultList());
-            return subjects;
+            subjects = em.createNamedQuery("findByDateInit").setParameter("subjectDateInit", date).getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -171,14 +161,14 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findSubjectsByLanguage(String language) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsByLanguage(String language) throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<> ( em.createNamedQuery("findByLanguage").setParameter("subjectLanguage", "%" + language + "%").getResultList());
-            return subjects;
+            subjects = em.createNamedQuery("findByLanguage").setParameter("subjectLanguage", "%" + language + "%").getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -189,14 +179,15 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Set<Subject> findSubjectsByEndDate(Date date) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsByEndDate(Date date) throws FindErrorException {
+        List<Subject> subjects;
         try {
-            subjects = new HashSet<>( em.createNamedQuery("findByDateEnd").setParameter("subjectDateEnd", date).getResultList());
-            return subjects;
+            subjects = em.createNamedQuery("findByDateEnd").setParameter("subjectDateEnd", date).getResultList();
+
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -207,19 +198,28 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     @Override
-    public Subject findSubjectById(String id) throws FindErrorException {
+    public Subject findSubjectById(Integer id) throws FindErrorException {
         Subject subject = null;
         try {
-            em.find(Subject.class, id);
+            subject = em.find(Subject.class, id);
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return subject;
     }
 
+    /**
+     * Finds subjects with a specific number of units, based on the provided
+     * comparison operator.
+     *
+     * @param number The number of units to compare.
+     * @param comparisonOperator The comparison operator to use.
+     * @return A set of subjects that meet the search criteria.
+     * @throws FindErrorException Thrown if there is an error during the search.
+     */
     @Override
-    public Set<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException {
+        List<Subject> subjects;
         String comparison;
         if ("=".equals(comparisonOperator)) {
             comparison = "=";
@@ -229,7 +229,7 @@ public class EJBSubjectManager implements SubjectInterface {
             comparison = "<";
         }
         try {
-            subjects = new HashSet<> (em.createNamedQuery("findSubjectsWithXUnits").setParameter("comparisonOperator", comparison).setParameter("numUnits", number).getResultList());
+            subjects = em.createNamedQuery("findSubjectsWithXUnits").setParameter("comparisonOperator", comparison).setParameter("numUnits", number).getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
@@ -237,9 +237,18 @@ public class EJBSubjectManager implements SubjectInterface {
         return subjects;
     }
 
+    /**
+     * Retrieves subjects based on the count of enrolled students.
+     *
+     * @param number The number for comparison.
+     * @param comparisonOperator The operator for comparison.
+     * @return List of subjects meeting the specified enrollment count
+     * condition.
+     * @throws FindErrorException If an error occurs during retrieval.
+     */
     @Override
-    public Set<Subject> findSubjectsWithXExamDuration(Integer number, String comparisonOperator) throws FindErrorException {
-        Set<Subject> subjects;
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number, String comparisonOperator) throws FindErrorException {
+        List<Subject> subjects;
         String comparison;
         if ("=".equals(comparisonOperator)) {
             comparison = "=";
@@ -249,32 +258,11 @@ public class EJBSubjectManager implements SubjectInterface {
             comparison = "<";
         }
         try {
-            subjects = new HashSet<> (em.createNamedQuery("findSubjectsWithExamsDuration").setParameter("comparisonOperator", comparison).setParameter("numExamDuration", number).getResultList());
+            subjects = em.createNamedQuery("findSubjectsWithEnrolledStudentsCount").setParameter("comparisonOperator", comparison).setParameter("numUnits", number).getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
 
         return subjects;
     }
-
-    @Override
-    public Set<Subject> findSubjectsWithXStudents(Integer number, String comparisonOperator) throws FindErrorException {
-       Set<Subject> subjects;
-        String comparison;
-        if ("=".equals(comparisonOperator)) {
-            comparison = "=";
-        } else if (">".equals(comparisonOperator)) {
-            comparison = ">";
-        } else {
-            comparison = "<";
-        }
-        try {
-            subjects = new HashSet<> (em.createNamedQuery("findSubjectsWithStudentsCount").setParameter("comparisonOperator", comparison).setParameter("numStudents", number).getResultList());
-        } catch (Exception ex) {
-            throw new FindErrorException(ex.getMessage());
-        }
-
-        return subjects;
-    }
-
 }

@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
@@ -39,10 +41,6 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName")
     ,
     @NamedQuery(
-            name = "findByHours",
-            query = "SELECT s FROM Subject s WHERE s.hours = :subjectHours")
-    ,
-    @NamedQuery(
             name = "findByLanguage",
             query = "SELECT s FROM Subject s WHERE s.languageType LIKE :subjectLanguage")
     ,
@@ -63,13 +61,8 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT s FROM Subject s JOIN FETCH s.units u GROUP BY s HAVING COUNT(u) :comparisonOperator :numUnits")
     ,
     @NamedQuery(
-            name = "findSubjectsWithExamsDuration",
-            query = "SELECT s FROM Subject s JOIN FETCH s.exams e GROUP BY s HAVING COUNT(e) :comparisonOperator :numExamDuration")
-    ,
-    @NamedQuery(
-            name = "findSubjectsWithStudentsCount",
-            query = "SELECT s FROM Subject s JOIN FETCH s.students stu GROUP BY s HAVING COUNT(stu) :comparisonOperator :numStudents")
-
+        name = "findSubjectsWithEnrolledStudentsCount",
+        query = "SELECT s FROM Subject s LEFT JOIN s.enrollments e WHERE e.isMatriculate = true GROUP BY s HAVING COUNT(e) >= :numEnrolledStudents")
 })
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")
@@ -94,10 +87,12 @@ public class Subject implements Serializable {
     /**
      * Enumeration of the levels for the subject.
      */
+    @Enumerated(EnumType.STRING)
     private LevelType levelType;
     /**
      * Enumeration of languages for the subject.
      */
+    @Enumerated(EnumType.STRING)
     private LanguageType languageType;
     /**
      * Date init of the subject.
@@ -127,7 +122,7 @@ public class Subject implements Serializable {
      * Relational field containing students of the subject.
      */
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
-    private Set<Student> students;
+    private Set<Enrolled> enrollments;
     /**
      * Relational field containing exams of the subject.
      */
@@ -298,23 +293,18 @@ public class Subject implements Serializable {
         this.units = units;
     }
 
-    /**
-     * Gets the students related to the subject.
-     *
-     * @return the set of students
-     */
-    @XmlTransient
-    public Set<Student> getStudents() {
-        return students;
+    
+    public Set<Enrolled> getEnrollments() {
+        return enrollments;
     }
 
     /**
-     * Sets the students related to the subject.
+     * Gets the students related to the subject.
      *
-     * @param students the set of students to be set
+     * @param enrollments
      */
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+    public void setEnrollments(Set<Enrolled> enrollments) {    
+        this.enrollments = enrollments;
     }
 
     /**
@@ -322,7 +312,6 @@ public class Subject implements Serializable {
      *
      * @return the set of exams
      */
-    @XmlTransient
     public Set<Exam> getExams() {
         return exams;
     }
@@ -349,11 +338,11 @@ public class Subject implements Serializable {
      * @param dateEnd the end date of the subject
      * @param teacher the teacher of the subject
      * @param units the set of units related to the subject
-     * @param students the set of students related to the subject
+     * @param enrollments the set of enrollments
      * @param exams the set of exams related to the subject
      */
     public Subject(Integer id, String name, Integer hours, LevelType levelType, LanguageType languageType,
-            Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Student> students, Set<Exam> exams) {
+            Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Enrolled> enrollments, Set<Exam> exams) {
         this.id = id;
         this.name = name;
         this.hours = hours;
@@ -363,7 +352,7 @@ public class Subject implements Serializable {
         this.dateEnd = dateEnd;
         this.teacher = teacher;
         this.units = units;
-        this.students = students;
+        this.enrollments = enrollments;
         this.exams = exams;
     }
 
@@ -409,7 +398,7 @@ public class Subject implements Serializable {
     public String toString() {
         return "Subject{" + "id=" + id + ", name=" + name + ", hours=" + hours + ", levelType=" + levelType
                 + ", languageType=" + languageType + ", dateInit=" + dateInit + ", dateEnd=" + dateEnd
-                + ", teacher=" + teacher + ", units=" + units + ", students=" + students + ", exams=" + exams + '}';
+                + ", teacher=" + teacher + ", units=" + units + ",enrollments=" + enrollments + ", exams=" + exams + '}';
     }
 
 }

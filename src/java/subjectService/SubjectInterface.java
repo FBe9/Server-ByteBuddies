@@ -11,13 +11,15 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
+import javax.ejb.Local;
 
 /**
- * Interface for subject EJB.
+ * Local interface for subject EJB.
  *
  * @author irati
  */
+@Local
 public interface SubjectInterface {
 
     /**
@@ -51,7 +53,7 @@ public interface SubjectInterface {
      * @return a Subject entity containing the subject data.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Subject findSubjectById(String id) throws FindErrorException;
+    public Subject findSubjectById(Integer id) throws FindErrorException;
 
     /**
      * Method to search for all subjects.
@@ -59,7 +61,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findAllSubjects() throws FindErrorException;
+    public List<Subject> findAllSubjects() throws FindErrorException;
 
     /**
      * Method to search subjects by name.
@@ -68,7 +70,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findSubjectsByName(String name) throws FindErrorException;
+    public List<Subject> findSubjectsByName(String name) throws FindErrorException;
 
     /**
      * Method to search subjects by hours.
@@ -77,16 +79,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findSubjectsByHours(Integer hours) throws FindErrorException;
-
-    /**
-     * Method to search subjects by teacher name.
-     *
-     * @param name string teacher's name to make the search.
-     * @return a collection of subjects.
-     * @throws FindErrorException if there is an error during reading.
-     */
-    public Set<Subject> findSubjectsByTeacher(String name) throws FindErrorException;
+    public List<Subject> findSubjectsByTeacher(String name) throws FindErrorException;
 
     /**
      * Method to search subjects by its init date.
@@ -95,7 +88,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findSubjectsByInitDate(Date date) throws FindErrorException;
+    public List<Subject> findSubjectsByInitDate(Date date) throws FindErrorException;
 
     /**
      * Method to search subjects by language.
@@ -104,7 +97,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findSubjectsByLanguage(String language) throws FindErrorException;
+    public List<Subject> findSubjectsByLanguage(String language) throws FindErrorException;
 
     /**
      * Method to search subjects by its end date.
@@ -113,7 +106,7 @@ public interface SubjectInterface {
      * @return a collection of subjects.
      * @throws FindErrorException if there is an error during reading.
      */
-    public Set<Subject> findSubjectsByEndDate(Date date) throws FindErrorException;
+    public List<Subject> findSubjectsByEndDate(Date date) throws FindErrorException;
 
     /**
      * Finds subjects with a specific number of units, based on the provided
@@ -124,28 +117,16 @@ public interface SubjectInterface {
      * @return A set of subjects that meet the search criteria.
      * @throws FindErrorException Thrown if there is an error during the search.
      */
-    public Set<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException;
+    public List<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException;
 
     /**
-     * Finds subjects with a specific exam duration, based on the provided
-     * comparison operator.
+     * Retrieves subjects based on the count of enrolled students.
      *
-     * @param number The exam duration to compare.
-     * @param comparisonOperator The comparison operator to use.
-     * @return A set of subjects that meet the search criteria.
-     * @throws FindErrorException Thrown if there is an error during the search.
+     * @param number The number for comparison.
+     * @param comparisonOperator The operator for comparison.
+     * @return List of subjects meeting the specified enrollment count condition.
+     * @throws FindErrorException If an error occurs during retrieval.
      */
-    public Set<Subject> findSubjectsWithXExamDuration(Integer number, String comparisonOperator) throws FindErrorException;
-
-    /**
-     * Finds subjects with a specific number of students, based on the provided
-     * comparison operator.
-     *
-     * @param number The number of students to compare.
-     * @param comparisonOperator The comparison operator to use.
-     * @return A set of subjects that meet the search criteria.
-     * @throws FindErrorException Thrown if there is an error during the search.
-     */
-    public Set<Subject> findSubjectsWithXStudents(Integer number, String comparisonOperator) throws FindErrorException;
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number, String comparisonOperator) throws FindErrorException;
 
 }
