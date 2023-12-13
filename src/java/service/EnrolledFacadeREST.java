@@ -30,7 +30,7 @@ import javax.ws.rs.core.PathSegment;
 import subjectService.EnrolledInterface;
 
 /**
- *
+ * RESTful web service for managing enrollments.
  * @author irati
  */
 @Stateless
