@@ -32,9 +32,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "findAllUnits", query = "SELECT u FROM Unit u"
     ),
-    //Find Unit by Name
+    //Find Units by similar Name
     @NamedQuery(
-            name = "findUnitByName", query = "SELECT u FROM Unit u WHERE u.name LIKE :name"
+            name = "findUnitsByName", query = "SELECT u FROM Unit u WHERE u.name LIKE :name"
+    ),
+    //Find Unit by especific Name
+    @NamedQuery(
+            name = "findOneUnitByName", query = "SELECT u FROM Unit u WHERE u.name = :name"
     ),
     //Find Unit by DateInit
     @NamedQuery(
@@ -50,7 +54,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ),
     //Find Unit by Subject
     @NamedQuery(
-            name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name LIKE :subjectName"
+            name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name = :subjectName"
     )
     })
 
