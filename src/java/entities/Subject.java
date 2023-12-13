@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/*
  * Entity representing subjects for a teacher and costumer. It has the following fields:
  * subject id, name, hours, level, language, init date and end date. It also contains field for getting
  * the students, units, exams and teacher releated to it.
