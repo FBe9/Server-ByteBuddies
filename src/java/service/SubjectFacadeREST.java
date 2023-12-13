@@ -117,13 +117,15 @@ public class SubjectFacadeREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Subject find(@PathParam("id") Integer id) {
+        Subject subject;
         try {
             LOGGER.log(Level.INFO, "Reading data for account {0}", id);
-            return ejb.findSubjectById(id);
+            subject = ejb.findSubjectById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return subject;
     }
 
     /**
@@ -135,13 +137,15 @@ public class SubjectFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Subject> findAll() {
+        List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading data for all accounts");
-            return (List<Subject>) ejb.findAllSubjects();
+            subjects = ejb.findAllSubjects();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -155,12 +159,15 @@ public class SubjectFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsByName/{name}")
     public List<Subject> findSubjectsByName(@PathParam("name") String name) {
+       List<Subject> subjects;
         try {
-            return ejb.findSubjectsByName(name);
+            LOGGER.log(Level.INFO, "Reading subjects by name");
+           subjects = ejb.findSubjectsByName(name);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -174,12 +181,15 @@ public class SubjectFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectByTeacher/{name}")
     public List<Subject> findSubjectsByTeacher(@PathParam("name") String name) {
+        List<Subject> subjects;
         try {
-            return ejb.findSubjectsByTeacher(name);
+            LOGGER.log(Level.INFO, "Reading subjects by teacher's name");
+            subjects = ejb.findSubjectsByTeacher(name);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -193,12 +203,15 @@ public class SubjectFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsByLanguage/{language}")
     public List<Subject> findSubjectsByLanguage(@PathParam("language") String language) {
+       List<Subject> subjects; 
         try {
-            return ejb.findSubjectsByLanguage(language);
+            LOGGER.log(Level.INFO, "Reading subjects by language");
+            subjects = ejb.findSubjectsByLanguage(language);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return subjects;
     }
 
     /**
@@ -215,6 +228,7 @@ public class SubjectFacadeREST {
         List<Subject> subjects;
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         try {
+            LOGGER.log(Level.INFO, "Reading subjects by initDate");
             Date date = format.parse(dateGet);
             subjects = ejb.findSubjectsByInitDate(date);
         } catch (FindErrorException | ParseException ex) {
@@ -238,6 +252,7 @@ public class SubjectFacadeREST {
         List<Subject> subjects;
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         try {
+            LOGGER.log(Level.INFO, "Reading subjects by endDate");
             Date date = format.parse(dateGet);
             subjects = ejb.findSubjectsByEndDate(date);
         } catch (FindErrorException | ParseException ex) {
@@ -261,6 +276,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsWithXUnits(@PathParam("number") Integer number, @PathParam("comparisonOperator") String comparisonOperator) {
         List<Subject> subjects;
         try {
+            LOGGER.log(Level.INFO, "Reading subjects by X number of units");
             subjects = ejb.findSubjectsWithXUnits(number, comparisonOperator);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -284,6 +300,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number, @PathParam("comparisonOperator") String comparisonOperator) {
         List<Subject> subjects;
         try {
+            LOGGER.log(Level.INFO, "Reading subjects by the amount of enrolledStudents");
             subjects = ejb.findSubjectsWithEnrolledStudentsCount(number, comparisonOperator);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());

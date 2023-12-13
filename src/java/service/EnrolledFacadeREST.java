@@ -136,13 +136,15 @@ public class EnrolledFacadeREST {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Enrolled find(@PathParam("id") Integer id) {
+       Enrolled enrolled;
         try {
-            LOGGER.log(Level.INFO, "Reading data for account {0}", id);
-            return ejb.findEnrolledById(id);
+            LOGGER.log(Level.INFO, "Reading data for enrolled {0}", id);
+            enrolled = ejb.findEnrolledById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return enrolled;
     }
      /**
      * GET method to find all enrollments: uses findAllEnrolled business logic method.
@@ -151,13 +153,35 @@ public class EnrolledFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Enrolled> findAll() {
+        List<Enrolled> enrollments;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all accounts");
-            return (List<Enrolled>) ejb.findAllEnrolled();
+            LOGGER.log(Level.INFO, "Reading data for all enrollments");
+            enrollments = ejb.findAllEnrolled();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
+        return enrollments;
+    }
+    /**
+     * GET method to find all matriculated enrollments for a given student. uses findMatriculatedbusiness logic method.
+     *
+     * @param studentId the studentId for the search
+     * @return a list of enrollments.
+     */
+    @GET
+    @Path(" findMatriculated/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Enrolled> findMatriculated(@PathParam("id") Integer studentId) {
+        List<Enrolled> enrollments;
+        try {
+            LOGGER.log(Level.INFO, "Reading all matriculated enrollments for the student with the id; .", studentId);
+            enrollments = ejb.findMatriculated(studentId);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return enrollments;
     }
 
 }
