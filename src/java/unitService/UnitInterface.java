@@ -74,8 +74,19 @@ public interface UnitInterface {
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findMyUnitsByName(String name) throws FindErrorException;
-
+    public ArrayList<Unit> findUnitsByName(String name) throws FindErrorException;
+    
+    /**
+     * This method finds a units which name is the one the user
+     * introduced.
+     *
+     * @param name A String that contains the words the user introduced.
+     * @return The Unit entity object to be found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    public Unit findOneUnitByName(String name) throws FindErrorException;
+    
     /**
      * This method finds all the units where the init date of the unit is equals
      * the date the user introduced.

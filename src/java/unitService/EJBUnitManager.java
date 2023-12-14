@@ -35,15 +35,19 @@ public class EJBUnitManager implements UnitInterface {
      * This method creates a new Unit in the data base.
      *
      * @param unit The Unit entity object containing new Unit data.
-     * @throws CreateErrorException Thrown when any error or exception occurs during
-     * creation.
+     * @throws CreateErrorException Thrown when any error or exception occurs
+     * during creation.
      */
     @Override
     public void createUnit(Unit unit) throws CreateErrorException {
         Unit bdUnit;
 
         try {
-
+            bdUnit = (Unit) em.createNamedQuery("findOneUnitByName").setParameter("name", unit.getName()).getSingleResult();
+            if (bdUnit.equals(unit)) {
+                throw new CreateErrorException("The unit already exist");
+            }
+            
             em.persist(unit);
         } catch (Exception e) {
             throw new CreateErrorException(e.getMessage());
@@ -54,8 +58,8 @@ public class EJBUnitManager implements UnitInterface {
      * This method updates a movement data in the data store.
      *
      * @param unit The Unit entity object containing modified Unit data.
-     * @throws UpdateErrorException Thrown when any error or exception occurs during
-     * update.
+     * @throws UpdateErrorException Thrown when any error or exception occurs
+     * during update.
      */
     @Override
     public void updateUnit(Unit unit) throws UpdateErrorException {
@@ -75,8 +79,8 @@ public class EJBUnitManager implements UnitInterface {
      * This method removes a Unit from the data store.
      *
      * @param unit The Unit entity object to be removed.
-     * @throws DeleteErrorException Thrown when any error or exception occurs during
-     * deletion.
+     * @throws DeleteErrorException Thrown when any error or exception occurs
+     * during deletion.
      */
     @Override
     public void removeUnit(Unit unit) throws DeleteErrorException {
@@ -96,8 +100,8 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @param id An Integer that contains the id the user introduce.
      * @return The Unit entity object to be found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public Unit findUnitByID(Integer id) throws FindErrorException {
@@ -115,8 +119,8 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public ArrayList<Unit> findAllUnits() throws FindErrorException {
@@ -130,17 +134,17 @@ public class EJBUnitManager implements UnitInterface {
     }
 
     /**
-     * This method finds all the units which name contains
-     * the words the user introduced.
+     * This method finds all the units which name contains the words the user
+     * introduced.
      *
      * @param name A String that contains the words the user introduced.
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
-    public ArrayList<Unit> findMyUnitsByName(String name) throws FindErrorException {
+    public ArrayList<Unit> findUnitsByName(String name) throws FindErrorException {
         ArrayList<Unit> units = null;
         try {
             units = new ArrayList<>(em.createNamedQuery("findUnitsByName").setParameter("name", "%" + name + "%").getResultList());
@@ -149,16 +153,36 @@ public class EJBUnitManager implements UnitInterface {
         }
         return units;
     }
+    
+    /**
+     * This method finds a unit which name is the one the user
+     * introduced.
+     *
+     * @param name A String that contains the words the user introduced.
+     * @return The Unit entity object to be found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public Unit findOneUnitByName(String name) throws FindErrorException {
+        Unit unitbd = null;
+        try {
+            unitbd = (Unit) em.createNamedQuery("findOneUnitByName").setParameter("name", name).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitByName(String name) {0}", e.getMessage());
+        }
+        return unitbd;
+    }
 
     /**
-     * This method finds all the units where the init date 
-     * of the unit is equals the date the user introduced.
-     * 
+     * This method finds all the units where the init date of the unit is equals
+     * the date the user introduced.
+     *
      * @param dateInit A Date that contains the date the User introduce.
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public ArrayList<Unit> findUnitsByDateInit(Date dateInit) throws FindErrorException {
@@ -170,16 +194,16 @@ public class EJBUnitManager implements UnitInterface {
         }
         return units;
     }
-    
+
     /**
-     * This method finds all the units where the end date 
-     * of the unit is equals the date the user introduced.
-     * 
+     * This method finds all the units where the end date of the unit is equals
+     * the date the user introduced.
+     *
      * @param dateEnd A Date that contains the date the User introduce.
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public ArrayList<Unit> findUnitsByDateEnd(Date dateEnd) throws FindErrorException {
@@ -191,15 +215,16 @@ public class EJBUnitManager implements UnitInterface {
         }
         return units;
     }
-    
+
     /**
-     * This method finds all the units where the hours of the unit are equals the hours the user introduced.
-     * 
+     * This method finds all the units where the hours of the unit are equals
+     * the hours the user introduced.
+     *
      * @param hours An Integer with the number the user introduce.
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public ArrayList<Unit> findUnitsByHours(Integer hours) throws FindErrorException {
@@ -211,20 +236,20 @@ public class EJBUnitManager implements UnitInterface {
         }
         return units;
     }
-    
+
     /**
-     * This method finds all the units which subject name contains
-     * the words the user introduced.
+     * This method finds all the units which subject name contains the words the
+     * user introduced.
      *
      * @param name A String that contains the words the user introduced.
      * @return An ArrayList of Units that contains the units that the method
      * found.
-     * @throws FindErrorException Thrown when any error or exception occurs during
-     * reading.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
      */
     @Override
     public ArrayList<Unit> findUnitsBySubject(String name) throws FindErrorException {
-         ArrayList<Unit> units = null;
+        ArrayList<Unit> units = null;
         try {
             units = new ArrayList<>(em.createNamedQuery("findUnitsBySubject").setParameter("name", "%" + name + "%").getResultList());
         } catch (Exception e) {
