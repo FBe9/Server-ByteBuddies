@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -11,13 +6,57 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
+/**
+ * Unit Entity class 
+ * 
+ * @author Nerea
+ */
+@NamedQueries({ 
+    @NamedQuery(
+            name = "findUnitByID", query = "SELECT u FROM Unit u WHERE u.id = :id"
+    ),
+    //Find all Units
+    @NamedQuery(
+            name = "findAllUnits", query = "SELECT u FROM Unit u"
+    ),
+    //Find Units by similar Name
+    @NamedQuery(
+            name = "findUnitsByName", query = "SELECT u FROM Unit u WHERE u.name LIKE :name"
+    ),
+    //Find Unit by especific Name
+    @NamedQuery(
+            name = "findOneUnitByName", query = "SELECT u FROM Unit u WHERE u.name = :name"
+    ),
+    //Find Unit by DateInit
+    @NamedQuery(
+            name = "findUnitsByDateInit", query = "SELECT u FROM Unit u WHERE u.dateInit = :dateInit"
+    ),
+    //Find Unit by DateFin 
+    @NamedQuery(
+            name = "findUnitsByDateEnd", query = "SELECT u FROM Unit u WHERE u.dateEnd = :dateEnd"
+    ),
+    //Find Unit by Hours
+    @NamedQuery(
+            name = "findUnitsByHours", query = "SELECT u FROM Unit u WHERE u.hours = :hours"
+    ),
+    //Find Unit by Subject
+    @NamedQuery(
+            name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name = :subjectName"
+    )
+    })
 
 /**
  *
@@ -42,59 +81,76 @@ public class Unit implements Serializable{
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
     private Integer hours;
+    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
     private Set<Exercise> exercises;
+    @ManyToOne
     private Subject subject;
-    
+  
     //Setters and Getters
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public Date getDateInit() {
         return dateInit;
     }
+
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
+
     public Date getDateEnd() {
         return dateEnd;
     }
+
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
     public Integer getHours() {
         return hours;
     }
+
     public void setHours(Integer hours) {
         this.hours = hours;
     }
+    @XmlTransient
     public Set<Exercise> getExercises() {
         return exercises;
     }
+
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
     }
+
     public Subject getSubject() {
         return subject;
     }
+
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-    
+
     //Constructors
     public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
@@ -107,15 +163,17 @@ public class Unit implements Serializable{
         this.subject = subject;
     }
     public Unit() {
-    }   
+    }
     
-      @Override
+    //HasCode
+    @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-
+    
+    //Equals
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -123,6 +181,10 @@ public class Unit implements Serializable{
             return false;
         }
         Unit other = (Unit) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        if (!((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))) {
+            return false;
+        }
+        return true;
+
     }
 }

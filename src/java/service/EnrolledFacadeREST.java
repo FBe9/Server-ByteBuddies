@@ -5,8 +5,8 @@
  */
 package service;
 
-import entities.Mark;
-import entities.MarkId;
+import entities.Enrolled;
+import entities.EnrolledId;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,81 +24,80 @@ import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author Alex
+ * @author 2dam
  */
 @Stateless
-@Path("entities.mark")
-public class MarkFacadeREST extends AbstractFacade<Mark> {
+@Path("entities.enrolled")
+public class EnrolledFacadeREST extends AbstractFacade<Enrolled> {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
 
-    private MarkId getPrimaryKey(PathSegment pathSegment) {
+    private EnrolledId getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
-         * URI path part is supposed to be in form of 'somePath;examId=examIdValue;studentId=studentIdValue'.
+         * URI path part is supposed to be in form of 'somePath;accountId=accountIdValue;customerId=customerIdValue'.
          * Here 'somePath' is a result of getPath() method invocation and
          * it is ignored in the following code.
          * Matrix parameters are used as field names to build a primary key instance.
          */
-        entities.MarkId key = new entities.MarkId();
+        entities.EnrolledId key = new entities.EnrolledId();
         javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
-        java.util.List<String> examId = map.get("examId");
-        if (examId != null && !examId.isEmpty()) {
-            key.setExamId(new java.lang.Integer(examId.get(0)));
+        java.util.List<String> accountId = map.get("accountId");
+        if (accountId != null && !accountId.isEmpty()) {
+            key.setAccountId(new java.lang.Long(accountId.get(0)));
         }
-        java.util.List<String> studentId = map.get("studentId");
-        if (studentId != null && !studentId.isEmpty()) {
-            key.setStudentId(new java.lang.Integer(studentId.get(0)));
+        java.util.List<String> customerId = map.get("customerId");
+        if (customerId != null && !customerId.isEmpty()) {
+            key.setCustomerId(new java.lang.Long(customerId.get(0)));
         }
         return key;
     }
 
-    public MarkFacadeREST() {
-        super(Mark.class);
+    public EnrolledFacadeREST() {
+        super(Enrolled.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Mark entity) {
+    public void create(Enrolled entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Mark entity) {
-
+    public void edit(@PathParam("id") PathSegment id, Enrolled entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") PathSegment id) {
-        entities.MarkId key = getPrimaryKey(id);
+        entities.EnrolledId key = getPrimaryKey(id);
         super.remove(super.find(key));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Mark find(@PathParam("id") PathSegment id) {
-        entities.MarkId key = getPrimaryKey(id);
+    public Enrolled find(@PathParam("id") PathSegment id) {
+        entities.EnrolledId key = getPrimaryKey(id);
         return super.find(key);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mark> findAll() {
+    public List<Enrolled> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mark> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Enrolled> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
