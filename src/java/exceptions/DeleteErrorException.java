@@ -1,30 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package exceptions;
 
 /**
- *
- * @author 2dam
+ * Exception if any error happens during delete.
+ * @author irati
  */
 public class DeleteErrorException extends Exception {
-
-    /**
-     * Creates a new instance of <code>DeleteErrorException</code> without
-     * detail message.
+     /**
+     * Creates a new instance without message.
      */
     public DeleteErrorException() {
     }
-
     /**
-     * Constructs an instance of <code>DeleteErrorException</code> with the
-     * specified detail message.
-     *
-     * @param msg the detail message.
+     * Creates a new instance with message.
      */
-    public DeleteErrorException(String msg) {
-        super(msg);
+    public DeleteErrorException(String message) {
+        super(message);
     }
+    
 }

@@ -1,23 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
 @Entity
 @Table(name = "user", schema = "bytebuddiesbd")
+@Inheritance(strategy = InheritanceType.JOINED)
 @XmlRootElement
 public class User implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -28,6 +28,7 @@ public class User implements Serializable{
     private String surname;
     private String password;
     private Date dateInit;
+    @Enumerated(EnumType.STRING)
     private UserType userType;
     
     //Setters and Getters

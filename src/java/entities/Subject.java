@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -10,114 +5,344 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Entity representing subjects for a teacher and costumer. It has the following
+ * fields: subject id, name, hours, level, language, init date and end date. It
+ * also contains field for getting the students, units, exams and teacher
+ * releated to it.
  *
- * @author 2dam
+ * @author Irati
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllSubjects",
+            query = "SELECT s FROM Subject s")
+    ,
+    @NamedQuery(
+            name = "findByName",
+            query = "SELECT s FROM Subject s WHERE s.name LIKE :subjectName")
+    ,
+    @NamedQuery(
+            name = "findByLanguage",
+            query = "SELECT s FROM Subject s WHERE s.languageType LIKE :subjectLanguage")
+    ,
+    @NamedQuery(
+            name = "findByDateInit",
+            query = "SELECT s FROM Subject s WHERE s.dateInit = :subjectDateInit")
+    ,
+    @NamedQuery(
+            name = "findByDateEnd",
+            query = "SELECT s FROM Subject s WHERE s.dateEnd = :subjectDateEnd")
+    ,
+    @NamedQuery(
+            name = "findByTeacherName",
+            query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
+    ,
+    @NamedQuery(
+            name = "findSubjectsWithXUnits",
+            query = "SELECT s FROM Subject s JOIN FETCH s.units u GROUP BY s HAVING COUNT(u) :comparisonOperator :numUnits")
+    ,
+    @NamedQuery(
+        name = "findSubjectsWithEnrolledStudentsCount",
+        query = "SELECT s FROM Subject s LEFT JOIN s.enrollments e WHERE e.isMatriculate = true GROUP BY s HAVING COUNT(e) >= :numEnrolledStudents")
+})
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")
 @XmlRootElement
-public class Subject implements Serializable{
+public class Subject implements Serializable {
+
     private static final long serialVersionUID = 1L;
+    /**
+     * Identification field for the subject.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    /**
+     * Name of the subject.
+     */
     private String name;
+    /**
+     * Hours that the subject lasts.
+     */
     private Integer hours;
+    /**
+     * Enumeration of the levels for the subject.
+     */
+    @Enumerated(EnumType.STRING)
     private LevelType levelType;
+    /**
+     * Enumeration of languages for the subject.
+     */
+    @Enumerated(EnumType.STRING)
     private LanguageType languageType;
+    /**
+     * Date init of the subject.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
+    /**
+     * Date end of the subject.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
+    /**
+     * Teacher of the subject.
+     */
+    @ManyToOne
     private Teacher teacher;
+    /**
+     * Relational field containing units of the subject.
+     */
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Unit> units;
-    private Set<Student> students;
+    /**
+     * Relational field containing students of the subject.
+     */
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+    private Set<Enrolled> enrollments;
+    /**
+     * Relational field containing exams of the subject.
+     */
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     private Set<Exam> exams;
-    
+
     //Setters and Getters
+    /**
+     * Gets the subject ID.
+     *
+     * @return the subject ID
+     */
     public Integer getId() {
         return id;
     }
+
+    /**
+     * Sets the subject ID.
+     *
+     * @param id the subject ID to be set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
+
+    /**
+     * Gets the name of the subject.
+     *
+     * @return the name of the subject
+     */
     public String getName() {
         return name;
     }
+
+    /**
+     * Sets the name of the subject.
+     *
+     * @param name the name to be set
+     */
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Gets the hours that the subject lasts.
+     *
+     * @return the hours
+     */
     public Integer getHours() {
         return hours;
     }
+
+    /**
+     * Sets the hours that the subject lasts.
+     *
+     * @param hours the hours to be set
+     */
     public void setHours(Integer hours) {
         this.hours = hours;
     }
+
+    /**
+     * Gets the level type of the subject.
+     *
+     * @return the level type
+     */
     public LevelType getLevelType() {
         return levelType;
     }
+
+    /**
+     * Sets the level type of the subject.
+     *
+     * @param levelType the level type to be set
+     */
     public void setLevelType(LevelType levelType) {
         this.levelType = levelType;
     }
+
+    /**
+     * Gets the language type of the subject.
+     *
+     * @return the language type
+     */
     public LanguageType getLanguageType() {
         return languageType;
     }
+
+    /**
+     * Sets the language type of the subject.
+     *
+     * @param languageType the language type to be set
+     */
     public void setLanguageType(LanguageType languageType) {
         this.languageType = languageType;
     }
+
+    /**
+     * Gets the start date of the subject.
+     *
+     * @return the start date
+     */
     public Date getDateInit() {
         return dateInit;
     }
+
+    /**
+     * Sets the start date of the subject.
+     *
+     * @param dateInit the start date to be set
+     */
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
+
+    /**
+     * Gets the end date of the subject.
+     *
+     * @return the end date
+     */
     public Date getDateEnd() {
         return dateEnd;
     }
+
+    /**
+     * Sets the end date of the subject.
+     *
+     * @param dateEnd the end date to be set
+     */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
+
+    /**
+     * Gets the teacher of the subject.
+     *
+     * @return the teacher
+     */
     public Teacher getTeacher() {
         return teacher;
     }
+
+    /**
+     * Sets the teacher of the subject.
+     *
+     * @param teacher the teacher to be set
+     */
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
+
+    /**
+     * Gets the units related to the subject.
+     *
+     * @return the set of units
+     */
+    @XmlTransient
     public Set<Unit> getUnits() {
         return units;
     }
+
+    /**
+     * Sets the units related to the subject.
+     *
+     * @param units the set of units to be set
+     */
     public void setUnits(Set<Unit> units) {
         this.units = units;
     }
-    public Set<Student> getStudents() {
-        return students;
+
+    
+    public Set<Enrolled> getEnrollments() {
+        return enrollments;
     }
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+
+    /**
+     * Gets the students related to the subject.
+     *
+     * @param enrollments
+     */
+    public void setEnrollments(Set<Enrolled> enrollments) {    
+        this.enrollments = enrollments;
     }
+
+    /**
+     * Gets the exams related to the subject.
+     *
+     * @return the set of exams
+     */
     public Set<Exam> getExams() {
         return exams;
     }
+
+    /**
+     * Sets the exams related to the subject.
+     *
+     * @param exams the set of exams to be set
+     */
     public void setExams(Set<Exam> exams) {
         this.exams = exams;
-    }   
-   
+    }
+
     //Constructors
-    
-    public Subject(Integer id, String name, Integer hours, LevelType levelType, LanguageType languageType, Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Student> students, Set<Exam> exams) {
+    /**
+     * Creates a new instance of the Subject class with specified attributes.
+     *
+     * @param id the subject ID
+     * @param name the name of the subject
+     * @param hours the hours that the subject lasts
+     * @param levelType the level type of the subject
+     * @param languageType the language type of the subject
+     * @param dateInit the start date of the subject
+     * @param dateEnd the end date of the subject
+     * @param teacher the teacher of the subject
+     * @param units the set of units related to the subject
+     * @param enrollments the set of enrollments
+     * @param exams the set of exams related to the subject
+     */
+    public Subject(Integer id, String name, Integer hours, LevelType levelType, LanguageType languageType,
+            Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Enrolled> enrollments, Set<Exam> exams) {
         this.id = id;
         this.name = name;
         this.hours = hours;
@@ -127,12 +352,21 @@ public class Subject implements Serializable{
         this.dateEnd = dateEnd;
         this.teacher = teacher;
         this.units = units;
-        this.students = students;
+        this.enrollments = enrollments;
         this.exams = exams;
     }
+
+    /**
+     * Creates a new instance of the Subject class with default constructor.
+     */
     public Subject() {
     }
-    
+
+    /**
+     * Computes the hash code for this object.
+     *
+     * @return the hash code
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -140,9 +374,14 @@ public class Subject implements Serializable{
         return hash;
     }
 
+    /**
+     * Checks if this object is equal to another object.
+     *
+     * @param object the object to compare
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Subject)) {
             return false;
         }
@@ -150,5 +389,15 @@ public class Subject implements Serializable{
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
-    
+    /**
+     * Converts this object to a string representation.
+     *
+     * @return the string representation of the object
+     */
+    @Override
+    public String toString() {
+        return "Subject{" + "id=" + id + ", name=" + name + ", hours=" + hours + ", levelType=" + levelType
+                + ", languageType=" + languageType + ", dateInit=" + dateInit + ", dateEnd=" + dateEnd
+                + ", teacher=" + teacher + ", units=" + units + ",enrollments=" + enrollments + ", exams=" + exams + '}';
+    }
 }

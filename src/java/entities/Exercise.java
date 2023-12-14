@@ -2,7 +2,6 @@ package entities;
 
 import java.io.File;
 import java.io.Serializable;
-
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -326,5 +325,4 @@ public class Exercise implements Serializable {
         Exercise other = (Exercise) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
-
 }
