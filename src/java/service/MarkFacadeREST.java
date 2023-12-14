@@ -5,8 +5,8 @@
  */
 package service;
 
-import entities.Exam;
 import entities.Mark;
+import entities.MarkId;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,10 +20,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.PathSegment;
 
 /**
  *
- * @author 2dam
+ * @author Alex
  */
 @Stateless
 @Path("entities.mark")
@@ -31,6 +32,27 @@ public class MarkFacadeREST extends AbstractFacade<Mark> {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
+
+    private MarkId getPrimaryKey(PathSegment pathSegment) {
+        /*
+         * pathSemgent represents a URI path segment and any associated matrix parameters.
+         * URI path part is supposed to be in form of 'somePath;examId=examIdValue;studentId=studentIdValue'.
+         * Here 'somePath' is a result of getPath() method invocation and
+         * it is ignored in the following code.
+         * Matrix parameters are used as field names to build a primary key instance.
+         */
+        entities.MarkId key = new entities.MarkId();
+        javax.ws.rs.core.MultivaluedMap<String, String> map = pathSegment.getMatrixParameters();
+        java.util.List<String> examId = map.get("examId");
+        if (examId != null && !examId.isEmpty()) {
+            key.setExamId(new java.lang.Integer(examId.get(0)));
+        }
+        java.util.List<String> studentId = map.get("studentId");
+        if (studentId != null && !studentId.isEmpty()) {
+            key.setStudentId(new java.lang.Integer(studentId.get(0)));
+        }
+        return key;
+    }
 
     public MarkFacadeREST() {
         super(Mark.class);
@@ -46,21 +68,24 @@ public class MarkFacadeREST extends AbstractFacade<Mark> {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Exam id, Mark entity) {
+    public void edit(@PathParam("id") PathSegment id, Mark entity) {
+
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Exam id) {
-        super.remove(super.find(id));
+    public void remove(@PathParam("id") PathSegment id) {
+        entities.MarkId key = getPrimaryKey(id);
+        super.remove(super.find(key));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Mark find(@PathParam("id") Exam id) {
-        return super.find(id);
+    public Mark find(@PathParam("id") PathSegment id) {
+        entities.MarkId key = getPrimaryKey(id);
+        return super.find(key);
     }
 
     @GET

@@ -357,6 +357,7 @@ public class Subject implements Serializable {
         return hash;
     }
 
+
     /**
      * Checks if this object is equal to another object.
      *
@@ -371,6 +372,7 @@ public class Subject implements Serializable {
         Subject other = (Subject) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
+
 
     /**
      * Converts this object to a string representation.
