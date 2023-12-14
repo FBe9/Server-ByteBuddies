@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -54,7 +53,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(
             name = "findByTeacherName",
-            query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
+            query = "SELECT s FROM Subject s INNER JOIN User u WHERE u.name LIKE :teacherName AND u.userType = :teacher")
     ,
     @NamedQuery(
             name = "findSubjectsWithXUnits",

@@ -1,8 +1,6 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.Objects;
-import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte1.other;
 
 /**
  * Entity to establish the id for the N:M with atributes relation.
