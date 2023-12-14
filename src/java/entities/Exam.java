@@ -1,34 +1,52 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
+import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 2dam
+ * @author Alex
  */
 @Entity
 @Table(name = "exam", schema = "bytebuddiesbd")
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllExams",
+            query = "SELECT e FROM Exam e ORDER BY e.id DESC"),
+    @NamedQuery(
+            name = "findByDescription",
+            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription"), 
+    @NamedQuery(
+            name = "findAndOrderByDuration",
+            query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
+    @NamedQuery(
+            name = "findByNullSolution",
+            query = "SELECT e FROM Exam e WHERE e.mark IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)")    
+})
+
 @XmlRootElement
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -38,8 +56,10 @@ public class Exam implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
     private Integer duration;
-    private File file;
+    private String filePath;
+    @ManyToOne
     private Subject subject;
+    @OneToMany(cascade=ALL,mappedBy="exam",fetch=EAGER)
     private Set<Mark> marks;
 
     //Setters and Getters
@@ -75,14 +95,15 @@ public class Exam implements Serializable {
         this.duration = duration;
     }
 
-    public File getFile() {
-        return file;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setFile(File file) {
-        this.file = file;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
+    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
@@ -100,33 +121,47 @@ public class Exam implements Serializable {
     }
 
     //Constructor
-    public Exam(Integer id, String description, Date dateInit, Integer duration, File file, Subject subject, Set<Mark> marks) {
+    public Exam(Integer id, String description, Date dateInit, Integer duration, String filePath, Subject subject, Set<Mark> marks) {
         this.id = id;
         this.description = description;
         this.dateInit = dateInit;
         this.duration = duration;
-        this.file = file;
+        this.filePath = filePath;
         this.subject = subject;
         this.marks = marks;
     }
+
     public Exam() {
     }
-    
+
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Exam)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        Exam other = (Exam) object;
-        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Exam other = (Exam) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Exam{" + "id=" + id + ", description=" + description + ", dateInit=" + dateInit + ", duration=" + duration + ", filePath=" + filePath + ", subject=" + subject + ", marks=" + marks + '}';
     }
 
 }

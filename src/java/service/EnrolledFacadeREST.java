@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Enrolled;
@@ -76,11 +71,6 @@ public class EnrolledFacadeREST {
         }
         return key;
     }
-    /**
-     * POST method to create enrollment: uses createEnrolled business logic method.
-     *
-     * @param enrolled the enrollment containg the data.
-     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createEnrolled(Enrolled enrolled) {
@@ -183,5 +173,4 @@ public class EnrolledFacadeREST {
         }
         return enrollments;
     }
-
 }

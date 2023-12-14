@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import java.io.Serializable;
@@ -11,27 +6,27 @@ import java.util.Set;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.FetchType.EAGER;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ * 
  * @author Irati
  * @author Olivia
  */
 public class Student extends User implements Serializable{
     @Enumerated(EnumType.STRING)
     private LevelType levelType;
-    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(cascade=ALL,mappedBy="student",fetch=FetchType.EAGER)
     private Set<Mark> marks;
-    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(cascade=ALL, mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     //Constructors
     public Student(String dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
         super(dni, email, name, surname, password, dateInit, userType);
     }
-
-    
     public Student() {    
     }
     //Setters and Getters

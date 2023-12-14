@@ -374,6 +374,7 @@ public class Subject implements Serializable {
         return hash;
     }
 
+
     /**
      * Checks if this object is equal to another object.
      *
@@ -389,6 +390,7 @@ public class Subject implements Serializable {
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
+
     /**
      * Converts this object to a string representation.
      *
@@ -400,5 +402,4 @@ public class Subject implements Serializable {
                 + ", languageType=" + languageType + ", dateInit=" + dateInit + ", dateEnd=" + dateEnd
                 + ", teacher=" + teacher + ", units=" + units + ",enrollments=" + enrollments + ", exams=" + exams + '}';
     }
-
 }

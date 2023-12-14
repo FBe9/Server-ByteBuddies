@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Subject;
@@ -291,7 +286,7 @@ public class SubjectFacadeREST {
      * condition.
      * 
      */
-    @GET
+   @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithEnrolledStudentsCount/{number}/{comparisonOperator}")
     public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number, @PathParam("comparisonOperator") String comparisonOperator) {
@@ -305,5 +300,5 @@ public class SubjectFacadeREST {
         }
         return subjects;
     }
-
+   
 }
