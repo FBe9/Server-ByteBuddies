@@ -8,6 +8,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedQueries;
+
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,12 +20,14 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Entity
 @Table(name = "mark", schema = "bytebuddiesbd")
-@NamedQuery(
-        name = "findExamsByStudent",
-        query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName")
+@NamedQueries({
+        @NamedQuery(
+            name = "findExamsByStudent",
+            query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName")
+})
 
 @XmlRootElement
-class Mark implements Serializable {
+public class Mark implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -95,12 +99,8 @@ class Mark implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.Exam);
-        hash = 67 * hash + Objects.hashCode(this.student);
-        hash = 67 * hash + Objects.hashCode(this.value);
-        hash = 67 * hash + Objects.hashCode(this.callType);
-        hash = 67 * hash + Objects.hashCode(this.solutionFilePath);
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -116,23 +116,13 @@ class Mark implements Serializable {
             return false;
         }
         final Mark other = (Mark) obj;
-        if (!Objects.equals(this.solutionFilePath, other.solutionFilePath)) {
-            return false;
-        }
-        if (!Objects.equals(this.Exam, other.Exam)) {
-            return false;
-        }
-        if (!Objects.equals(this.student, other.student)) {
-            return false;
-        }
-        if (!Objects.equals(this.value, other.value)) {
-            return false;
-        }
-        if (this.callType != other.callType) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         return true;
     }
+
+    
 
     @Override
     public String toString() {

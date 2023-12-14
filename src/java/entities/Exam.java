@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,11 +30,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "findAllExams",
-            query = "SELECT e FROM Exam e"),
+            query = "SELECT e FROM Exam e ORDER BY e.id DESC"),
     @NamedQuery(
-            name = "findByTeacher",
-            query = "SELECT e FROM Exam e WHERE e.subject.teacher.name = :userName")
-    
+            name = "findByDescription",
+            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription"), 
+    @NamedQuery(
+            name = "findAndOrderByDuration",
+            query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
+    @NamedQuery(
+            name = "findByNullSolution",
+            query = "SELECT e FROM Exam e WHERE e.mark IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)")    
 })
 
 @XmlRootElement
@@ -97,6 +103,7 @@ public class Exam implements Serializable {
         this.filePath = filePath;
     }
 
+    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
@@ -129,14 +136,8 @@ public class Exam implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 13 * hash + Objects.hashCode(this.id);
-        hash = 13 * hash + Objects.hashCode(this.description);
-        hash = 13 * hash + Objects.hashCode(this.dateInit);
-        hash = 13 * hash + Objects.hashCode(this.duration);
-        hash = 13 * hash + Objects.hashCode(this.filePath);
-        hash = 13 * hash + Objects.hashCode(this.subject);
-        hash = 13 * hash + Objects.hashCode(this.marks);
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
@@ -152,25 +153,7 @@ public class Exam implements Serializable {
             return false;
         }
         final Exam other = (Exam) obj;
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
-        }
-        if (!Objects.equals(this.filePath, other.filePath)) {
-            return false;
-        }
         if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.dateInit, other.dateInit)) {
-            return false;
-        }
-        if (!Objects.equals(this.duration, other.duration)) {
-            return false;
-        }
-        if (!Objects.equals(this.subject, other.subject)) {
-            return false;
-        }
-        if (!Objects.equals(this.marks, other.marks)) {
             return false;
         }
         return true;
