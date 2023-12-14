@@ -57,7 +57,6 @@ import javax.xml.bind.annotation.XmlTransient;
             name = "findUnitsBySubject", query = "SELECT u FROM Unit u WHERE u.subject.name = :subjectName"
     )
     })
-
 /**
  *
  * @author Nerea
@@ -90,47 +89,36 @@ public class Unit implements Serializable{
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public Date getDateInit() {
         return dateInit;
     }
-
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
-
     public Date getDateEnd() {
         return dateEnd;
     }
-
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
-
     public Integer getHours() {
         return hours;
     }
-
     public void setHours(Integer hours) {
         this.hours = hours;
     }
@@ -138,19 +126,16 @@ public class Unit implements Serializable{
     public Set<Exercise> getExercises() {
         return exercises;
     }
-
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
     }
-
     public Subject getSubject() {
         return subject;
     }
-
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
+    
     //Constructors
     public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
@@ -163,6 +148,7 @@ public class Unit implements Serializable{
         this.subject = subject;
     }
     public Unit() {
+      
     }
     
     //HasCode
@@ -172,7 +158,7 @@ public class Unit implements Serializable{
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
-    
+
     //Equals
     @Override
     public boolean equals(Object object) {
@@ -181,10 +167,10 @@ public class Unit implements Serializable{
             return false;
         }
         Unit other = (Unit) object;
+
         if (!((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))) {
             return false;
         }
         return true;
-
     }
 }

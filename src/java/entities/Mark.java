@@ -9,11 +9,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
-
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  *
  * @author Alex
@@ -96,7 +94,7 @@ public class Mark implements Serializable {
 
     public Mark() {
     }
-
+  
     @Override
     public int hashCode() {
         int hash = 5;
@@ -121,9 +119,7 @@ public class Mark implements Serializable {
         }
         return true;
     }
-
-    
-
+  
     @Override
     public String toString() {
         return "Mark{" + "Exam=" + Exam + ", student=" + student + ", value=" + value + ", callType=" + callType + ", solutionFilePath=" + solutionFilePath + '}';

@@ -25,8 +25,6 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Alex
  */
-@Entity
-@Table(name = "exam", schema = "bytebuddiesbd")
 @NamedQueries({
     @NamedQuery(
             name = "findAllExams",
@@ -42,11 +40,12 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT e FROM Exam e WHERE e.mark IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)")    
 })
 
+@Entity
+@Table(name = "exam", schema = "bytebuddiesbd")
 @XmlRootElement
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

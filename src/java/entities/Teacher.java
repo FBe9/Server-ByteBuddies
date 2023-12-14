@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author 2dam
+ * @author Irati
  */
 class Teacher extends User implements Serializable{
     @Enumerated(EnumType.STRING)

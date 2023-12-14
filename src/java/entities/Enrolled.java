@@ -153,5 +153,4 @@ public class Enrolled implements Serializable {
     public String toString() {
         return "Enrolled{" + "id=" + id + ", subject=" + subject + ", student=" + student + ", isMatriculate=" + isMatriculate + '}';
     }
-    
 }

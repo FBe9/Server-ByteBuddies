@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author 2dam
+ * @author Nerea
  */
 @Entity
 @Table(name = "user", schema = "bytebuddiesbd")
