@@ -7,6 +7,7 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,11 +52,11 @@ public class EJBMarkManager implements MarkInterface{
     }
 
     @Override
-    public Set<Exam> findExamsByStudent(String userName) throws FindErrorException {
-        Set<Exam> exams;
+    public List<Exam> findExamsByStudent(String userName) throws FindErrorException {
+        List<Exam> exams;
         
         try{
-            exams = new HashSet<>(em.createNamedQuery("findExamsByStudent").setParameter("userName", "%" + userName + "%").getResultList());
+            exams = em.createNamedQuery("findExamsByStudent").setParameter("userName", "%" + userName + "%").getResultList();
             return exams;
         }catch(Exception ex){
             throw new FindErrorException(ex.getMessage());

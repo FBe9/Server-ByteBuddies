@@ -5,7 +5,7 @@ import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
-import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -19,11 +19,11 @@ public interface ExamInterface {
     
     public void deleteExam(Exam exam) throws DeleteErrorException;
     
-    public Set<Exam> findAllExams()throws FindErrorException;
+    public List<Exam> findAllExams()throws FindErrorException;
     
-    public Set<Exam> findByDescription(String description) throws FindErrorException;
+    public List<Exam> findByDescription(String description) throws FindErrorException;
     
-    public Set<Exam> findAndOrderByDuration() throws FindErrorException;
+    public List<Exam> findAndOrderByDuration() throws FindErrorException;
     
-    public Set<Exam> findByNullSolution() throws FindErrorException;
+    public List<Exam> findByNullSolution() throws FindErrorException;
 }

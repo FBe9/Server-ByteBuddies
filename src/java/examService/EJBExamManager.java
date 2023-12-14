@@ -1,13 +1,11 @@
 package examService;
 
 import entities.Exam;
-import entities.Mark;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -53,10 +51,10 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public Set<Exam> findAllExams() throws FindErrorException{
-        Set<Exam> exams;
+    public List<Exam> findAllExams() throws FindErrorException{
+        List<Exam> exams;
         try{
-            exams = new HashSet<>(em.createNamedQuery("findAllExams").getResultList());
+            exams = em.createNamedQuery("findAllExams").getResultList();
             return exams;
         }catch (Exception ex){
             throw new FindErrorException(ex.getMessage());
@@ -64,11 +62,11 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public Set<Exam> findByDescription(String description) throws FindErrorException{
-        Set<Exam> exams;
+    public List<Exam> findByDescription(String description) throws FindErrorException{
+        List<Exam> exams;
         
         try{
-            exams = new HashSet<>(em.createNamedQuery("findByDescription").setParameter("examDescription", "%" + description + "%").getResultList());
+            exams = em.createNamedQuery("findByDescription").setParameter("examDescription", "%" + description + "%").getResultList();
             return exams;
         }catch (Exception ex){
             throw new FindErrorException(ex.getMessage());
@@ -76,11 +74,11 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public Set<Exam> findAndOrderByDuration() throws FindErrorException{
-        Set<Exam> exams;
+    public List<Exam> findAndOrderByDuration() throws FindErrorException{
+        List<Exam> exams;
         
         try{
-            exams = new HashSet<>(em.createNamedQuery("findAndOrderByDuration").getResultList());
+            exams = em.createNamedQuery("findAndOrderByDuration").getResultList();
             return exams;
         } catch (Exception ex){
             throw new FindErrorException(ex.getMessage());
@@ -88,11 +86,11 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public Set<Exam> findByNullSolution() throws FindErrorException {
-        Set<Exam> exams;
+    public List<Exam> findByNullSolution() throws FindErrorException {
+        List<Exam> exams;
         
         try{
-            exams = new HashSet<>(em.createNamedQuery("findByNullSolution").getResultList());
+            exams = em.createNamedQuery("findByNullSolution").getResultList();
             return exams;
         } catch(Exception ex){
             throw new FindErrorException(ex.getMessage());

@@ -6,7 +6,7 @@ import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
-import java.util.Set;
+import java.util.List;
 
 /**
  *
@@ -20,5 +20,5 @@ public interface MarkInterface {
     
     public void deleteMark(Mark mark) throws DeleteErrorException;
     
-    public Set<Exam> findExamsByStudent(String userName)throws FindErrorException;
+    public List<Exam> findExamsByStudent(String userName)throws FindErrorException;
 }
