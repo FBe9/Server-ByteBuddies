@@ -21,7 +21,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "student", schema = "bytebuddiesbd")
 @XmlRootElement
-public class Student extends User implements Serializable{
+public class Student extends User {
+    private static final long serialVersionUID = 1L;
     @Enumerated(EnumType.STRING)
     private LevelType levelType;
     @OneToMany(cascade=ALL,mappedBy="student",fetch=FetchType.EAGER)
@@ -29,7 +30,7 @@ public class Student extends User implements Serializable{
     @OneToMany(cascade=ALL, mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     //Constructors
-    public Student(String dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
+    public Student(Integer dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
         super(dni, email, name, surname, password, dateInit, userType);
     }
     public Student() {    

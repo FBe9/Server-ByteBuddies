@@ -43,15 +43,15 @@ public class Enrolled implements Serializable {
     /**
      * Reference to the associated subject.
      */
-    @MapsId("subjectId")
-    @ManyToOne
+    @ManyToOne(targetEntity=Subject.class)
+    @MapsId("id")
     private Subject subject;
 
     /**
      * Reference to the associated student.
      */
-    @MapsId("studentId")
-    @ManyToOne
+    @ManyToOne(targetEntity=Student.class)
+    @MapsId("dni")
     private Student student;
 
     /**

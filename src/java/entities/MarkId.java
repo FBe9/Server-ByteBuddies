@@ -1,11 +1,15 @@
 package entities;
 
+import java.io.Serializable;
+import javax.persistence.Embeddable;
+
 
 /**
  *
  * @author Alex
  */
-public class MarkId {
+@Embeddable
+public class MarkId implements Serializable{
 
     private Integer examId;
     private Integer studentId;

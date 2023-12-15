@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,9 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "findAndOrderByDuration",
             query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
-    @NamedQuery(
+   /*@NamedQuery(
             name = "findByNullSolution",
-            query = "SELECT e FROM Exam e JOIN Mark m on e.id = m.exam.id WHERE m.solutionFilePath = ''"),
+            query = "SELECT e FROM Exam e LEFT JOIN Mark m on e.id = m.exam.id WHERE m.solutionFilePath = ''"), */
     @NamedQuery(
             name ="findBySubject",
             query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")
@@ -113,6 +114,7 @@ public class Exam implements Serializable {
         this.subject = subject;
     }
 
+    @XmlTransient
     public Set<Mark> getMarks() {
         return marks;
     }
