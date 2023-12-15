@@ -113,20 +113,18 @@ public interface SubjectInterface {
      * comparison operator.
      *
      * @param number The number of units to compare.
-     * @param comparisonOperator The comparison operator to use.
      * @return A set of subjects that meet the search criteria.
      * @throws FindErrorException Thrown if there is an error during the search.
      */
-    public List<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException;
+    public List<Subject> findSubjectsWithXUnits(Integer number) throws FindErrorException;
 
     /**
      * Retrieves subjects based on the count of enrolled students.
      *
      * @param number The number for comparison.
-     * @param comparisonOperator The operator for comparison.
      * @return List of subjects meeting the specified enrollment count condition.
      * @throws FindErrorException If an error occurs during retrieval.
      */
-    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number, String comparisonOperator) throws FindErrorException;
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number) throws FindErrorException;
 
 }

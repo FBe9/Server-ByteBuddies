@@ -7,8 +7,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.FetchType.EAGER;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -16,6 +18,9 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati
  * @author Olivia
  */
+@Entity
+@Table(name = "student", schema = "bytebuddiesbd")
+@XmlRootElement
 public class Student extends User implements Serializable{
     @Enumerated(EnumType.STRING)
     private LevelType levelType;

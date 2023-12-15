@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
     @NamedQuery(
             name = "findByNullSolution",
-            query = "SELECT e FROM Exam e WHERE e.mark IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)")    
+//            query = "SELECT e FROM Exam e WHERE e.marks IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)"
+            query = "SELECT e FROM Exam e JOIN Mark m on e.exam = m.exam WHERE m.solutionFilePath = ''")    
 })
 
 @Entity

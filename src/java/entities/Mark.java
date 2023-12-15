@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
         @NamedQuery(
             name = "findExamsByStudent",
-            query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName")
+            query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName ")
 })
 
 @XmlRootElement
@@ -33,22 +33,22 @@ public class Mark implements Serializable {
     private MarkId id;
     @MapsId("examId")
     @ManyToOne
-    private Exam Exam;
+    private Exam exam;
     @MapsId("studentId")
     @ManyToOne
     private Student student;
-    private Float value;
+    private Float markValue;
     @Enumerated(EnumType.STRING)
     private CallType callType;
     private String solutionFilePath;
 
     //Setters and Getters
     public Exam getExam() {
-        return Exam;
+        return exam;
     }
 
     public void setExam(Exam Exam) {
-        this.Exam = Exam;
+        this.exam = Exam;
     }
 
     public Student getStudent() {
@@ -59,12 +59,12 @@ public class Mark implements Serializable {
         this.student = student;
     }
 
-    public Float getValue() {
-        return value;
+    public Float getMarkValue() {
+        return markValue;
     }
 
-    public void setValue(Float value) {
-        this.value = value;
+    public void setMarkValue(Float markValue) {
+        this.markValue = markValue;
     }
 
     public CallType getCallType() {
@@ -84,10 +84,10 @@ public class Mark implements Serializable {
     }
 
     //Constructors
-    public Mark(Exam Exam, Student student, Float value, CallType callType, String solutionFilePath) {
-        this.Exam = Exam;
+    public Mark(Exam exam, Student student, Float markValue, CallType callType, String solutionFilePath) {
+        this.exam = exam;
         this.student = student;
-        this.value = value;
+        this.markValue = markValue;
         this.callType = callType;
         this.solutionFilePath = solutionFilePath;
     }
@@ -122,6 +122,6 @@ public class Mark implements Serializable {
   
     @Override
     public String toString() {
-        return "Mark{" + "Exam=" + Exam + ", student=" + student + ", value=" + value + ", callType=" + callType + ", solutionFilePath=" + solutionFilePath + '}';
+        return "Mark{" + "Exam=" + exam + ", student=" + student + ", markValue=" + markValue + ", callType=" + callType + ", solutionFilePath=" + solutionFilePath + '}';
     }
 }

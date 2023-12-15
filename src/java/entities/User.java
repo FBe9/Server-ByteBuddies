@@ -1,5 +1,7 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -16,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Nerea
  */
 @Entity
-@Table(name = "user", schema = "bytebuddiesbd")
+@Table(name = "userbb", schema = "bytebuddiesbd")
 @Inheritance(strategy = InheritanceType.JOINED)
 @XmlRootElement
 public class User implements Serializable{
@@ -27,6 +30,9 @@ public class User implements Serializable{
     private String name;
     private String surname;
     private String password;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    @JsonSerialize(as = Date.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
     @Enumerated(EnumType.STRING)
     private UserType userType;
