@@ -259,17 +259,16 @@ public class SubjectFacadeREST {
      * findSubjectsWithXUnits business logic method.
      *
      * @param number The number for comparison.
-     * @param comparisonOperator The operator for comparison
      * @return List of subjects meeting the specified unit count condition.
      */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findSubjectsWithXUnits/{number}/{comparisonOperator}")
-    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Integer number, @PathParam("comparisonOperator") String comparisonOperator) {
+    @Path("findSubjectsWithXUnits/{number}")
+    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Integer number) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by X number of units");
-            subjects = ejb.findSubjectsWithXUnits(number, comparisonOperator);
+            subjects = ejb.findSubjectsWithXUnits(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -281,19 +280,18 @@ public class SubjectFacadeREST {
      * GET method to find subjects based on the count of enrolled students: uses findSubjectsWithEnrolledStudentsCount business logic method.
      *
      * @param number The number for comparison.
-     * @param comparisonOperator The operator for comparison.
      * @return List of subjects meeting the specified enrollment count
      * condition.
      * 
      */
    @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findSubjectsWithEnrolledStudentsCount/{number}/{comparisonOperator}")
-    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number, @PathParam("comparisonOperator") String comparisonOperator) {
+    @Path("findSubjectsWithEnrolledStudentsCount/{number}")
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by the amount of enrolledStudents");
-            subjects = ejb.findSubjectsWithEnrolledStudentsCount(number, comparisonOperator);
+            subjects = ejb.findSubjectsWithEnrolledStudentsCount(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

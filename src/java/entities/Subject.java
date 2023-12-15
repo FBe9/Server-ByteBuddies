@@ -53,15 +53,15 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(
             name = "findByTeacherName",
-            query = "SELECT s FROM Subject s INNER JOIN User u WHERE u.name LIKE :teacherName AND u.userType = :teacher")
+            query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
     ,
     @NamedQuery(
             name = "findSubjectsWithXUnits",
-            query = "SELECT s FROM Subject s JOIN FETCH s.units u GROUP BY s HAVING COUNT(u) :comparisonOperator :numUnits")
+            query = "SELECT s FROM Subject s INNER JOIN s.units u GROUP BY s HAVING COUNT(u) >= :numUnits")
     ,
     @NamedQuery(
-        name = "findSubjectsWithEnrolledStudentsCount",
-        query = "SELECT s FROM Subject s LEFT JOIN s.enrollments e WHERE e.isMatriculate = true GROUP BY s HAVING COUNT(e) >= :numEnrolledStudents")
+            name = "findSubjectsWithEnrolledStudentsCount",
+            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true GROUP BY s HAVING COUNT(e) >= :numEnrolledStudents")
 })
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")
@@ -120,12 +120,12 @@ public class Subject implements Serializable {
     /**
      * Relational field containing students of the subject.
      */
-    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Enrolled> enrollments;
     /**
      * Relational field containing exams of the subject.
      */
-    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Exam> exams;
 
     //Setters and Getters
@@ -291,8 +291,7 @@ public class Subject implements Serializable {
     public void setUnits(Set<Unit> units) {
         this.units = units;
     }
-
-    
+    @XmlTransient
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }
@@ -302,7 +301,7 @@ public class Subject implements Serializable {
      *
      * @param enrollments
      */
-    public void setEnrollments(Set<Enrolled> enrollments) {    
+    public void setEnrollments(Set<Enrolled> enrollments) {
         this.enrollments = enrollments;
     }
 
@@ -311,6 +310,7 @@ public class Subject implements Serializable {
      *
      * @return the set of exams
      */
+    @XmlTransient
     public Set<Exam> getExams() {
         return exams;
     }
