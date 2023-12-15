@@ -47,7 +47,7 @@ public class EJBUnitManager implements UnitInterface {
             if (bdUnit.equals(unit)) {
                 throw new CreateErrorException("The unit already exist");
             }
-            
+
             em.persist(unit);
         } catch (Exception e) {
             throw new CreateErrorException(e.getMessage());
@@ -95,8 +95,7 @@ public class EJBUnitManager implements UnitInterface {
     }
 
     /**
-     * The method finds a unit which id is equals the id the User introduce for
-     * a new unit.
+     * The method finds a unit which id is equals the id the User introduced.
      *
      * @param id An Integer that contains the id the user introduce.
      * @return The Unit entity object to be found.
@@ -115,7 +114,7 @@ public class EJBUnitManager implements UnitInterface {
     }
 
     /**
-     * The method finds all the units where the User is the creator
+     * The method finds all the units.
      *
      * @return An ArrayList of Units that contains the units that the method
      * found.
@@ -133,111 +132,7 @@ public class EJBUnitManager implements UnitInterface {
         return units;
     }
 
-    /**
-     * This method finds all the units which name contains the words the user
-     * introduced.
-     *
-     * @param name A String that contains the words the user introduced.
-     * @return An ArrayList of Units that contains the units that the method
-     * found.
-     * @throws FindErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public ArrayList<Unit> findUnitsByName(String name) throws FindErrorException {
-        ArrayList<Unit> units = null;
-        try {
-            units = new ArrayList<>(em.createNamedQuery("findUnitsByName").setParameter("name", "%" + name + "%").getResultList());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsByName(String name) {0}", e.getMessage());
-        }
-        return units;
-    }
-    
-    /**
-     * This method finds a unit which name is the one the user
-     * introduced.
-     *
-     * @param name A String that contains the words the user introduced.
-     * @return The Unit entity object to be found.
-     * @throws FindErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public Unit findOneUnitByName(String name) throws FindErrorException {
-        Unit unitbd = null;
-        try {
-            unitbd = (Unit) em.createNamedQuery("findOneUnitByName").setParameter("name", name).getSingleResult();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitByName(String name) {0}", e.getMessage());
-        }
-        return unitbd;
-    }
-
-    /**
-     * This method finds all the units where the init date of the unit is equals
-     * the date the user introduced.
-     *
-     * @param dateInit A Date that contains the date the User introduce.
-     * @return An ArrayList of Units that contains the units that the method
-     * found.
-     * @throws FindErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public ArrayList<Unit> findUnitsByDateInit(Date dateInit) throws FindErrorException {
-        ArrayList<Unit> units = null;
-        try {
-            units = new ArrayList<>(em.createNamedQuery("findUnitsByDateInit").setParameter("dateInit", dateInit).getResultList());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsByDateInit(Date dateInit) {0}", e.getMessage());
-        }
-        return units;
-    }
-
-    /**
-     * This method finds all the units where the end date of the unit is equals
-     * the date the user introduced.
-     *
-     * @param dateEnd A Date that contains the date the User introduce.
-     * @return An ArrayList of Units that contains the units that the method
-     * found.
-     * @throws FindErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public ArrayList<Unit> findUnitsByDateEnd(Date dateEnd) throws FindErrorException {
-        ArrayList<Unit> units = null;
-        try {
-            units = new ArrayList<>(em.createNamedQuery("findUnitsByDateEnd").setParameter("dateInit", dateEnd).getResultList());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsByDateEnd(Date dateInit) {0}", e.getMessage());
-        }
-        return units;
-    }
-
-    /**
-     * This method finds all the units where the hours of the unit are equals
-     * the hours the user introduced.
-     *
-     * @param hours An Integer with the number the user introduce.
-     * @return An ArrayList of Units that contains the units that the method
-     * found.
-     * @throws FindErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public ArrayList<Unit> findUnitsByHours(Integer hours) throws FindErrorException {
-        ArrayList<Unit> units = null;
-        try {
-            units = new ArrayList<>(em.createNamedQuery("findUnitsByHours").setParameter("hours", hours).getResultList());
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsByHours(Integer hours) {0}", e.getMessage());
-        }
-        return units;
-    }
-
-    /**
+     /**
      * This method finds all the units which subject name contains the words the
      * user introduced.
      *
@@ -248,12 +143,124 @@ public class EJBUnitManager implements UnitInterface {
      * during reading.
      */
     @Override
-    public ArrayList<Unit> findUnitsBySubject(String name) throws FindErrorException {
+    public ArrayList<Unit> findSubjectUnits(String name) throws FindErrorException {
         ArrayList<Unit> units = null;
         try {
-            units = new ArrayList<>(em.createNamedQuery("findUnitsBySubject").setParameter("name", "%" + name + "%").getResultList());
+            units = new ArrayList<>(em.createNamedQuery("findSubjectUnits").setParameter("name", "%" + name + "%").getResultList());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsByName(String name) {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnits(String name) {0}", e.getMessage());
+        }
+        return units;
+    }
+
+   /**
+     * This method finds all the units that the name contains the words the user
+     * introduced and the subject name is the one the user introduced.
+     *
+     * @param name A String that contains the words the user introduced.
+     * @param subject A String with the name of the subject
+     * @return An ArrayList of Units that contains the units that the method
+     * found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public ArrayList<Unit> findSubjectUnitsByName(String name, String subject) throws FindErrorException {
+        ArrayList<Unit> units = null;
+        try {
+            units = new ArrayList<>(em.createNamedQuery("findSubjectUnitsByName").setParameter("name", "%" + name + "%").setParameter("subject", subject).getResultList());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByName(String name, String subject) {0}", e.getMessage());
+        }
+        return units;
+    }
+
+    /**
+     * This method finds a units which name is the one the user introduced and
+     * the subject name is the one the user introduced.
+     *
+     * @param name A String that contains the words the user introduced.
+     * @param subject A String with the name of the subject
+     * @return The Unit entity object to be found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public Unit findOneSubjectUnitByName(String name, String subject) throws FindErrorException {
+        Unit unitbd = null;
+        try {
+            unitbd = (Unit) em.createNamedQuery("findOneSubjectUnitByName").setParameter("name", name).setParameter("subject", subject).getSingleResult();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findOneSubjectUnitByName(String name, String subject) {0}", e.getMessage());
+        }
+        return unitbd;
+    }
+
+    /**
+     * This method finds all the units where the init date of the unit is equals
+     * the date the user introduced and the subject name is the one the user
+     * introduce.
+     *
+     * @param dateInit A Date that contains the date the User introduce.
+     * @param subject A String with the name of the subject
+     * @return An ArrayList of Units that contains the units that the method
+     * found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public ArrayList<Unit> findSubjectUnitsByDateInit(Date dateInit, String subject) throws FindErrorException {
+        ArrayList<Unit> units = null;
+        try {
+            units = new ArrayList<>(em.createNamedQuery("findSubjectUnitsByDateInit").setParameter("dateInit", dateInit).setParameter("subject", subject).getResultList());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateInit(Date dateInit, String subject) {0}", e.getMessage());
+        }
+        return units;
+    }
+
+    /**
+     * This method finds all the units where the end date of the unit is equals
+     * the date the user introduced and the subject name is the one the user
+     * introduce.
+     *
+     * @param dateEnd A Date that contains the date the User introduce.
+     * @param subject A String with the name of the subject
+     * @return An ArrayList of Units that contains the units that the method
+     * found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public ArrayList<Unit> findSubjectUnitsByDateEnd(Date dateEnd, String subject) throws FindErrorException {
+        ArrayList<Unit> units = null;
+        try {
+            units = new ArrayList<>(em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateInit", dateEnd).setParameter("subject", subject).getResultList());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateEnd(Date dateInit, String subject) {0}", e.getMessage());
+        }
+        return units;
+    }
+
+    /**
+     * This method finds all the units where the hours of the unit are equals
+     * the hours the user introduced and the subject name is the one the user
+     * introduce.
+     *
+     * @param hours An Integer with the number the user introduce.
+     * @param subject A String with the name of the subject
+     * @return An ArrayList of Units that contains the units that the method
+     * found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public ArrayList<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException {
+        ArrayList<Unit> units = null;
+        try {
+            units = new ArrayList<>(em.createNamedQuery("findSubjectUnitsByHours").setParameter("hours", hours).setParameter("subject", subject).getResultList());
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByHours(Integer hours, String subject) {0}", e.getMessage());
         }
         return units;
     }
