@@ -1,6 +1,5 @@
 package entities;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "exercise", schema = "bytebuddiesbd")
 @NamedQueries({
+    //Teachers queries
     @NamedQuery(
             name = "getAllExercises",
             query = "SELECT e FROM Exercise e"
@@ -45,11 +45,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     )
     ,
     @NamedQuery(
-            name = "getExercisesByUnitName",
-            query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
-    )
-    ,
-    @NamedQuery(
             name = "getExercisesByDate",
             query = "SELECT e FROM Exercise e WHERE e.deadline=:deadline"
     )
@@ -57,6 +52,33 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getExercisesByLevel",
             query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType"
+    )
+    //Teacher and student queries
+    ,
+    @NamedQuery(
+            name = "getExercisesByUnitName",
+            query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
+    )
+    //Student queries
+    ,
+    @NamedQuery(
+            name = "getExercisesByIDAndUnitName", 
+            query = "SELECT e FROM Exercise e WHERE e.id=:id AND e.unit.name=:name"
+    )
+    , 
+    @NamedQuery(
+            name = "getExercisesByNumberAndUnitName",
+            query = "SELECT e FROM Exercise e WHERE e.number=:number AND e.unit.name=:name"
+    )
+    ,
+    @NamedQuery(
+            name = "getExercisesByDateAndUnitName",
+            query = "SELECT e FROM Exercise e WHERE e.deadline=:deadline AND e.unit.name=:name"
+    )
+    ,
+    @NamedQuery(
+            name = "getExercisesByLevelAndUnitName",
+            query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType AND e.unit.name=:name"
     )
 })
 @XmlRootElement
@@ -96,12 +118,12 @@ public class Exercise implements Serializable {
     /**
      * This is the file with the exercise
      */
-    private File file;
+    private String file;
 
     /**
      * This is the file with the exercise solution
      */
-    private File fileSolution;
+    private String fileSolution;
 
     /**
      * Date of the deadline
@@ -134,7 +156,7 @@ public class Exercise implements Serializable {
      * @param deadline
      * @param hours
      */
-    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, File file, File fileSolution, Date deadline, Integer hours) {
+    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {
         this.id = id;
         this.unit = unit;
         this.number = number;
@@ -242,7 +264,7 @@ public class Exercise implements Serializable {
      *
      * @return
      */
-    public File getFile() {
+    public String getFile() {
         return file;
     }
 
@@ -251,7 +273,7 @@ public class Exercise implements Serializable {
      *
      * @param file
      */
-    public void setFile(File file) {
+    public void setFile(String file) {
         this.file = file;
     }
 
@@ -260,7 +282,7 @@ public class Exercise implements Serializable {
      *
      * @return
      */
-    public File getFileSolution() {
+    public String getFileSolution() {
         return fileSolution;
     }
 
@@ -269,7 +291,7 @@ public class Exercise implements Serializable {
      *
      * @param fileSolution
      */
-    public void setFileSolution(File fileSolution) {
+    public void setFileSolution(String fileSolution) {
         this.fileSolution = fileSolution;
     }
 
