@@ -26,4 +26,6 @@ public interface ExamInterface {
     public List<Exam> findAndOrderByDuration() throws FindErrorException;
     
     public List<Exam> findByNullSolution() throws FindErrorException;
+    
+    public List<Exam> findBySubject(String subject) throws FindErrorException;
 }

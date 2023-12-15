@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -37,8 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
     @NamedQuery(
             name = "findByNullSolution",
-//            query = "SELECT e FROM Exam e WHERE e.marks IN (SELECT m FROM Mark m WHERE m.solutionFilePath = null)"
-            query = "SELECT e FROM Exam e JOIN Mark m on e.exam = m.exam WHERE m.solutionFilePath = ''")    
+            query = "SELECT e FROM Exam e JOIN Mark m on e.id = m.exam.id WHERE m.solutionFilePath = ''"),
+    @NamedQuery(
+            name ="findBySubject",
+            query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")
+        
 })
 
 @Entity
@@ -103,7 +105,6 @@ public class Exam implements Serializable {
         this.filePath = filePath;
     }
 
-    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
