@@ -218,18 +218,10 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException Thrown if there is an error during the search.
      */
     @Override
-    public List<Subject> findSubjectsWithXUnits(Integer number, String comparisonOperator) throws FindErrorException {
+    public List<Subject> findSubjectsWithXUnits(Integer number) throws FindErrorException {
         List<Subject> subjects;
-        String comparison;
-        if ("=".equals(comparisonOperator)) {
-            comparison = "=";
-        } else if (">".equals(comparisonOperator)) {
-            comparison = ">";
-        } else {
-            comparison = "<";
-        }
         try {
-            subjects = em.createNamedQuery("findSubjectsWithXUnits").setParameter("comparisonOperator", comparison).setParameter("numUnits", number).getResultList();
+            subjects = em.createNamedQuery("findSubjectsWithXUnits").setParameter("numUnits", number).getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
@@ -247,18 +239,10 @@ public class EJBSubjectManager implements SubjectInterface {
      * @throws FindErrorException If an error occurs during retrieval.
      */
     @Override
-    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number, String comparisonOperator) throws FindErrorException {
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number) throws FindErrorException {
         List<Subject> subjects;
-        String comparison;
-        if ("=".equals(comparisonOperator)) {
-            comparison = "=";
-        } else if (">".equals(comparisonOperator)) {
-            comparison = ">";
-        } else {
-            comparison = "<";
-        }
         try {
-            subjects = em.createNamedQuery("findSubjectsWithEnrolledStudentsCount").setParameter("comparisonOperator", comparison).setParameter("numUnits", number).getResultList();
+            subjects = em.createNamedQuery("findSubjectsWithEnrolledStudentsCount").setParameter("numUnits", number).getResultList();
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }

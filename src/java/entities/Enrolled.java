@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "findMatriculated", 
-            query = "SELECT e.subject FROM Enrolled e WHERE e.student.id = :studentId AND e.isMatriculate = true")
+            query = "SELECT e.subject FROM Enrolled e WHERE e.student.dni = :studentId AND e.isMatriculate = true")
     ,
     @NamedQuery(
             name = "findAllEnrollments",
@@ -143,6 +144,24 @@ public class Enrolled implements Serializable {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Enrolled other = (Enrolled) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     /**
      * Converts this object to a string representation.

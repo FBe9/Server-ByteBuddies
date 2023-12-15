@@ -16,15 +16,17 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati
  */
 @Entity
-@Table(name = "techer", schema = "bytebuddiesbd")
+@Table(name = "teacher", schema = "bytebuddiesbd")
 @XmlRootElement
-class Teacher extends User implements Serializable {
+public class Teacher extends User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private StudiesType studiesType;
     private String qualifications;
     @OneToMany(mappedBy = "teacher")
     private Set<Subject> subjects;
+    @OneToMany(mappedBy = "teacher")
+    private Set<Exam> Exams;
 
     //Constructors
     public Teacher(String dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
@@ -59,5 +61,14 @@ class Teacher extends User implements Serializable {
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
+    @XmlTransient
+    public Set<Exam> getExams() {
+        return Exams;
+    }
+
+    public void setExams(Set<Exam> Exams) {
+        this.Exams = Exams;
+    }
+    
 
 }
