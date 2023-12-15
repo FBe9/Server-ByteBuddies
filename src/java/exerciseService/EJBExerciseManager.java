@@ -136,25 +136,6 @@ public class EJBExerciseManager implements ExerciseInterface {
     }
 
     /**
-     * This method gets a list with all exercises using the unit name.
-     *
-     * @param name Name of the unit.
-     * @return List of the exercises with that specific unit name.
-     * @throws ExerciseErrorException Thrown when any error or exception occurs
-     * during reading.
-     */
-    @Override
-    public List<Exercise> getExercisesByUnitName(String name) throws ExerciseErrorException {
-        List<Exercise> exercises;
-        try {
-            exercises = entityManager.createNamedQuery("getExercisesByUnitName").setParameter("name", name).getResultList();
-        } catch (Exception e) {
-            throw new ExerciseErrorException(e.getMessage());
-        }
-        return exercises;
-    }
-
-    /**
      * This method gets a list with all exercises using the date.
      *
      * @param date Date of the date of the exercise.
@@ -192,4 +173,85 @@ public class EJBExerciseManager implements ExerciseInterface {
         return exercises;
     }
 
+    /**
+     * This method gets a list with all exercises using the unit name.
+     *
+     * @param name Name of the unit.
+     * @return List of the exercises with that specific unit name.
+     * @throws ExerciseErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public List<Exercise> getExercisesByUnitName(String name) throws ExerciseErrorException {
+        List<Exercise> exercises;
+        try {
+            exercises = entityManager.createNamedQuery("getExercisesByUnitName").setParameter("name", name).getResultList();
+        } catch (Exception e) {
+            throw new ExerciseErrorException(e.getMessage());
+        }
+        return exercises;
+    }
+
+    /**
+     * This method gets a list with all exercises using the exercise number and
+     * the unit name.
+     *
+     * @param number Number of the exercise.
+     * @param name Name of the unit.
+     * @return List of the exercises with that specific number and unit.
+     * @throws ExerciseErrorException ExerciseErrorException Thrown when any
+     * error or exception occurs during reading.
+     */
+    @Override
+    public List<Exercise> getExercisesByNumberAndUnitName(Integer number, String name) throws ExerciseErrorException {
+        List<Exercise> exercises;
+        try {
+            exercises = entityManager.createNamedQuery("getExercisesByNumberAndUnitName").setParameter("number", number).setParameter("name", name).getResultList();
+        } catch (Exception e) {
+            throw new ExerciseErrorException(e.getMessage());
+        }
+        return exercises;
+    }
+
+    /**
+     * This method gets a list with all exercises using the exercise date and
+     * the unit name.
+     *
+     * @param date Date of the date of the exercise.
+     * @param name Name of the unit.
+     * @return List of the exercises with that specific date and unit.
+     * @throws ExerciseErrorException ExerciseErrorException Thrown when any
+     * error or exception occurs during reading.
+     */
+    @Override
+    public List<Exercise> getExercisesByDateAndUnitName(Date date, String name) throws ExerciseErrorException {
+        List<Exercise> exercises;
+        try {
+            exercises = entityManager.createNamedQuery("getExercisesByDateAndUnitName").setParameter("date", date).setParameter("name", name).getResultList();
+        } catch (Exception e) {
+            throw new ExerciseErrorException(e.getMessage());
+        }
+        return exercises;
+    }
+
+    /**
+     * This method gets a list with all exercises using the exercise level type
+     * and the unit name.
+     *
+     * @param levelType Level type of the exercises.
+     * @param name Name of the unit.
+     * @return List of the exercises with that specific level type and unit.
+     * @throws ExerciseErrorException ExerciseErrorException Thrown when any
+     * error or exception occurs during reading.
+     */
+    @Override
+    public List<Exercise> getExercisesByLevelAndUnitName(LevelType levelType, String name) throws ExerciseErrorException {
+        List<Exercise> exercises;
+        try {
+            exercises = entityManager.createNamedQuery("getExercisesByLevelAndUnitName").setParameter("levelType", levelType).setParameter("name", name).getResultList();
+        } catch (Exception e) {
+            throw new ExerciseErrorException(e.getMessage());
+        }
+        return exercises;
+    }
 }
