@@ -59,14 +59,6 @@ public class Teacher extends User implements Serializable {
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
-    @XmlTransient
-    public Set<Exam> getExams() {
-        return Exams;
-    }
-
-    public void setExams(Set<Exam> Exams) {
-        this.Exams = Exams;
-    }
     
 
 }
