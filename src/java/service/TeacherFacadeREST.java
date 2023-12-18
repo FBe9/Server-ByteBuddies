@@ -45,20 +45,20 @@ public class TeacherFacadeREST extends AbstractFacade<Teacher> {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") String id, Teacher entity) {
+    public void edit(@PathParam("id") Integer id, Teacher entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") String id) {
+    public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Teacher find(@PathParam("id") String id) {
+    public Teacher find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 

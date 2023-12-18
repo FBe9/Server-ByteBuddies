@@ -62,6 +62,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "findSubjectsWithEnrolledStudentsCount",
             query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true GROUP BY s HAVING COUNT(e) >= :numEnrolledStudents")
+    ,
+        @NamedQuery(
+            name = "findByEnrollments",
+            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true AND e.student.id =:studentId")
+
 })
 @Entity
 @Table(name = "subject", schema = "bytebuddiesbd")
@@ -291,7 +296,7 @@ public class Subject implements Serializable {
     public void setUnits(Set<Unit> units) {
         this.units = units;
     }
-    @XmlTransient
+
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }

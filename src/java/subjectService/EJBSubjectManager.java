@@ -249,4 +249,16 @@ public class EJBSubjectManager implements SubjectInterface {
 
         return subjects;
     }
+
+    @Override
+    public List<Subject> findByEnrollments(Integer studentId) throws FindErrorException {
+         List<Subject> subjects;
+        try {
+            subjects = em.createNamedQuery("findByEnrollments").setParameter("studentId", studentId).getResultList();
+        } catch (Exception ex) {
+            throw new FindErrorException(ex.getMessage());
+        }
+
+        return subjects;
+    }
 }

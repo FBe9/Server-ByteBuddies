@@ -33,6 +33,7 @@ import subjectService.SubjectInterface;
 @Stateless
 @Path("entities.subject")
 public class SubjectFacadeREST {
+
     /**
      * EJB object implementing business logic.
      */
@@ -151,10 +152,10 @@ public class SubjectFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsByName/{name}")
     public List<Subject> findSubjectsByName(@PathParam("name") String name) {
-       List<Subject> subjects;
+        List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by name");
-           subjects = ejb.findSubjectsByName(name);
+            subjects = ejb.findSubjectsByName(name);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -195,7 +196,7 @@ public class SubjectFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsByLanguage/{language}")
     public List<Subject> findSubjectsByLanguage(@PathParam("language") String language) {
-       List<Subject> subjects; 
+        List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by language");
             subjects = ejb.findSubjectsByLanguage(language);
@@ -277,14 +278,15 @@ public class SubjectFacadeREST {
     }
 
     /**
-     * GET method to find subjects based on the count of enrolled students: uses findSubjectsWithEnrolledStudentsCount business logic method.
+     * GET method to find subjects based on the count of enrolled students: uses
+     * findSubjectsWithEnrolledStudentsCount business logic method.
      *
      * @param number The number for comparison.
      * @return List of subjects meeting the specified enrollment count
      * condition.
-     * 
+     *
      */
-   @GET
+    @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithEnrolledStudentsCount/{number}")
     public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number) {
@@ -298,5 +300,20 @@ public class SubjectFacadeREST {
         }
         return subjects;
     }
-   
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findByEnrollments/{studentId}")
+    public List<Subject> findByEnrollments(@PathParam("studentName") Integer studentId) {
+        List<Subject> subjects;
+        try {
+            LOGGER.log(Level.INFO, "Reading subjects in which a student is enrolled");
+            subjects = ejb.findByEnrollments(studentId);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return subjects;
+    }
+
 }
