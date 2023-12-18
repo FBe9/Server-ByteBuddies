@@ -1,18 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Exercise;
+import entities.LevelType;
+import exceptions.CreateErrorException;
+import exceptions.DeleteErrorException;
+import exceptions.ExerciseErrorException;
+import exceptions.UpdateErrorException;
+import exerciseService.ExerciseInterface;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import javax.ejb.Stateless;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -22,70 +28,136 @@ import javax.ws.rs.core.MediaType;
 
 /**
  *
- * @author 2dam
+ * @author Leire
  */
-@Stateless
 @Path("entities.exercise")
-public class ExerciseFacadeREST extends AbstractFacade<Exercise> {
+public class ExerciseFacadeREST {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
 
-    public ExerciseFacadeREST() {
-        super(Exercise.class);
-    }
+    @EJB
+    private ExerciseInterface exerciseEJB;
+
+    private static final Logger LOGGER = Logger.getLogger(ExerciseFacadeREST.class.getName());
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Exercise entity) {
-        super.create(entity);
+        try {
+            exerciseEJB.createExercise(entity);
+        } catch (CreateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Exercise entity) {
-        super.edit(entity);
+    public void edit(@PathParam("id") Long id, Exercise entity) {
+        try {
+            exerciseEJB.updateExercise(entity);
+        } catch (UpdateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void remove(@PathParam("id") Long id) {
+        try {
+            exerciseEJB.removeExercise(id);
+        } catch (DeleteErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Exercise find(@PathParam("id") Integer id) {
-        return super.find(id);
+    public Exercise getExerciseByID(@PathParam("id") Long id) {
+        Exercise exercise = null;
+        try {
+            exercise = exerciseEJB.getExerciseByID(id);
+        } catch (ExerciseErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercise;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Exercise> findAll() {
-        return super.findAll();
+    public List<Exercise> getAllExercises() {
+        List<Exercise> exercise = null;
+        try {
+            exercise = exerciseEJB.getAllExercises();
+        } catch (ExerciseErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercise;
     }
 
     @GET
-    @Path("{from}/{to}")
+    @Path("getByNumber/{number}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Exercise> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    public List<Exercise> getExercisesByNumber(@PathParam("number") Integer number) {
+        List<Exercise> exercise = null;
+        try {
+            exercise = exerciseEJB.getExercisesByNumber(number);
+        } catch (ExerciseErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercise;
     }
 
     @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    @Path("getByDate/{date}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Exercise> getExercisesByDate(@PathParam("date") String date) {
+        List<Exercise> exercises = null;
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date formatDate = format.parse(date);
+            exercises = exerciseEJB.getExercisesByDate(formatDate);
+        } catch (ExerciseErrorException | ParseException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercises;
     }
 
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    @GET
+    @Path("getByLevelType/{levelType}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Exercise> getExercisesByLevel(@PathParam("levelType") LevelType levelType) {
+        List<Exercise> exercise = null;
+        try {
+            exercise = exerciseEJB.getExercisesByLevel(levelType);
+        } catch (ExerciseErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercise;
     }
-    
+
+    @GET
+    @Path("getByUnitName/{name}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Exercise> getExercisesByUnitName(@PathParam("name") String name) {
+        List<Exercise> exercise = null;
+        try {
+            exercise = exerciseEJB.getExercisesByUnitName(name);
+        } catch (ExerciseErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exercise;
+    }
+
 }
