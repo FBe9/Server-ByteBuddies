@@ -65,7 +65,10 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
         @NamedQuery(
             name = "findByEnrollments",
-            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true AND e.student.id =:studentId")
+            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true AND e.student.id =:studentId"),
+         @NamedQuery(
+            name = "findSubjectsByTeacherId",
+            query = "SELECT s FROM Subject s WHERE s.teacher.id =:teacherId")
 
 })
 @Entity

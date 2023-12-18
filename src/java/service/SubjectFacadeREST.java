@@ -186,28 +186,6 @@ public class SubjectFacadeREST {
     }
 
     /**
-     * GET method to find subject by language: uses findSubjectsByLanguage
-     * business logic method.
-     *
-     * @param language the language of the subject.
-     * @return the subjects.
-     */
-    @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findSubjectsByLanguage/{language}")
-    public List<Subject> findSubjectsByLanguage(@PathParam("language") String language) {
-        List<Subject> subjects;
-        try {
-            LOGGER.log(Level.INFO, "Reading subjects by language");
-            subjects = ejb.findSubjectsByLanguage(language);
-        } catch (FindErrorException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-        return subjects;
-    }
-
-    /**
      * GET method to find subject by init date: uses findSubjectsByInitDate
      * business logic method.
      *
@@ -265,7 +243,7 @@ public class SubjectFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithXUnits/{number}")
-    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Integer number) {
+    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by X number of units");
@@ -289,7 +267,7 @@ public class SubjectFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithEnrolledStudentsCount/{number}")
-    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number) {
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects by the amount of enrolledStudents");
@@ -301,14 +279,47 @@ public class SubjectFacadeREST {
         return subjects;
     }
 
+    /**
+     * GET method that retrieves a list of subjects based on the enrollments of a student
+     * identified by the provided student ID.
+     *
+     * @param studentId The unique identifier of the student for whom subjects
+     * are to be retrieved.
+     * @return A List of Subject objects representing the subjects associated
+     * with the specified student.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findByEnrollments/{studentId}")
-    public List<Subject> findByEnrollments(@PathParam("studentName") Integer studentId) {
+    public List<Subject> findByEnrollments(@PathParam("studentId") Integer studentId) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects in which a student is enrolled");
             subjects = ejb.findByEnrollments(studentId);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return subjects;
+    }
+
+    /**
+     * GET method that retrieves a list of subjects taught by a teacher identified by the
+     * provided teacher ID.
+     *
+     * @param teacherId The unique identifier of the teacher for whom subjects
+     * are to be retrieved.
+     * @return A List of Subject objects representing the subjects taught by the
+     * specified teacher.
+     */
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findSubjectsByTeacherId/{teacherId}")
+    public List<Subject> findSubjectsByTeacherId(@PathParam("teacherId") Integer teacherId) {
+        List<Subject> subjects;
+        try {
+            LOGGER.log(Level.INFO, "Reading subjects for a teacher");
+            subjects = ejb.findSubjectsByTeacherId(teacherId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
