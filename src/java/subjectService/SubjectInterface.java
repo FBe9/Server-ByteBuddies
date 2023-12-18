@@ -122,9 +122,11 @@ public interface SubjectInterface {
      * Retrieves subjects based on the count of enrolled students.
      *
      * @param number The number for comparison.
-     * @return List of subjects meeting the specified enrollment count condition.
+     * @return List of subjects meeting the specified enrollment count
+     * condition.
      * @throws FindErrorException If an error occurs during retrieval.
      */
     public List<Subject> findSubjectsWithEnrolledStudentsCount(Integer number) throws FindErrorException;
 
+    public List<Subject> findByEnrollments(Integer studentId) throws FindErrorException;
 }

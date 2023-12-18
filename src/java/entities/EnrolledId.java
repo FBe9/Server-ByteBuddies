@@ -11,8 +11,8 @@ public class EnrolledId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer dni;
-    private Integer id;
+    private Integer studentId;
+    private Integer subjectId;
 
     /**
      * Default constructor for creating an empty enrollment ID.
@@ -20,20 +20,20 @@ public class EnrolledId implements Serializable {
     public EnrolledId() {
     }
 
-    public Integer getDni() {
-        return dni;
+    public Integer getStudentId() {
+        return studentId;
     }
 
-    public void setDni(Integer dni) {
-        this.dni = dni;
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getSubjectId() {
+        return subjectId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setSubjectId(Integer subjectId) {
+        this.subjectId = subjectId;
     }
 
     

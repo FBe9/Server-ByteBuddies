@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.DiscriminatorValue;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati
  */
 @Entity
-@Table(name = "teacher", schema = "bytebuddiesbd")
+@DiscriminatorValue("teacher")
 @XmlRootElement
 public class Teacher extends User {
     private static final long serialVersionUID = 1L;
@@ -29,8 +30,8 @@ public class Teacher extends User {
     private Set<Subject> subjects;
 
     //Constructors
-    public Teacher(Integer dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
-        super(dni, email, name, surname, password, dateInit, userType);
+    public Teacher(Integer dni, String email, String name, String surname, String password, Date dateInit) {
+        super(dni, email, name, surname, password, dateInit);
     }
 
     public Teacher() {

@@ -7,6 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import static javax.persistence.CascadeType.ALL;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Olivia
  */
 @Entity
-@Table(name = "student", schema = "bytebuddiesbd")
+@DiscriminatorValue("student")
 @XmlRootElement
 public class Student extends User {
     private static final long serialVersionUID = 1L;
@@ -30,8 +31,8 @@ public class Student extends User {
     @OneToMany(cascade=ALL, mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     //Constructors
-    public Student(Integer dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
-        super(dni, email, name, surname, password, dateInit, userType);
+    public Student(Integer dni, String email, String name, String surname, String password, Date dateInit) {
+        super(dni, email, name, surname, password, dateInit);
     }
     public Student() {    
     }

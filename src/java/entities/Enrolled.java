@@ -10,6 +10,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing the enrollment of a student in a subject.
@@ -19,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "findMatriculated", 
-            query = "SELECT e.subject FROM Enrolled e WHERE e.student.dni = :studentId AND e.isMatriculate = true")
+            query = "SELECT e.subject FROM Enrolled e WHERE e.student.id = :studentId AND e.isMatriculate = true")
     ,
     @NamedQuery(
             name = "findAllEnrollments",
@@ -44,14 +45,14 @@ public class Enrolled implements Serializable {
      * Reference to the associated subject.
      */
     @ManyToOne(targetEntity=Subject.class)
-    @MapsId("id")
+    @MapsId("subjectId")
     private Subject subject;
 
     /**
      * Reference to the associated student.
      */
     @ManyToOne(targetEntity=Student.class)
-    @MapsId("dni")
+    @MapsId("studentId")
     private Student student;
 
     /**
@@ -83,6 +84,7 @@ public class Enrolled implements Serializable {
      *
      * @return the subject
      */
+    @XmlTransient
     public Subject getSubject() {
         return subject;
     }

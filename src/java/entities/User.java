@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,7 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Nerea
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type",
+        discriminatorType = DiscriminatorType.STRING)
 @Table(name = "user", schema = "bytebuddiesbd")
 @XmlRootElement
 public class User implements Serializable {
@@ -29,7 +33,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer dni;
+    private Integer id;
     private String email;
     private String name;
     private String surname;
@@ -38,15 +42,13 @@ public class User implements Serializable {
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
 
-    public Integer getDni() {
-        return dni;
+    public Integer getId() {
+        return id;
     }
 
-    public void setDni(Integer dni) {
-        this.dni = dni;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
    
@@ -90,23 +92,15 @@ public class User implements Serializable {
         this.dateInit = dateInit;
     }
 
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
 
     //Constructors
-    public User(Integer dni, String email, String name, String surname, String password, Date dateInit, UserType userType) {
-        this.dni= dni;
+    public User(Integer id, String email, String name, String surname, String password, Date dateInit) {
+        this.id= id;
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.dateInit = dateInit;
-        this.userType = userType;
     }
 
     public User() {
