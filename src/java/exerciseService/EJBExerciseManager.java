@@ -191,7 +191,7 @@ public class EJBExerciseManager implements ExerciseInterface {
         }
         return exercises;
     }
-
+    
     /**
      * This method gets a list with all exercises using the exercise number and
      * the unit name.

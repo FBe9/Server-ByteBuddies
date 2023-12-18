@@ -31,14 +31,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     //Teachers queries
     @NamedQuery(
-            name = "getAllExercises",
-            query = "SELECT e FROM Exercise e"
-    ), 
-    @NamedQuery(
             name = "getExercisesByID", 
             query = "SELECT e FROM Exercise e WHERE e.id=:id"
     )
-    , 
+    , @NamedQuery(
+            name = "getAllExercises",
+            query = "SELECT e FROM Exercise e"
+    )
+    ,
     @NamedQuery(
             name = "getExercisesByNumber",
             query = "SELECT e FROM Exercise e WHERE e.number=:number"
@@ -60,11 +60,6 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
     )
     //Student queries
-    ,
-    @NamedQuery(
-            name = "getExercisesByIDAndUnitName", 
-            query = "SELECT e FROM Exercise e WHERE e.id=:id AND e.unit.name=:name"
-    )
     , 
     @NamedQuery(
             name = "getExercisesByNumberAndUnitName",
