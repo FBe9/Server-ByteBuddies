@@ -31,13 +31,11 @@ import javax.xml.bind.annotation.XmlTransient;
             query = "SELECT e FROM Exam e ORDER BY e.id DESC"),
     @NamedQuery(
             name = "findByDescription",
-            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription"), 
-    @NamedQuery(
-            name = "findAndOrderByDuration",
-            query = "SELECT e FROM Exam e ORDER BY e.duration DESC"),
-   /*@NamedQuery(
-            name = "findByNullSolution",
-            query = "SELECT e FROM Exam e LEFT JOIN Mark m on e.id = m.exam.id WHERE m.solutionFilePath = ''"), */
+            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription"),
+   @NamedQuery(
+            name = "findBySolution",
+            query = "SELECT e FROM Exam e LEFT JOIN e.marks m  WHERE m.solutionFilePath = :solutionFilePath"),
+   
     @NamedQuery(
             name ="findBySubject",
             query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")

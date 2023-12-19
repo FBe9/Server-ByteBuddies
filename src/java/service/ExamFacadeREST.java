@@ -1,18 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Exam;
+import examService.ExamInterface;
+import exceptions.CreateErrorException;
+import exceptions.DeleteErrorException;
+import exceptions.FindErrorException;
+import exceptions.UpdateErrorException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -26,66 +28,122 @@ import javax.ws.rs.core.MediaType;
  */
 @Stateless
 @Path("entities.exam")
-public class ExamFacadeREST extends AbstractFacade<Exam> {
+public class ExamFacadeREST {
 
-    @PersistenceContext(unitName = "WebBiteBuddys")
-    private EntityManager em;
-
-    public ExamFacadeREST() {
-        super(Exam.class);
-    }
+    @EJB
+    private ExamInterface ejb;
+    
+    private Logger LOGGER = Logger.getLogger(ExamFacadeREST.class.getName());
+    
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Exam entity) {
-        super.create(entity);
+    public void createExam(Exam exam) {
+        try{
+            LOGGER.log(Level.INFO, "Creating exam {0}", exam.getId());
+            ejb.createExam(exam);
+        }catch(CreateErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Exam entity) {
-        super.edit(entity);
+    public void updateExam(Exam exam) {
+        try{
+            LOGGER.log(Level.INFO, "Updating exam {0}", exam.getId());
+            ejb.updateExam(exam);
+        }catch(UpdateErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+    public void deleteExam(@PathParam("id") Integer id) {
+        try{
+            LOGGER.log(Level.INFO, "Deleting exam {0}", id);
+            ejb.deleteExam(ejb.findExamById(id));
+        }catch(FindErrorException | DeleteErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Exam find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Exam exam;
+        try{
+            LOGGER.log(Level.INFO, "Searching for exam {0}", id);
+            exam = ejb.findExamById(id);
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exam;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Exam> findAll() {
-        return super.findAll();
+        List<Exam> exams;
+        try{
+            LOGGER.log(Level.INFO, "Searching for all exams");
+            exams = ejb.findAllExams();
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exams;
     }
 
     @GET
-    @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Exam> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    @Path("findByDescription/{description}")
+    public List<Exam> findByDescription(@PathParam("description") String description) {
+        List<Exam> exams;
+        try{
+            LOGGER.log(Level.INFO, "Searching for exam with desc {0}", description);
+            exams = ejb.findByDescription(description);
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exams;
     }
-
+    
     @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findByNullSolution/{solutionFilePath}")
+    public List<Exam> findBySolution(@PathParam("solutionFilePath") String solutionFilePath) {
+        List<Exam> exams;
+        try{
+            LOGGER.log(Level.INFO, "Searching for all exam with {0} file path", solutionFilePath);
+            exams = ejb.findBySolution(solutionFilePath);
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exams;
     }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findBySubject/{subject}")
+    public List<Exam> findBySubject(@PathParam("subject") String subject) {
+        List<Exam> exams;
+        try{
+            LOGGER.log(Level.INFO, "Searching for exam with desc {0}", subject);
+            exams = ejb.findBySubject(subject);
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exams;
     }
     
 }

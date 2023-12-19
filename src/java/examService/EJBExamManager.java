@@ -60,6 +60,17 @@ public class EJBExamManager implements ExamInterface {
             throw new FindErrorException(ex.getMessage());
         }
     }
+    
+    @Override
+    public Exam findExamById(Integer id) throws FindErrorException{
+        Exam exam = null;
+        try{
+            exam = em.find(Exam.class, id);
+        }catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+        return exam;
+    }
 
     @Override
     public List<Exam> findByDescription(String description) throws FindErrorException{
@@ -74,23 +85,11 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public List<Exam> findAndOrderByDuration() throws FindErrorException{
+    public List<Exam> findBySolution(String solutionFilePath) throws FindErrorException {
         List<Exam> exams;
         
         try{
-            exams = em.createNamedQuery("findAndOrderByDuration").getResultList();
-            return exams;
-        } catch (Exception ex){
-            throw new FindErrorException(ex.getMessage());
-        }
-    }
-
-    @Override
-    public List<Exam> findByNullSolution() throws FindErrorException {
-        List<Exam> exams;
-        
-        try{
-            exams = em.createNamedQuery("findByNullSolution").getResultList();
+            exams = em.createNamedQuery("findBySolution").setParameter("solutionFilePath", "%" + solutionFilePath + "%").getResultList();
             return exams;
         } catch(Exception ex){
             throw new FindErrorException(ex.getMessage());

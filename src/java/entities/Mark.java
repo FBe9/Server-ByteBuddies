@@ -20,6 +20,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "mark", schema = "bytebuddiesbd")
 @NamedQueries({
         @NamedQuery(
+            name = "findAllMarks",
+            query = "SELECT m FROM Mark m ORDER BY id DESC"),
+        @NamedQuery(
             name = "findExamsByStudent",
             query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName ")
 })
@@ -43,6 +46,15 @@ public class Mark implements Serializable {
     private String solutionFilePath;
 
     //Setters and Getters
+
+    public MarkId getId() {
+        return id;
+    }
+
+    public void setId(MarkId id) {
+        this.id = id;
+    }
+    
     public Exam getExam() {
         return exam;
     }

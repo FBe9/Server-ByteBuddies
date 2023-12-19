@@ -20,5 +20,9 @@ public interface MarkInterface {
     
     public void deleteMark(Mark mark) throws DeleteErrorException;
     
+    public List<Mark> findAllMarks() throws FindErrorException;
+    
+    public Mark findMarkById(Integer id) throws FindErrorException;
+    
     public List<Exam> findExamsByStudent(String userName)throws FindErrorException;
 }

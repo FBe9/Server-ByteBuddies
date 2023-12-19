@@ -48,6 +48,30 @@ public class EJBMarkManager implements MarkInterface{
             throw new DeleteErrorException(ex.getMessage());
         }
     }
+    
+    @Override
+    public List<Mark> findAllMarks() throws FindErrorException {
+        List<Mark> marks;
+        try{
+            marks = em.createNamedQuery("findAllMarks").getResultList();
+            return marks;
+        }catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    public Mark findMarkById(Integer id) throws FindErrorException {
+        Mark mark = null;
+        try{
+            mark = em.find(Mark.class, id);
+        } catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+        return mark;
+    }
+    
+    
 
     @Override
     public List<Exam> findExamsByStudent(String userName) throws FindErrorException {

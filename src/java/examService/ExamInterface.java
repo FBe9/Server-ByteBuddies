@@ -21,11 +21,11 @@ public interface ExamInterface {
     
     public List<Exam> findAllExams()throws FindErrorException;
     
+    public Exam findExamById(Integer id) throws FindErrorException;
+    
     public List<Exam> findByDescription(String description) throws FindErrorException;
     
-    public List<Exam> findAndOrderByDuration() throws FindErrorException;
-    
-    public List<Exam> findByNullSolution() throws FindErrorException;
+    public List<Exam> findBySolution(String solutionFilePath) throws FindErrorException;
     
     public List<Exam> findBySubject(String subject) throws FindErrorException;
 }
