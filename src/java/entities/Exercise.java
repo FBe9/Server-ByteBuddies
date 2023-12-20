@@ -2,13 +2,18 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -94,10 +99,14 @@ public class Exercise implements Serializable {
     private Integer id;
 
     /**
-     * Unit exercise
+     * Relational field containing the list Exercise in the Unit
      */
-    @ManyToOne
-    private Unit unit;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "units_exercise", schema = "bytebuddiesbd", joinColumns = {
+        @JoinColumn(name = "exercise_id", referencedColumnName = "id")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "unit_id", referencedColumnName = "id")})
+    private Set<Unit> units;
 
     /**
      * Exercise number
@@ -147,7 +156,7 @@ public class Exercise implements Serializable {
      * Constructor with parameters
      *
      * @param id
-     * @param unit
+     * @param units
      * @param number
      * @param description
      * @param levelType
@@ -156,9 +165,9 @@ public class Exercise implements Serializable {
      * @param deadline
      * @param hours
      */
-    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {
+    public Exercise(Integer id, Set<Unit> units, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {   
         this.id = id;
-        this.unit = unit;
+        this.units = units;
         this.number = number;
         this.description = description;
         this.levelType = levelType;
@@ -186,23 +195,22 @@ public class Exercise implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
     /**
-     * Gets the unit
+     * Gets the units
      *
-     * @return
+     * @return 
      */
-    public Unit getUnit() {
-        return unit;
+    public Set<Unit> getUnits() {
+        return units;
     }
 
     /**
-     * Sets the unit
+     * Sets the units
      *
-     * @param unit
+     * @param units
      */
-    public void setUnit(Unit unit) {
-        this.unit = unit;
+    public void setUnits(Set<Unit> units) {
+        this.units = units;
     }
 
     /**

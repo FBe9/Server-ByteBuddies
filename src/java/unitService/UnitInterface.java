@@ -7,8 +7,8 @@ package unitService;
 
 import entities.Unit;
 import exceptions.*;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -56,24 +56,24 @@ public interface UnitInterface {
     /**
      * The method finds all the units.
      *
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findAllUnits() throws FindErrorException;
+    public List<Unit> findAllUnits() throws FindErrorException;
 
     /**
      * This method finds all the units which subject name contains the words the
      * user introduced.
      *
      * @param name A String that contains the words the user introduced.
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findSubjectUnits(String name) throws FindErrorException;
+    public List<Unit> findSubjectUnits(String name) throws FindErrorException;
 
     /**
      * This method finds all the units that the name contains the words the user
@@ -81,12 +81,12 @@ public interface UnitInterface {
      *
      * @param name A String that contains the words the user introduced.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findSubjectUnitsByName(String name, String subject) throws FindErrorException;
+    public List<Unit> findSubjectUnitsByName(String name, String subject) throws FindErrorException;
 
     /**
      * This method finds a units which name is the one the user introduced and
@@ -107,12 +107,12 @@ public interface UnitInterface {
      *
      * @param dateInit A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findSubjectUnitsByDateInit(Date dateInit, String subject) throws FindErrorException;
+    public List<Unit> findSubjectUnitsByDateInit(Date dateInit, String subject) throws FindErrorException;
 
     /**
      * This method finds all the units where the end date of the unit is equals
@@ -121,12 +121,12 @@ public interface UnitInterface {
      *
      * @param dateEnd A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findSubjectUnitsByDateEnd(Date dateEnd, String subject) throws FindErrorException;
+    public List<Unit> findSubjectUnitsByDateEnd(Date dateEnd, String subject) throws FindErrorException;
 
     /**
      * This method finds all the units where the hours of the unit are equals
@@ -135,11 +135,24 @@ public interface UnitInterface {
      *
      * @param hours An Integer with the number the user introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units that the method
+     * @return An List of Units that contains the units that the method
      * found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public ArrayList<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException;
+    public List<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException;
+
+    /**
+     * This method finds all the units from the subjects where the user is
+     * matriculated.
+     *
+     * @param userId A Integre with the id of the user that is logged to the
+     * application.
+     * @return An List of Units that contains the units that the method
+     * found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    public List<Unit> findUnitsFromUserSubjects(Integer userId) throws FindErrorException;
 
 }
