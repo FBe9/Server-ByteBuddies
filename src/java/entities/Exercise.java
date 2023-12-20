@@ -59,7 +59,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType"
     )
     //Teacher and student queries
-    ,
+    /*,
     @NamedQuery(
             name = "getExercisesByUnitName",
             query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
@@ -84,7 +84,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getExercisesByLevelAndUnitName",
             query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType AND e.unit.name=:name"
-    )
+    )*/
 })
 @XmlRootElement
 public class Exercise implements Serializable {
