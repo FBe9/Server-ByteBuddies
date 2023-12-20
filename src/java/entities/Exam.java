@@ -22,24 +22,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Entity representing the exams. It has the following fields: exam id,
+ * description, date, duration, file path, subject, marks.
  *
  * @author Alex
  */
 @NamedQueries({
     @NamedQuery(
             name = "findAllExams",
-            query = "SELECT e FROM Exam e ORDER BY e.id DESC"),
+            query = "SELECT e FROM Exam e ORDER BY e.id DESC")
+    ,
     @NamedQuery(
             name = "findByDescription",
-            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription"),
+            query = "SELECT e FROM Exam e WHERE e.description LIKE :examDescription")
+    ,
    @NamedQuery(
             name = "findBySolution",
-            query = "SELECT e FROM Exam e LEFT JOIN e.marks m  WHERE m.solutionFilePath = :solutionFilePath"),
+            query = "SELECT e FROM Exam e LEFT JOIN e.marks m  WHERE m.solutionFilePath = :solutionFilePath")
+    ,
    
     @NamedQuery(
-            name ="findBySubject",
+            name = "findBySubject",
             query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")
-        
+
 })
 
 @Entity
@@ -48,80 +53,189 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Exam implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Identification (id) for the exam.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    /**
+     * The description, title or name.
+     */
     private String description;
+
+    /**
+     * The date when the exam is programmed.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
+
+    /**
+     * The duration value of the exam, in minutes.
+     */
     private Integer duration;
+
+    /**
+     * The path to store the exam heading.
+     */
     private String filePath;
+
+    /**
+     * The subject which the exam belongs to.
+     */
     @ManyToOne
     private Subject subject;
-    @OneToMany(cascade=ALL,mappedBy="exam",fetch=EAGER)
+
+    /**
+     * Relational field for the grades or marks assigned to an exam.
+     */
+    @OneToMany(cascade = ALL, mappedBy = "exam", fetch = EAGER)
     private Set<Mark> marks;
 
     //Setters and Getters
+    /**
+     * Gets the exam id.
+     *
+     * @return Integer value of the id field.
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * Sets the exam id
+     *
+     * @param id
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * Gets the name of the exam.
+     *
+     * @return String value of the field description.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets the name of the exam.
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets the date of the exam.
+     *
+     * @return Date value of the dateInit field.
+     */
     public Date getDateInit() {
         return dateInit;
     }
 
+    /**
+     * Sets the date of the exam.
+     *
+     * @param dateInit
+     */
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
 
+    /**
+     * Gets the duration of the exam (minutes).
+     *
+     * @return Integer value (in minutes) of the duration field.
+     */
     public Integer getDuration() {
         return duration;
     }
 
+    /**
+     * Sets the duration of the exam (in minutes).
+     *
+     * @param duration
+     */
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
 
+    /**
+     * Gets the path where the exam heading file is stored.
+     *
+     * @return String value of the filePath field.
+     */
     public String getFilePath() {
         return filePath;
     }
 
+    /**
+     * Sets the path to where the exam heading is stored.
+     *
+     * @param filePath
+     */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Gets the subject the exam belongs to.
+     *
+     * @return Subject object of the subject field.
+     */
     public Subject getSubject() {
         return subject;
     }
 
+    /**
+     * Sets the subject the exam belongs to.
+     *
+     * @param subject
+     */
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
+    /**
+     * Gets the marks related to the exam.
+     *
+     * @return Set list of the type Mark.
+     */
     @XmlTransient
     public Set<Mark> getMarks() {
         return marks;
     }
 
+    /**
+     * Sets the marks collection with the marks related to the exam.
+     *
+     * @param marks
+     */
     public void setMarks(Set<Mark> marks) {
         this.marks = marks;
     }
 
     //Constructor
+    /**
+     * Constructor with parameters for the Exam entity.
+     *
+     * @param id
+     * @param description
+     * @param dateInit
+     * @param duration
+     * @param filePath
+     * @param subject
+     * @param marks
+     */
     public Exam(Integer id, String description, Date dateInit, Integer duration, String filePath, Subject subject, Set<Mark> marks) {
         this.id = id;
         this.description = description;
@@ -132,9 +246,17 @@ public class Exam implements Serializable {
         this.marks = marks;
     }
 
+    /**
+     * Default empty constructor for the Exam entity.
+     */
     public Exam() {
     }
 
+    /**
+     * Computes the hash code for the exam.
+     *
+     * @return int value of the hash code.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -142,6 +264,13 @@ public class Exam implements Serializable {
         return hash;
     }
 
+    /**
+     * Checks if this exam is equal to any other exam.
+     *
+     * @param obj
+     * @return boolean value, true if it's equal to any other exam, false if
+     * opposite.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -160,6 +289,11 @@ public class Exam implements Serializable {
         return true;
     }
 
+    /**
+     * String representation of the exam entity.
+     *
+     * @return
+     */
     @Override
     public String toString() {
         return "Exam{" + "id=" + id + ", description=" + description + ", dateInit=" + dateInit + ", duration=" + duration + ", filePath=" + filePath + ", subject=" + subject + ", marks=" + marks + '}';

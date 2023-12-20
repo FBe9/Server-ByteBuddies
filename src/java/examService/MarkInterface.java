@@ -7,11 +7,13 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author Alex
  */
+@Local
 public interface MarkInterface {
     
     public void createMark(Mark mark) throws CreateErrorException;

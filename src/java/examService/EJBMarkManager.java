@@ -7,6 +7,7 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author Alex
  */
+@Stateless
 public class EJBMarkManager implements MarkInterface{
     
     @PersistenceContext(unitName = "WebBiteBuddys")

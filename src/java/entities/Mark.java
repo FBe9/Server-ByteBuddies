@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT m FROM Mark m ORDER BY id DESC"),
         @NamedQuery(
             name = "findExamsByStudent",
-            query = "SELECT m.exam FROM Mark m WHERE m.student.name = :userName ")
+            query = "SELECT m.exam FROM Mark m WHERE m.student.name LIKE :userName ")
 })
 
 @XmlRootElement
