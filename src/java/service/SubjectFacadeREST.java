@@ -89,7 +89,7 @@ public class SubjectFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeSubject(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting account {0}", id);
+        LOGGER.log(Level.INFO, "Deleting subject {0}", id);
         try {
             ejb.deleteSubject(ejb.findSubjectById(id));
         } catch (FindErrorException | DeleteErrorException ex) {
@@ -112,7 +112,7 @@ public class SubjectFacadeREST {
     public Subject find(@PathParam("id") Integer id) {
         Subject subject;
         try {
-            LOGGER.log(Level.INFO, "Reading data for account {0}", id);
+            LOGGER.log(Level.INFO, "Reading data for subject {0}", id);
             subject = ejb.findSubjectById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -132,7 +132,7 @@ public class SubjectFacadeREST {
     public List<Subject> findAll() {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all accounts");
+            LOGGER.log(Level.INFO, "Reading data for all subjects");
             subjects = ejb.findAllSubjects();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());

@@ -36,15 +36,16 @@ public class EJBSubjectManager implements SubjectInterface {
      */
     @Override
     public void createSubject(Subject subject) throws CreateErrorException {
-        try {
+        try{
             em.createNamedQuery("findByName").setParameter("subjectName", subject.getName()).getSingleResult();
-        } catch (NoResultException ex) {
-            try {
+        }catch(NoResultException ex){
+             try {
                 em.persist(subject);
             } catch (Exception e) {
                 throw new CreateErrorException(e.getMessage());
             }
         }
+
     }
 
     /**
@@ -73,7 +74,6 @@ public class EJBSubjectManager implements SubjectInterface {
      */
     @Override
     public void deleteSubject(Subject subject) throws DeleteErrorException {
-        //Mirar
         try {
             em.remove(em.merge(subject));
         } catch (Exception e) {
