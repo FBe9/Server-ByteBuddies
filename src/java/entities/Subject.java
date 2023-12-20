@@ -13,6 +13,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -53,7 +56,8 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     @NamedQuery(
             name = "findByTeacherName",
-            query = "SELECT s FROM Subject s WHERE s.teacher.name LIKE :teacherName")
+            query = "SELECT s FROM Subject s JOIN s.teachers t WHERE t.name LIKE :teacherName"
+    )
     ,
     @NamedQuery(
             name = "findSubjectsWithXUnits",
@@ -65,10 +69,12 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
         @NamedQuery(
             name = "findByEnrollments",
-            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true AND e.student.id =:studentId"),
-         @NamedQuery(
+            query = "SELECT s FROM Subject s INNER JOIN s.enrollments e WHERE e.isMatriculate = true AND e.student.id =:studentId")
+    ,
+        @NamedQuery(
             name = "findSubjectsByTeacherId",
-            query = "SELECT s FROM Subject s WHERE s.teacher.id =:teacherId")
+            query = "SELECT s FROM Subject s JOIN s.teachers t WHERE t.id = :teacherId"
+    )
 
 })
 @Entity
@@ -115,11 +121,14 @@ public class Subject implements Serializable {
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
-    /**
-     * Teacher of the subject.
-     */
-    @ManyToOne
-    private Teacher teacher;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "subject_teacher",schema="bytebuddiesbd",
+            joinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id")
+    )
+    private Set<Teacher> teachers;
     /**
      * Relational field containing units of the subject.
      */
@@ -263,22 +272,12 @@ public class Subject implements Serializable {
         this.dateEnd = dateEnd;
     }
 
-    /**
-     * Gets the teacher of the subject.
-     *
-     * @return the teacher
-     */
-    public Teacher getTeacher() {
-        return teacher;
+    public Set<Teacher> getTeachers() {
+        return teachers;
     }
 
-    /**
-     * Sets the teacher of the subject.
-     *
-     * @param teacher the teacher to be set
-     */
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setTeachers(Set<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     /**
@@ -349,7 +348,7 @@ public class Subject implements Serializable {
      * @param exams the set of exams related to the subject
      */
     public Subject(Integer id, String name, Integer hours, LevelType levelType, LanguageType languageType,
-            Date dateInit, Date dateEnd, Teacher teacher, Set<Unit> units, Set<Enrolled> enrollments, Set<Exam> exams) {
+            Date dateInit, Date dateEnd, Set<Teacher> teachers, Set<Unit> units, Set<Enrolled> enrollments, Set<Exam> exams) {
         this.id = id;
         this.name = name;
         this.hours = hours;
@@ -357,7 +356,7 @@ public class Subject implements Serializable {
         this.languageType = languageType;
         this.dateInit = dateInit;
         this.dateEnd = dateEnd;
-        this.teacher = teacher;
+        this.teachers = teachers;
         this.units = units;
         this.enrollments = enrollments;
         this.exams = exams;
@@ -405,6 +404,6 @@ public class Subject implements Serializable {
     public String toString() {
         return "Subject{" + "id=" + id + ", name=" + name + ", hours=" + hours + ", levelType=" + levelType
                 + ", languageType=" + languageType + ", dateInit=" + dateInit + ", dateEnd=" + dateEnd
-                + ", teacher=" + teacher + ", units=" + units + ",enrollments=" + enrollments + ", exams=" + exams + '}';
+                + ", teachers=" + teachers + ", units=" + units + ",enrollments=" + enrollments + ", exams=" + exams + '}';
     }
 }

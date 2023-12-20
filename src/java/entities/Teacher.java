@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -26,7 +28,7 @@ public class Teacher extends User {
     @Enumerated(EnumType.STRING)
     private StudiesType studiesType;
     private String qualifications;
-    @OneToMany(mappedBy = "teacher")
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.EAGER)
     private Set<Subject> subjects;
 
     //Constructors
