@@ -2,18 +2,13 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -59,7 +54,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType"
     )
     //Teacher and student queries
-    /*,
+    ,
     @NamedQuery(
             name = "getExercisesByUnitName",
             query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
@@ -84,7 +79,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(
             name = "getExercisesByLevelAndUnitName",
             query = "SELECT e FROM Exercise e WHERE e.levelType=:levelType AND e.unit.name=:name"
-    )*/
+    )
 })
 @XmlRootElement
 public class Exercise implements Serializable {
@@ -101,12 +96,8 @@ public class Exercise implements Serializable {
     /**
      * Relational field containing the list Exercise in the Unit
      */
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "units_exercise", schema = "bytebuddiesbd", joinColumns = {
-        @JoinColumn(name = "exercise_id", referencedColumnName = "id")},
-            inverseJoinColumns = {
-                @JoinColumn(name = "unit_id", referencedColumnName = "id")})
-    private Set<Unit> units;
+    @ManyToOne
+    private Unit unit;
 
     /**
      * Exercise number
@@ -156,7 +147,7 @@ public class Exercise implements Serializable {
      * Constructor with parameters
      *
      * @param id
-     * @param units
+     * @param unit
      * @param number
      * @param description
      * @param levelType
@@ -165,9 +156,9 @@ public class Exercise implements Serializable {
      * @param deadline
      * @param hours
      */
-    public Exercise(Integer id, Set<Unit> units, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {   
+    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {    
         this.id = id;
-        this.units = units;
+        this.unit = unit;
         this.number = number;
         this.description = description;
         this.levelType = levelType;
@@ -195,22 +186,23 @@ public class Exercise implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
+    
     /**
-     * Gets the units
-     *
+     * Gets the Unit
+     * 
      * @return 
      */
-    public Set<Unit> getUnits() {
-        return units;
+    public Unit getUnit() {
+        return unit;
     }
-
+    
     /**
-     * Sets the units
-     *
-     * @param units
+     * Sets the Unit
+     * 
+     * @param unit 
      */
-    public void setUnits(Set<Unit> units) {
-        this.units = units;
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 
     /**
