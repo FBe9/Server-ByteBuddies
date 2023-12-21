@@ -1,7 +1,7 @@
 package entities;
 
 /**
- *
+ * This is an enumeration of the types of languages.
  * @author Nerea
  */
 public enum LanguageType {

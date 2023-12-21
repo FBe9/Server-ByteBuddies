@@ -1,6 +1,5 @@
 package entities;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.EnumType;
@@ -10,7 +9,6 @@ import static javax.persistence.CascadeType.ALL;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
