@@ -62,7 +62,7 @@ public class ExerciseFacadeREST {
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Exercise entity) {
+    public void edit(@PathParam("id") Integer id, Exercise entity) {
         try {
             LOGGER.log(Level.INFO, "Updating exercise.");
             exerciseEJB.updateExercise(entity);
@@ -74,7 +74,7 @@ public class ExerciseFacadeREST {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    public void remove(@PathParam("id") Integer id) {
         try {
             LOGGER.log(Level.INFO, "Removing exercise.");
             exerciseEJB.removeExercise(id);
@@ -87,7 +87,7 @@ public class ExerciseFacadeREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Exercise getExerciseByID(@PathParam("id") Long id) {
+    public Exercise getExerciseByID(@PathParam("id") Integer id) {
         Exercise exercise = null;
         try {
             LOGGER.log(Level.INFO, "Finding exercise by ID.");
@@ -147,11 +147,12 @@ public class ExerciseFacadeREST {
     @GET
     @Path("getByLevelType/{levelType}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Exercise> getExercisesByLevel(@PathParam("levelType") LevelType levelType) {
+    public List<Exercise> getExercisesByLevel(@PathParam("levelType") String levelType) {
         List<Exercise> exercises = null;
         try {
             LOGGER.log(Level.INFO, "Finding exercise by level type.");
-            exercises = exerciseEJB.getExercisesByLevel(levelType);
+            
+            exercises = exerciseEJB.getExercisesByLevel(LevelType.valueOf(levelType.toUpperCase()));
         } catch (ExerciseErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -209,11 +210,11 @@ public class ExerciseFacadeREST {
     @GET
     @Path("getByLevelTypeAndUnitName/{levelType}/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Exercise> getExercisesByLevelAndUnitName(@PathParam("levelType") LevelType levelType, @PathParam("name") String name) {
+    public List<Exercise> getExercisesByLevelAndUnitName(@PathParam("levelType") String levelType, @PathParam("name") String name) {
         List<Exercise> exercises = null;
         try {
             LOGGER.log(Level.INFO, "Finding exercise by level type and unit name.");
-            exercises = exerciseEJB.getExercisesByLevelAndUnitName(levelType, name);
+            exercises = exerciseEJB.getExercisesByLevelAndUnitName(LevelType.valueOf(levelType.toUpperCase()), name);
         } catch (ExerciseErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

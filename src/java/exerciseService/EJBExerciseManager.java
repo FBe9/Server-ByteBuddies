@@ -71,7 +71,7 @@ public class EJBExerciseManager implements ExerciseInterface {
      * during deletion.
      */
     @Override
-    public void removeExercise(Long id) throws DeleteErrorException {
+    public void removeExercise(Integer id) throws DeleteErrorException {
         try {
             entityManager.remove(entityManager.merge(getExerciseByID(id)));
         } catch (ExerciseErrorException e) {
@@ -88,7 +88,7 @@ public class EJBExerciseManager implements ExerciseInterface {
      * during reading.
      */
     @Override
-    public Exercise getExerciseByID(Long id) throws ExerciseErrorException {
+    public Exercise getExerciseByID(Integer id) throws ExerciseErrorException {
         Exercise exercise;
         try {
             exercise = entityManager.find(Exercise.class, id);
@@ -147,7 +147,7 @@ public class EJBExerciseManager implements ExerciseInterface {
     public List<Exercise> getExercisesByDate(Date date) throws ExerciseErrorException {
         List<Exercise> exercises;
         try {
-            exercises = entityManager.createNamedQuery("getExercisesByDate").setParameter("date", date).getResultList();
+            exercises = entityManager.createNamedQuery("getExercisesByDate").setParameter("deadline", date).getResultList();
         } catch (Exception e) {
             throw new ExerciseErrorException(e.getMessage());
         }
@@ -227,7 +227,7 @@ public class EJBExerciseManager implements ExerciseInterface {
     public List<Exercise> getExercisesByDateAndUnitName(Date date, String name) throws ExerciseErrorException {
         List<Exercise> exercises;
         try {
-            exercises = entityManager.createNamedQuery("getExercisesByDateAndUnitName").setParameter("date", date).setParameter("name", name).getResultList();
+            exercises = entityManager.createNamedQuery("getExercisesByDateAndUnitName").setParameter("deadline", date).setParameter("name", name).getResultList();
         } catch (Exception e) {
             throw new ExerciseErrorException(e.getMessage());
         }
