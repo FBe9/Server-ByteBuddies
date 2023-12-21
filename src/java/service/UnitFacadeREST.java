@@ -4,7 +4,6 @@ import entities.Unit;
 import exceptions.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +23,8 @@ import javax.ws.rs.core.MediaType;
 import unitService.UnitInterface;
 
 /**
- *
+ * RESTful web service for managing units.
+ * 
  * @author Nerea
  */
 @Stateless

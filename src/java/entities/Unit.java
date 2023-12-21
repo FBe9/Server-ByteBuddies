@@ -106,83 +106,160 @@ public class Unit implements Serializable {
      */
     private Integer hours;
     /**
-     * 
+     * Relational field containing exercises of the unit.
      */
     @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
     private Set<Exercise> exercises;
     /**
-     * 
+     * Relational field containing subject of a unit.
      */
     @ManyToOne
     private Subject subject;
 
     //Setters and Getters
+    /**
+     * Gets the unit ID.
+     *
+     * @return A integer with the unit ID
+     */
     public Integer getId() {
         return id;
     }
-
+    
+    /**
+     * Sets the unit ID.
+     *
+     * @param id the unit ID to be set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * 
+     * @param name 
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public String getDescription() {
         return description;
     }
-
+    
+    /**
+     * 
+     * @param description 
+     */
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public Date getDateInit() {
         return dateInit;
     }
-
+    
+    /**
+     * 
+     * @param dateInit 
+     */
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public Date getDateEnd() {
         return dateEnd;
     }
-
+    
+    /**
+     * 
+     * @param dateEnd 
+     */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public Integer getHours() {
         return hours;
     }
-
+    
+    /**
+     * 
+     * @param hours 
+     */
     public void setHours(Integer hours) {
         this.hours = hours;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     @XmlTransient
     public Set<Exercise> getExercises() {
         return exercises;
     }
-
+    
+    /**
+     * 
+     * @param exercises 
+     */
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
     }
 
+    /**
+     * 
+     * @return 
+     */
     public Subject getSubject() {
         return subject;
     }
-
+    
+    /**
+     * 
+     * @param subject 
+     */
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
     //Constructors
+    /**
+     * 
+     * @param id
+     * @param name
+     * @param description
+     * @param dateInit
+     * @param dateEnd
+     * @param hours
+     * @param exercises
+     * @param subject 
+     */
     public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
         this.name = name;
@@ -193,12 +270,19 @@ public class Unit implements Serializable {
         this.exercises = exercises;
         this.subject = subject;
     }
-
+    
+    /**
+     * 
+     */
     public Unit() {
 
     }
 
     //HasCode
+    /**
+     * 
+     * @return 
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -207,6 +291,11 @@ public class Unit implements Serializable {
     }
 
     //Equals
+    /**
+     * 
+     * @param object
+     * @return 
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

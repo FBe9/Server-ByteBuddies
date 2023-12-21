@@ -286,6 +286,8 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findUnitsFromUserSubjects(Integer userId) throws FindErrorException {
         List<Subject> subjects;
         List<Unit> AllUnits = new ArrayList<>();
+        //TODO: If userType teacher..... else ....
+        
         subjects = (ArrayList<Subject>) ejbS.findByEnrollments(userId);
 
         for (int i = 0; i < subjects.size(); i++) {
