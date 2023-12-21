@@ -241,7 +241,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnitsByDateEnd(Date dateEnd, String subject) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateInit", dateEnd).setParameter("subjectName", subject).getResultList();
+            units = em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateEnd", dateEnd).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateEnd(Date dateInit, String subject) {0}", e.getMessage());
         }
