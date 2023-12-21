@@ -94,7 +94,7 @@ public class Exercise implements Serializable {
     private Integer id;
 
     /**
-     * Unit exercise
+     * Relational field containing the list Exercise in the Unit
      */
     @ManyToOne
     private Unit unit;
@@ -156,7 +156,7 @@ public class Exercise implements Serializable {
      * @param deadline
      * @param hours
      */
-    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {
+    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {    
         this.id = id;
         this.unit = unit;
         this.number = number;
@@ -186,20 +186,20 @@ public class Exercise implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     /**
-     * Gets the unit
-     *
-     * @return
+     * Gets the Unit
+     * 
+     * @return 
      */
     public Unit getUnit() {
         return unit;
     }
-
+    
     /**
-     * Sets the unit
-     *
-     * @param unit
+     * Sets the Unit
+     * 
+     * @param unit 
      */
     public void setUnit(Unit unit) {
         this.unit = unit;

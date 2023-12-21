@@ -20,7 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Unit Entity class
+ * Entity representing Unit. It has the following
+ * fields: unit id, name, description, dateInit, dateEnd, hours, exercises list and subject object. 
  *
  * @author Nerea
  */
@@ -65,32 +66,53 @@ import javax.xml.bind.annotation.XmlTransient;
             name = "findSubjectUnitsByHours", query = "SELECT u FROM Unit u WHERE u.hours = :hours"
     )
 })
-/**
- *
- * @author Nerea
- */
+
 @Entity
 @Table(name = "unit", schema = "bytebuddiesbd")
 @XmlRootElement
 public class Unit implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * Identification field for the unit.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    /**
+     * Name of the Unit.
+     */
     private String name;
+    /**
+     * The description 
+     */
     private String description;
+    /**
+     * The Date of the first lesson of the Unit.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
+    /**
+     * The Date of the last lesson of the Unit.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
+    /**
+     * Hours that the Unit lasts.
+     */
     private Integer hours;
+    /**
+     * 
+     */
     @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
     private Set<Exercise> exercises;
+    /**
+     * 
+     */
     @ManyToOne
     private Subject subject;
 

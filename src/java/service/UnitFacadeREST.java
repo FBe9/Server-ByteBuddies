@@ -2,8 +2,11 @@ package service;
 
 import entities.Unit;
 import exceptions.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -115,8 +118,8 @@ public class UnitFacadeREST {
         }
         return unit;
     }
-    
-     /**
+
+    /**
      * GET method to get all the Unit data: it uses business method
      * findSubjectUnits.
      *
@@ -125,8 +128,8 @@ public class UnitFacadeREST {
     @GET
     @Path("findAllUnits")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findAllUnits() {
-        ArrayList<Unit> units = null;
+    public List<Unit> findAllUnits() {
+        List<Unit> units = null;
         try {
             LOGGER.log(Level.INFO, "Reading data for all units");
             units = ejbU.findAllUnits();
@@ -137,11 +140,19 @@ public class UnitFacadeREST {
         return units;
     }
     
+    /**
+     * GET method to get all the Unit data from an especific subject: it uses business method
+     * findSubjectUnits.
+     * 
+     * @param name A String that contains the words the user introduced.
+     * @return An List of Units that contains the units that the method
+     * found.
+     */
     @GET
-    @Path("findUnitsBySubject/{name}")
+    @Path("findSubjectUnits/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findSubjectUnits(@PathParam("name") String name) {
-        ArrayList<Unit> units;
+    public List<Unit> findSubjectUnits(@PathParam("subjectName") String name) {
+        List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all units by subject name");
             units = ejbU.findSubjectUnits(name);
@@ -151,20 +162,20 @@ public class UnitFacadeREST {
         }
         return units;
     }
-    
+
     /**
      * GET method to get all Units data by name: it uses business method
      * findSubjectUnitsByName.
      *
      * @param name A String that contains the words the user introduced.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units the method found.
+     * @return An List of Units that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByName/{name}/{subject}")
+    @Path("findSubjectUnitsByName/{unitName}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findSubjectUnitsByName(@PathParam("name") String name, @PathParam("subject")String subject) {
-        ArrayList<Unit> units;
+    public List<Unit> findSubjectUnitsByName(@PathParam("unitName") String name, @PathParam("subjectName") String subject) {
+        List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all units from a Subject by name");
             units = ejbU.findSubjectUnitsByName(name, subject);
@@ -181,12 +192,12 @@ public class UnitFacadeREST {
      *
      * @param name A String that contains the words the user introduced.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Units that contains the units the method found.
+     * @return An List of Units that contains the units the method found.
      */
     @GET
-    @Path("findOneSubjectUnitByName/{name}/{subject}")
+    @Path("findOneSubjectUnitByName/{unitName}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Unit findOneSubjectUnitByName(@PathParam("name") String name,  @PathParam("subject")String subject) {
+    public Unit findOneSubjectUnitByName(@PathParam("unitName") String name, @PathParam("subjectName") String subject) {
         Unit unit;
         try {
             LOGGER.log(Level.INFO, "Reading data for an especific unit from a Subject by name");
@@ -204,19 +215,23 @@ public class UnitFacadeREST {
      *
      * @param dateInit A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Unit that contains the units the method found.
+     * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByDateInit/{dateInit}/{subject}")
+    @Path("findSubjectUnitsByDateInit/{dateInit}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findSubjectUnitsByDateInit(@PathParam("dateInit") Date dateInit, @PathParam("subject")String subject) {
-        ArrayList<Unit> units = null;
+    public List<Unit> findSubjectUnitsByDateInit(@PathParam("dateInit") String dateInit, @PathParam("subjectName") String subject) {
+        List<Unit> units = null;
+         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             LOGGER.log(Level.INFO, "Reading data all the units from a subject by init date");
-            units = ejbU.findSubjectUnitsByDateInit(dateInit, subject);
+            Date date = format.parse(dateInit);
+            units = ejbU.findSubjectUnitsByDateInit(date, subject);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        }catch (ParseException ex) {
+            Logger.getLogger(UnitFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return units;
     }
@@ -227,19 +242,23 @@ public class UnitFacadeREST {
      *
      * @param dateEnd A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Unit that contains the units the method found.
+     * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByDateEnd/{dateEnd}/{subject}")
+    @Path("findSubjectUnitsByDateEnd/{dateEnd}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findSubjectUnitsByDateEnd(@PathParam("dateEnd") Date dateEnd, @PathParam("subject")String subject) {
-        ArrayList<Unit> units = null;
+    public List<Unit> findSubjectUnitsByDateEnd(@PathParam("dateEnd") String dateEnd, @PathParam("subjectName") String subject) {
+        List<Unit> units = null;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
+            Date date = format.parse(dateEnd);
             LOGGER.log(Level.INFO, "Reading data all the units from a subject by end date");
-            units = ejbU.findSubjectUnitsByDateEnd(dateEnd, subject);
+            units = ejbU.findSubjectUnitsByDateEnd(date, subject);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(UnitFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return units;
     }
@@ -250,16 +269,39 @@ public class UnitFacadeREST {
      *
      * @param hours An Integer that contains the number the User introduce.
      * @param subject A String with the name of the subject
-     * @return An ArrayList of Unit that contains the units the method found.
+     * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByHours/{hours}/{subject}")
+    @Path("findSubjectUnitsByHours/{hours}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ArrayList<Unit> findSubjectUnitsByHours(@PathParam("hours")Integer hours, @PathParam("subject")String subject) {
-        ArrayList<Unit> units;
+    public List<Unit> findSubjectUnitsByHours(@PathParam("hours") Integer hours, @PathParam("subjectName") String subject) {
+        List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all the units from a subject by hours");
             units = ejbU.findSubjectUnitsByHours(hours, subject);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return units;
+    }
+
+    /**
+     * GET method to get all Units data by subject where the user is
+     * matriculated: it uses business method findUnitsFromUserSubjects.
+     *
+     * @param userID A Integer with the id of the user that is logged into the
+     * app.
+     * @return An List of Unit that contains the units the method found.
+     */
+    @GET
+    @Path("findUnitsFromUserSubjects/{userID}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Unit> findUnitsFromUserSubjects(@PathParam("userID") Integer userID) {
+        List<Unit> units;
+        try {
+            LOGGER.log(Level.INFO, "Reading data for all the units from a subject where the user is matriculated");
+            units = ejbU.findUnitsFromUserSubjects(userID);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
