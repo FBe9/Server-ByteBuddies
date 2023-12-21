@@ -152,7 +152,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnits(String name) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnits").setParameter("name", name).getResultList();
+            units = em.createNamedQuery("findSubjectUnits").setParameter("subjectName", name).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnits(String name) {0}", e.getMessage());
         }
@@ -174,7 +174,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnitsByName(String name, String subject) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnitsByName").setParameter("name", "%" + name + "%").setParameter("subject", subject).getResultList();
+            units = em.createNamedQuery("findSubjectUnitsByName").setParameter("name", "%" + name + "%").setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByName(String name, String subject) {0}", e.getMessage());
         }
@@ -182,7 +182,7 @@ public class EJBUnitManager implements UnitInterface {
     }
 
     /**
-     * This method finds a units which name is the one the user introduced and
+     * This method finds a unit which name is the one the user introduced and
      * the subject name is the one the user introduced.
      *
      * @param name A String that contains the words the user introduced.
@@ -195,7 +195,7 @@ public class EJBUnitManager implements UnitInterface {
     public Unit findOneSubjectUnitByName(String name, String subject) throws FindErrorException {
         Unit unitbd = null;
         try {
-            unitbd = (Unit) em.createNamedQuery("findOneSubjectUnitByName").setParameter("name", name).setParameter("subject", subject).getSingleResult();
+            unitbd = (Unit) em.createNamedQuery("findOneSubjectUnitByName").setParameter("name", name).setParameter("subjectName", subject).getSingleResult();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findOneSubjectUnitByName(String name, String subject) {0}", e.getMessage());
         }
@@ -218,7 +218,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnitsByDateInit(Date dateInit, String subject) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnitsByDateInit").setParameter("dateInit", dateInit).setParameter("subject", subject).getResultList();
+            units = em.createNamedQuery("findSubjectUnitsByDateInit").setParameter("dateInit", dateInit).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateInit(Date dateInit, String subject) {0}", e.getMessage());
         }
@@ -241,7 +241,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnitsByDateEnd(Date dateEnd, String subject) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateInit", dateEnd).setParameter("subject", subject).getResultList();
+            units = em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateInit", dateEnd).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateEnd(Date dateInit, String subject) {0}", e.getMessage());
         }
@@ -264,7 +264,7 @@ public class EJBUnitManager implements UnitInterface {
     public List<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException {
         List<Unit> units = null;
         try {
-            units = em.createNamedQuery("findSubjectUnitsByHours").setParameter("hours", hours).setParameter("subject", subject).getResultList();
+            units = em.createNamedQuery("findSubjectUnitsByHours").setParameter("hours", hours).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByHours(Integer hours, String subject) {0}", e.getMessage());
         }

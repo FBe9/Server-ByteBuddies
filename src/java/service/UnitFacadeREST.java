@@ -149,9 +149,9 @@ public class UnitFacadeREST {
      * found.
      */
     @GET
-    @Path("findSubjectUnits/{name}")
+    @Path("findSubjectUnits/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findSubjectUnits(@PathParam("name") String name) {
+    public List<Unit> findSubjectUnits(@PathParam("subjectName") String name) {
         List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all units by subject name");
@@ -172,9 +172,9 @@ public class UnitFacadeREST {
      * @return An List of Units that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByName/{name}/{subject}")
+    @Path("findSubjectUnitsByName/{unitName}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findSubjectUnitsByName(@PathParam("name") String name, @PathParam("subject") String subject) {
+    public List<Unit> findSubjectUnitsByName(@PathParam("unitName") String name, @PathParam("subjectName") String subject) {
         List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all units from a Subject by name");
@@ -195,9 +195,9 @@ public class UnitFacadeREST {
      * @return An List of Units that contains the units the method found.
      */
     @GET
-    @Path("findOneSubjectUnitByName/{name}/{subject}")
+    @Path("findOneSubjectUnitByName/{unitName}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Unit findOneSubjectUnitByName(@PathParam("name") String name, @PathParam("subject") String subject) {
+    public Unit findOneSubjectUnitByName(@PathParam("unitName") String name, @PathParam("subjectName") String subject) {
         Unit unit;
         try {
             LOGGER.log(Level.INFO, "Reading data for an especific unit from a Subject by name");
@@ -218,9 +218,9 @@ public class UnitFacadeREST {
      * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByDateInit/{dateInit}/{subject}")
+    @Path("findSubjectUnitsByDateInit/{dateInit}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findSubjectUnitsByDateInit(@PathParam("dateInit") String dateInit, @PathParam("subject") String subject) {
+    public List<Unit> findSubjectUnitsByDateInit(@PathParam("dateInit") String dateInit, @PathParam("subjectName") String subject) {
         List<Unit> units = null;
          SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -245,9 +245,9 @@ public class UnitFacadeREST {
      * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByDateEnd/{dateEnd}/{subject}")
+    @Path("findSubjectUnitsByDateEnd/{dateEnd}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findSubjectUnitsByDateEnd(@PathParam("dateEnd") String dateEnd, @PathParam("subject") String subject) {
+    public List<Unit> findSubjectUnitsByDateEnd(@PathParam("dateEnd") String dateEnd, @PathParam("subjectName") String subject) {
         List<Unit> units = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -272,9 +272,9 @@ public class UnitFacadeREST {
      * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findSubjectUnitsByHours/{hours}/{subject}")
+    @Path("findSubjectUnitsByHours/{hours}/{subjectName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findSubjectUnitsByHours(@PathParam("hours") Integer hours, @PathParam("subject") String subject) {
+    public List<Unit> findSubjectUnitsByHours(@PathParam("hours") Integer hours, @PathParam("subjectName") String subject) {
         List<Unit> units;
         try {
             LOGGER.log(Level.INFO, "Reading data for all the units from a subject by hours");

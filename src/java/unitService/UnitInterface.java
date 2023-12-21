@@ -89,7 +89,7 @@ public interface UnitInterface {
     public List<Unit> findSubjectUnitsByName(String name, String subject) throws FindErrorException;
 
     /**
-     * This method finds a units which name is the one the user introduced and
+     * This method finds a unit which name is the one the user introduced and
      * the subject name is the one the user introduced.
      *
      * @param name A String that contains the words the user introduced.
