@@ -42,7 +42,7 @@ public interface ExerciseInterface {
      * @throws DeleteErrorException Thrown when any error or exception occurs
      * during deletion.
      */
-    public void removeExercise(Long id) throws DeleteErrorException;
+    public void removeExercise(Integer id) throws DeleteErrorException;
     
     /**
      * This method obtains an exercise using its id.
@@ -53,7 +53,7 @@ public interface ExerciseInterface {
      * during reading.
      */
     
-    public Exercise getExerciseByID(Long id) throws ExerciseErrorException;
+    public Exercise getExerciseByID(Integer id) throws ExerciseErrorException;
     /**
      * This method gets a list with all exercises.
      *

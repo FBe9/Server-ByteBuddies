@@ -31,14 +31,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     //Teachers queries
     @NamedQuery(
-            name = "getAllExercises",
-            query = "SELECT e FROM Exercise e"
-    ), 
-    @NamedQuery(
             name = "getExercisesByID", 
             query = "SELECT e FROM Exercise e WHERE e.id=:id"
     )
-    , 
+    , @NamedQuery(
+            name = "getAllExercises",
+            query = "SELECT e FROM Exercise e"
+    )
+    ,
     @NamedQuery(
             name = "getExercisesByNumber",
             query = "SELECT e FROM Exercise e WHERE e.number=:number"
@@ -60,11 +60,6 @@ import javax.xml.bind.annotation.XmlRootElement;
             query = "SELECT e FROM Exercise e WHERE e.unit.name=:name"
     )
     //Student queries
-    ,
-    @NamedQuery(
-            name = "getExercisesByIDAndUnitName", 
-            query = "SELECT e FROM Exercise e WHERE e.id=:id AND e.unit.name=:name"
-    )
     , 
     @NamedQuery(
             name = "getExercisesByNumberAndUnitName",
@@ -94,7 +89,7 @@ public class Exercise implements Serializable {
     private Integer id;
 
     /**
-     * Relational field containing the list Exercise in the Unit
+     * Unit exercise
      */
     @ManyToOne
     private Unit unit;
@@ -156,7 +151,7 @@ public class Exercise implements Serializable {
      * @param deadline
      * @param hours
      */
-    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {    
+    public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {
         this.id = id;
         this.unit = unit;
         this.number = number;
@@ -186,20 +181,20 @@ public class Exercise implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-    
+
     /**
-     * Gets the Unit
-     * 
-     * @return 
+     * Gets the unit
+     *
+     * @return
      */
     public Unit getUnit() {
         return unit;
     }
-    
+
     /**
-     * Sets the Unit
-     * 
-     * @param unit 
+     * Sets the unit
+     *
+     * @param unit
      */
     public void setUnit(Unit unit) {
         this.unit = unit;
