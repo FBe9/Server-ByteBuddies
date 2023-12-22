@@ -44,7 +44,6 @@ public class EJBExamManager implements ExamInterface {
     @Override
     public void deleteExam(Exam exam) throws DeleteErrorException {
         try {
-            
             em.remove(em.merge(exam));
             em.flush();
         } catch (Exception ex) {
@@ -69,7 +68,6 @@ public class EJBExamManager implements ExamInterface {
         try {
             exam = em.find(Exam.class, id);
         } catch (Exception ex) {
-            System.out.println("ERROR FINDING");
             throw new FindErrorException(ex.getMessage());
         }
         return exam;

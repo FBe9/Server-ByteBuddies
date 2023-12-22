@@ -26,9 +26,9 @@ public class Student extends User {
     private static final long serialVersionUID = 1L;
     @Enumerated(EnumType.STRING)
     private LevelType levelType;
-    @OneToMany(cascade=ALL,mappedBy="student",fetch=FetchType.EAGER)
+    @OneToMany(mappedBy="student",fetch=FetchType.EAGER)
     private Set<Mark> marks;
-    @OneToMany(cascade=ALL, mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     //Constructors
     public Student(Integer dni, String email, String name, String surname, String password, Date dateInit) {

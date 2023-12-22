@@ -2,6 +2,7 @@ package examService;
 
 import entities.Exam;
 import entities.Mark;
+import entities.MarkId;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
@@ -63,10 +64,11 @@ public class EJBMarkManager implements MarkInterface{
     }
     
     @Override
-    public Mark findMarkById(Integer id) throws FindErrorException {
+    public Mark findMarkById(Integer examId, Integer studentId) throws FindErrorException {
+        MarkId markId = new MarkId(examId, studentId);
         Mark mark = null;
         try{
-            mark = em.find(Mark.class, id);
+            mark = em.find(Mark.class, markId);
         } catch(Exception ex){
             throw new FindErrorException(ex.getMessage());
         }
@@ -83,6 +85,18 @@ public class EJBMarkManager implements MarkInterface{
             exams = em.createNamedQuery("findExamsByStudent").setParameter("userName", "%" + userName + "%").getResultList();
             return exams;
         }catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    public List<Mark> findMarkByExam(Integer examId) throws FindErrorException {
+        List<Mark> marks;
+        
+        try{
+            marks = em.createNamedQuery("findMarkByExam").setParameter("examid", examId).getResultList();
+            return marks;
+        } catch(Exception ex){
             throw new FindErrorException(ex.getMessage());
         }
     }

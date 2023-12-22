@@ -6,12 +6,14 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 /**
  *
  * @author Alex
@@ -21,10 +23,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
         @NamedQuery(
             name = "findAllMarks",
-            query = "SELECT m FROM Mark m ORDER BY id DESC"),
+            query = "SELECT m FROM Mark m"),
         @NamedQuery(
             name = "findExamsByStudent",
-            query = "SELECT m.exam FROM Mark m WHERE m.student.name LIKE :userName ")
+            query = "SELECT m.exam FROM Mark m WHERE m.student.name LIKE :userName "),
+        @NamedQuery(
+            name = "findMarkByExam",
+            query = "SELECT m FROM Mark m WHERE m.exam.id = :examId")
 })
 
 @XmlRootElement
@@ -34,15 +39,16 @@ public class Mark implements Serializable {
     
     @EmbeddedId
     private MarkId id;
+    
+    @ManyToOne
     @MapsId("examId")
-    @ManyToOne
     private Exam exam;
-    @MapsId("studentId")
+    
     @ManyToOne
+    @MapsId("studentId")
     private Student student;
     private Float markValue;
-    @Enumerated(EnumType.STRING)
-    private CallType callType;
+    
     private String solutionFilePath;
 
     //Setters and Getters
@@ -54,7 +60,7 @@ public class Mark implements Serializable {
     public void setId(MarkId id) {
         this.id = id;
     }
-    
+    //@XmlTransient
     public Exam getExam() {
         return exam;
     }
@@ -62,7 +68,7 @@ public class Mark implements Serializable {
     public void setExam(Exam Exam) {
         this.exam = Exam;
     }
-
+    //@XmlTransient
     public Student getStudent() {
         return student;
     }
@@ -79,14 +85,6 @@ public class Mark implements Serializable {
         this.markValue = markValue;
     }
 
-    public CallType getCallType() {
-        return callType;
-    }
-
-    public void setCallType(CallType callType) {
-        this.callType = callType;
-    }
-
     public String getSolutionFilePath() {
         return solutionFilePath;
     }
@@ -96,11 +94,10 @@ public class Mark implements Serializable {
     }
 
     //Constructors
-    public Mark(Exam exam, Student student, Float markValue, CallType callType, String solutionFilePath) {
+    public Mark(Exam exam, Student student, Float markValue, String solutionFilePath) {
         this.exam = exam;
         this.student = student;
         this.markValue = markValue;
-        this.callType = callType;
         this.solutionFilePath = solutionFilePath;
     }
 
@@ -134,6 +131,6 @@ public class Mark implements Serializable {
   
     @Override
     public String toString() {
-        return "Mark{" + "Exam=" + exam + ", student=" + student + ", markValue=" + markValue + ", callType=" + callType + ", solutionFilePath=" + solutionFilePath + '}';
+        return "Mark{" + "Exam=" + exam + ", student=" + student + ", markValue=" + markValue + ", solutionFilePath=" + solutionFilePath + '}';
     }
 }

@@ -24,7 +24,9 @@ public interface MarkInterface {
     
     public List<Mark> findAllMarks() throws FindErrorException;
     
-    public Mark findMarkById(Integer id) throws FindErrorException;
+    public Mark findMarkById(Integer examId, Integer studentId) throws FindErrorException;
     
     public List<Exam> findExamsByStudent(String userName)throws FindErrorException;
+    
+    public List<Mark> findMarkByExam(Integer examId) throws FindErrorException;
 }

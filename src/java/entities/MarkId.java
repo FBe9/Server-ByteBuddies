@@ -1,6 +1,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Embeddable;
 
 
@@ -38,6 +39,37 @@ public class MarkId implements Serializable{
         this.studentId = studentId;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.examId);
+        hash = 47 * hash + Objects.hashCode(this.studentId);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MarkId other = (MarkId) obj;
+        if (!Objects.equals(this.examId, other.examId)) {
+            return false;
+        }
+        if (!Objects.equals(this.studentId, other.studentId)) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "MarkId{" + "examId=" + examId + ", studentId=" + studentId + '}';

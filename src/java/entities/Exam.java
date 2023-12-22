@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.Set;
 import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(
             name = "findAllExams",
-            query = "SELECT e FROM Exam e ORDER BY e.id DESC")
+            query = "SELECT e FROM Exam e ORDER BY e.id ASC")
     ,
     @NamedQuery(
             name = "findByDescription",
@@ -65,6 +67,9 @@ public class Exam implements Serializable {
      * The description, title or name.
      */
     private String description;
+    
+    @Enumerated(EnumType.STRING)
+    private CallType callType;
 
     /**
      * The date when the exam is programmed.
@@ -93,7 +98,7 @@ public class Exam implements Serializable {
     /**
      * Relational field for the grades or marks assigned to an exam.
      */
-    @OneToMany(cascade = ALL, mappedBy = "exam", fetch = EAGER)
+    @OneToMany(mappedBy = "exam", fetch = EAGER)
     private Set<Mark> marks;
 
     //Setters and Getters
@@ -196,6 +201,14 @@ public class Exam implements Serializable {
         return subject;
     }
 
+    public CallType getCallType() {
+        return callType;
+    }
+
+    public void setCallType(CallType callType) {
+        this.callType = callType;
+    }
+    
     /**
      * Sets the subject the exam belongs to.
      *

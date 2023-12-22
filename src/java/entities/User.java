@@ -92,6 +92,8 @@ public class User implements Serializable {
         this.dateInit = dateInit;
     }
 
+    
+    
 
     //Constructors
     public User(Integer id, String email, String name, String surname, String password, Date dateInit) {

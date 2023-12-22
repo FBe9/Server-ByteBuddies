@@ -84,11 +84,11 @@ public class MarkFacadeREST {
     }
 
     @DELETE
-    @Path("{id}")
-    public void deleteMark(@PathParam("id") Integer id) {
+    @Path("{examId}/{studentId}")
+    public void deleteMark(@PathParam("examId") Integer examId, @PathParam("studentId") Integer studentId) {
         try {
-            LOGGER.log(Level.INFO, "Deleting mark {0}", id);
-            ejb.deleteMark(ejb.findMarkById(id));
+            LOGGER.log(Level.INFO, "Deleting mark with exam {0} and student {1}", examId + studentId);
+            ejb.deleteMark(ejb.findMarkById(examId, studentId));
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -96,13 +96,13 @@ public class MarkFacadeREST {
     }
 
     @GET
-    @Path("{id}")
+    @Path("{examId}/{studentId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Mark find(@PathParam("id") Integer id) {
+    public Mark find(@PathParam("examId") Integer examId, @PathParam("studentId") Integer studentId) {
         Mark mark = null;
         try {
-            LOGGER.log(Level.INFO, "Finding mark {0}", id);
-            mark = ejb.findMarkById(id);
+            LOGGER.log(Level.INFO, "Finding mark with exam {0} and student {1}", examId + studentId);
+            mark = ejb.findMarkById(examId, studentId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -137,5 +137,20 @@ public class MarkFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
         return exams;
+    }
+    
+    @GET
+    @Path("findMarkByExam/{examId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Mark> findMarkByExam(@PathParam("examId") Integer examId){
+        List<Mark> marks;
+        try{
+            LOGGER.log(Level.INFO, "Finding all marks of exam with id {0}", examId);
+            marks = ejb.findMarkByExam(examId);
+        } catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return marks;
     }
 }
