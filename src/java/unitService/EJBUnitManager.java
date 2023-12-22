@@ -5,6 +5,7 @@
  */
 package unitService;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import entities.*;
 import exceptions.*;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import subjectService.SubjectInterface;
 
@@ -49,14 +51,15 @@ public class EJBUnitManager implements UnitInterface {
         Unit bdUnit;
 
         try {
-            bdUnit = (Unit) em.createNamedQuery("findOneUnitByName").setParameter("name", unit.getName()).getSingleResult();
-            if (bdUnit.equals(unit)) {
-                throw new CreateErrorException("The unit already exist");
-            }
+            em.createNamedQuery("findOneUnitByName").setParameter("name", unit.getName()).getSingleResult();
+            throw new CreateErrorException("You already have a Unit with that name");
 
+        } catch (NoResultException n) {
             em.persist(unit);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  createUnit(Unit Unit) {0}", e.getMessage());
             throw new CreateErrorException(e.getMessage());
+
         }
     }
 
@@ -115,6 +118,7 @@ public class EJBUnitManager implements UnitInterface {
             unit = em.find(Unit.class, id);
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitByID(Integer id) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return unit;
     }
@@ -122,8 +126,7 @@ public class EJBUnitManager implements UnitInterface {
     /**
      * The method finds all the units.
      *
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -134,6 +137,7 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findAllUnits").getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findAllUnits() {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
@@ -143,8 +147,7 @@ public class EJBUnitManager implements UnitInterface {
      * user introduced.
      *
      * @param name A String that contains the words the user introduced.
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -155,6 +158,7 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findSubjectUnits").setParameter("subjectName", name).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnits(String name) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
@@ -165,8 +169,7 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @param name A String that contains the words the user introduced.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -177,6 +180,7 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findSubjectUnitsByName").setParameter("name", "%" + name + "%").setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByName(String name, String subject) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
@@ -198,6 +202,7 @@ public class EJBUnitManager implements UnitInterface {
             unitbd = (Unit) em.createNamedQuery("findOneSubjectUnitByName").setParameter("name", name).setParameter("subjectName", subject).getSingleResult();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findOneSubjectUnitByName(String name, String subject) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return unitbd;
     }
@@ -209,8 +214,7 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @param dateInit A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -221,6 +225,7 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findSubjectUnitsByDateInit").setParameter("dateInit", dateInit).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateInit(Date dateInit, String subject) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
@@ -232,8 +237,7 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @param dateEnd A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -244,6 +248,7 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findSubjectUnitsByDateEnd").setParameter("dateEnd", dateEnd).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByDateEnd(Date dateInit, String subject) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
@@ -255,8 +260,7 @@ public class EJBUnitManager implements UnitInterface {
      *
      * @param hours An Integer with the number the user introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -267,35 +271,68 @@ public class EJBUnitManager implements UnitInterface {
             units = em.createNamedQuery("findSubjectUnitsByHours").setParameter("hours", hours).setParameter("subjectName", subject).getResultList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "UnitEJB ->  findSubjectUnitsByHours(Integer hours, String subject) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
         return units;
     }
 
     /**
-     * This method finds all the units from the subjects where the user is
-     * matriculated.
+     * This method finds all the units from the subjects where the Teacher
+     * teachs.
      *
      * @param userId A Integre with the id of the user that is logged to the
      * application.
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
     @Override
-    public List<Unit> findUnitsFromUserSubjects(Integer userId) throws FindErrorException {
+    public List<Unit> findUnitsFromTeacherSubjects(Integer userId) throws FindErrorException {
         List<Subject> subjects;
         List<Unit> AllUnits = new ArrayList<>();
-        //TODO: If userType teacher..... else ....
-        
-        subjects = (ArrayList<Subject>) ejbS.findByEnrollments(userId);
+        try {
+            User user = em.find(User.class, userId);
 
-        for (int i = 0; i < subjects.size(); i++) {
-            String subjectName = subjects.get(i).getName();
-            List<Unit> units = em.createNamedQuery("findSubjectUnits").setParameter("subjectName", subjectName).getResultList();
-            AllUnits.addAll(units);
+            subjects = (ArrayList<Subject>) ejbS.findSubjectsByTeacher(user.getName());
+
+            for (int i = 0; i < subjects.size(); i++) {
+                String subjectName = subjects.get(i).getName();
+                List<Unit> units = em.createNamedQuery("findSubjectUnits").setParameter("subjectName", subjectName).getResultList();
+                AllUnits.addAll(units);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsFromTeacherSubjects(Integer userId) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
         }
+        return AllUnits;
+    }
 
+    /**
+     * This method finds all the units from the subjects where the Student is
+     * matriculated.
+     *
+     * @param userId A Integre with the id of the user that is logged to the
+     * application.
+     * @return An List of Units that contains the units that the method found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    @Override
+    public List<Unit> findUnitsFromStudentSubjects(Integer userId) throws FindErrorException {
+        List<Subject> subjects;
+        List<Unit> AllUnits = new ArrayList<>();
+        try {
+            subjects = (ArrayList<Subject>) ejbS.findByEnrollments(userId);
+
+            for (int i = 0; i < subjects.size(); i++) {
+                String subjectName = subjects.get(i).getName();
+                List<Unit> units = em.createNamedQuery("findSubjectUnits").setParameter("subjectName", subjectName).getResultList();
+                AllUnits.addAll(units);
+            }
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "UnitEJB ->  findUnitsFromStudentSubjects(Integer userId) {0}", e.getMessage());
+            throw new FindErrorException(e.getMessage());
+        }
         return AllUnits;
     }
 }

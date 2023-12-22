@@ -120,7 +120,7 @@ public class Unit implements Serializable {
     /**
      * Gets the unit ID.
      *
-     * @return A integer with the unit ID
+     * @return An Integer with the unit ID.
      */
     public Integer getId() {
         return id;
@@ -129,95 +129,106 @@ public class Unit implements Serializable {
     /**
      * Sets the unit ID.
      *
-     * @param id the unit ID to be set
+     * @param id the unit ID to be set.
      */
     public void setId(Integer id) {
         this.id = id;
     }
     
     /**
+     * Gets the unit Name. 
      * 
-     * @return 
+     * @return A String with the unit name.
      */
     public String getName() {
         return name;
     }
     
     /**
+     * Sets the unit Name.
      * 
-     * @param name 
+     * @param name the unit name to be set
      */
     public void setName(String name) {
         this.name = name;
     }
     
     /**
+     * Gets the unit Description.  
      * 
-     * @return 
+     * @return A String with the unit description.
      */
     public String getDescription() {
         return description;
     }
     
     /**
+     * Sets the unit Description.
      * 
-     * @param description 
+     * @param description the unit description to be set.
      */
     public void setDescription(String description) {
         this.description = description;
     }
     
     /**
+     * Gets the unit DateInit. 
      * 
-     * @return 
+     * @return A Date with the unit dateInit.
      */
     public Date getDateInit() {
         return dateInit;
     }
     
     /**
+     * Sets the unit DateInit.
      * 
-     * @param dateInit 
+     * @param dateInit the unit dateInit to be set.
      */
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
     }
     
     /**
+     * Gets the unit DateEnd. 
      * 
-     * @return 
+     * @return A Date with the unit dateEnd.
      */
     public Date getDateEnd() {
         return dateEnd;
     }
     
     /**
+     * Sets the unit DateEnd.
      * 
-     * @param dateEnd 
+     * @param dateEnd the unit dateEnd to be set.
      */
     public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
     
     /**
+     * Gets the unit Hours.  
      * 
-     * @return 
+     * @return An Integer with the unit hours.
      */
     public Integer getHours() {
         return hours;
     }
     
     /**
+     * Sets the unit Hours.
      * 
-     * @param hours 
+     * @param hours the unit hours to be set.
      */
     public void setHours(Integer hours) {
         this.hours = hours;
     }
     
     /**
+     * Gets the unit Exercises.  
      * 
-     * @return 
+     * @return A Set with the unit exercises.
      */
     @XmlTransient
     public Set<Exercise> getExercises() {
@@ -225,24 +236,27 @@ public class Unit implements Serializable {
     }
     
     /**
+     * Sets the unit Exercises.
      * 
-     * @param exercises 
+     * @param exercises the unit exercises to be set.
      */
     public void setExercises(Set<Exercise> exercises) {
         this.exercises = exercises;
     }
 
     /**
+     * Gets the unit Subject. 
      * 
-     * @return 
+     * @return A Subject object with the unit Subject.
      */
     public Subject getSubject() {
         return subject;
     }
     
     /**
+     * Sets the unit Subject.
      * 
-     * @param subject 
+     * @param subject the unit subject to be set.
      */
     public void setSubject(Subject subject) {
         this.subject = subject;
@@ -250,15 +264,16 @@ public class Unit implements Serializable {
 
     //Constructors
     /**
+     * Creates a new instance of the Unit class with specified attributes.
      * 
-     * @param id
-     * @param name
-     * @param description
-     * @param dateInit
-     * @param dateEnd
-     * @param hours
-     * @param exercises
-     * @param subject 
+     * @param id the unit id.
+     * @param name the name of the unit.
+     * @param description the description of the unit.
+     * @param dateInit the dateInit of the unit.
+     * @param dateEnd the dateEnd of the unit.
+     * @param hours the hours of the unit. 
+     * @param exercises the exercises of the unit.
+     * @param subject the subject of the unit.
      */
     public Unit(Integer id, String name, String description, Date dateInit, Date dateEnd, Integer hours, Set<Exercise> exercises, Subject subject) {
         this.id = id;
@@ -272,7 +287,7 @@ public class Unit implements Serializable {
     }
     
     /**
-     * 
+     * Creates a new instance of the Unit class with default constructor.
      */
     public Unit() {
 
@@ -280,8 +295,9 @@ public class Unit implements Serializable {
 
     //HasCode
     /**
+     * Computes the hash code for this object.
      * 
-     * @return 
+     * @return the hash code.
      */
     @Override
     public int hashCode() {
@@ -292,9 +308,10 @@ public class Unit implements Serializable {
 
     //Equals
     /**
-     * 
-     * @param object
-     * @return 
+     * Checks if this object is equal to another object.
+     *
+     * @param object the object to compare
+     * @return true if the objects are equal, false otherwise
      */
     @Override
     public boolean equals(Object object) {
