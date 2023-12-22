@@ -1,4 +1,4 @@
 /**
- * This package stores the data access classes.
+ * This package stores the service of user.
  */
-package dataAccess;
+package userService;

@@ -4,7 +4,6 @@ import entities.Unit;
 import exceptions.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,6 +23,7 @@ import javax.ws.rs.core.MediaType;
 import unitService.UnitInterface;
 
 /**
+ * RESTful web service for managing units.
  *
  * @author Nerea
  */
@@ -139,14 +139,13 @@ public class UnitFacadeREST {
         }
         return units;
     }
-    
+
     /**
-     * GET method to get all the Unit data from an especific subject: it uses business method
-     * findSubjectUnits.
-     * 
+     * GET method to get all the Unit data from an especific subject: it uses
+     * business method findSubjectUnits.
+     *
      * @param name A String that contains the words the user introduced.
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      */
     @GET
     @Path("findSubjectUnits/{subjectName}")
@@ -222,7 +221,7 @@ public class UnitFacadeREST {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Unit> findSubjectUnitsByDateInit(@PathParam("dateInit") String dateInit, @PathParam("subjectName") String subject) {
         List<Unit> units = null;
-         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
             LOGGER.log(Level.INFO, "Reading data all the units from a subject by init date");
             Date date = format.parse(dateInit);
@@ -230,7 +229,7 @@ public class UnitFacadeREST {
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
-        }catch (ParseException ex) {
+        } catch (ParseException ex) {
             Logger.getLogger(UnitFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
         }
         return units;
@@ -287,21 +286,44 @@ public class UnitFacadeREST {
     }
 
     /**
-     * GET method to get all Units data by subject where the user is
-     * matriculated: it uses business method findUnitsFromUserSubjects.
+     * GET method to get all Units data by subject where the Teacher teach: it
+     * uses business method findUnitsFromTeacherSubjects.
      *
      * @param userID A Integer with the id of the user that is logged into the
      * app.
      * @return An List of Unit that contains the units the method found.
      */
     @GET
-    @Path("findUnitsFromUserSubjects/{userID}")
+    @Path("findUnitsFromTeacherSubjects/{userID}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Unit> findUnitsFromUserSubjects(@PathParam("userID") Integer userID) {
+    public List<Unit> findUnitsFromTeacherSubjects(@PathParam("userID") Integer userID) {
         List<Unit> units;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all the units from a subject where the user is matriculated");
-            units = ejbU.findUnitsFromUserSubjects(userID);
+            LOGGER.log(Level.INFO, "Reading data for all the units from a subject where the Teacher teachs");
+            units = ejbU.findUnitsFromTeacherSubjects(userID);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return units;
+    }
+
+    /**
+     * GET method to get all Units data by subject where the Student is
+     * matriculated: it uses business method findUnitsFromStudentSubjects.
+     *
+     * @param userID A Integer with the id of the user that is logged into the
+     * app.
+     * @return An List of Unit that contains the units the method found.
+     */
+    @GET
+    @Path("findUnitsFromStudentSubjects/{userID}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Unit> findUnitsFromStudentSubjects(@PathParam("userID") Integer userID) {
+        List<Unit> units;
+        try {
+            LOGGER.log(Level.INFO, "Reading data for all the units from a subject where the Student is matriculated");
+            units = ejbU.findUnitsFromStudentSubjects(userID);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

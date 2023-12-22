@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package unitService;
 
 import entities.Unit;
@@ -56,8 +51,7 @@ public interface UnitInterface {
     /**
      * The method finds all the units.
      *
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -68,8 +62,7 @@ public interface UnitInterface {
      * user introduced.
      *
      * @param name A String that contains the words the user introduced.
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -81,8 +74,7 @@ public interface UnitInterface {
      *
      * @param name A String that contains the words the user introduced.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -107,8 +99,7 @@ public interface UnitInterface {
      *
      * @param dateInit A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -121,8 +112,7 @@ public interface UnitInterface {
      *
      * @param dateEnd A Date that contains the date the User introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
@@ -135,24 +125,34 @@ public interface UnitInterface {
      *
      * @param hours An Integer with the number the user introduce.
      * @param subject A String with the name of the subject
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
     public List<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException;
+    
+    /**
+     * This method finds all the units from the subjects where the Teacher
+     * teachs.
+     *
+     * @param userId A Integre with the id of the user that is logged to the
+     * application.
+     * @return An List of Units that contains the units that the method found.
+     * @throws FindErrorException Thrown when any error or exception occurs
+     * during reading.
+     */
+    public List<Unit> findUnitsFromTeacherSubjects(Integer userId) throws FindErrorException;
 
     /**
-     * This method finds all the units from the subjects where the user is
+     * This method finds all the units from the subjects where the Student is
      * matriculated.
      *
      * @param userId A Integre with the id of the user that is logged to the
      * application.
-     * @return An List of Units that contains the units that the method
-     * found.
+     * @return An List of Units that contains the units that the method found.
      * @throws FindErrorException Thrown when any error or exception occurs
      * during reading.
      */
-    public List<Unit> findUnitsFromUserSubjects(Integer userId) throws FindErrorException;
+    public List<Unit> findUnitsFromStudentSubjects(Integer userId) throws FindErrorException;
 
 }

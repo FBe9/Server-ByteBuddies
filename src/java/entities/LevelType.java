@@ -1,7 +1,7 @@
 package entities;
 
 /**
- *
+ * This is an enumeration of the types of levels.
  * @author Nerea
  */
 public enum LevelType {
