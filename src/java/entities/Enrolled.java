@@ -2,6 +2,7 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,14 +42,14 @@ public class Enrolled implements Serializable {
     /**
      * Reference to the associated student.
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @MapsId("studentId")
     private Student student;
 
     /**
      * Reference to the associated subject.
      */
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @MapsId("subjectId")
     private Subject subject;
 
@@ -92,7 +93,6 @@ public class Enrolled implements Serializable {
      *
      * @return the subject
      */
-    @XmlTransient
     public Subject getSubject() {
         return subject;
     }

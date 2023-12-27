@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * This is the stateless EJB that implements the EnrolledInterface.
+ *
  * @author Irati
  */
 @Stateless
@@ -32,6 +33,9 @@ public class EJBEnrolledManager implements EnrolledInterface {
     @Override
     public void createEnrolled(Enrolled enrolled) throws CreateErrorException {
         try {
+            if (!em.contains(enrolled)) {
+                enrolled = em.merge(enrolled);
+            }
             em.persist(enrolled);
         } catch (Exception ex) {
             throw new CreateErrorException(ex.getMessage());
@@ -88,12 +92,13 @@ public class EJBEnrolledManager implements EnrolledInterface {
         List<Enrolled> enrollments;
         try {
             enrollments = em.createNamedQuery("findAllEnrollments").getResultList();
-           
+
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return enrollments;
     }
+
     /**
      * Finds an enrollment by its ID.
      *
@@ -104,15 +109,14 @@ public class EJBEnrolledManager implements EnrolledInterface {
      */
     @Override
     public Enrolled findEnrolledById(Integer studentId, Integer subjectId) throws FindErrorException {
-       Enrolled enrolled = null;
-       EnrolledId id = new EnrolledId(studentId, subjectId);
-       try{
-           enrolled = em.find(Enrolled.class, id);
-       }catch(Exception ex){
-           throw new FindErrorException(ex.getMessage());
-       }
-       return enrolled;
+        Enrolled enrolled = null;
+        EnrolledId id = new EnrolledId(studentId, subjectId);
+        try {
+            enrolled = em.find(Enrolled.class, id);
+        } catch (Exception ex) {
+            throw new FindErrorException(ex.getMessage());
+        }
+        return enrolled;
     }
-
 
 }

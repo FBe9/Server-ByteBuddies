@@ -298,6 +298,7 @@ public class Subject implements Serializable {
     public void setUnits(Set<Unit> units) {
         this.units = units;
     }
+    @XmlTransient
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }
