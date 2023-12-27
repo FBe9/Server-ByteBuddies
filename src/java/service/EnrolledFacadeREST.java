@@ -106,11 +106,11 @@ public class EnrolledFacadeREST {
      * @param id the id of the subject.
      */
     @DELETE
-    @Path("{id}")
-    public void removeEnrolled(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting enrolled {0}", id);
+    @Path("{studentId}/{subjectId}")
+    public void removeEnrolled(@PathParam("studentId") Integer studentId, @PathParam("subjectId") Integer subjectId) {
+       // LOGGER.log(Level.INFO, "Deleting enrolled {0}", id);
         try {
-            ejb.deleteEnrolled(ejb.findEnrolledById(id));
+            ejb.deleteEnrolled(ejb.findEnrolledById(studentId, subjectId));
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -123,13 +123,13 @@ public class EnrolledFacadeREST {
      * @param id the id of the subject.
      */
     @GET
-    @Path("{id}")
+    @Path("{studentId}/{subjectId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Enrolled find(@PathParam("id") Integer id) {
+    public Enrolled find(@PathParam("studentId") Integer studentId, @PathParam("subjectId") Integer subjectId) {
        Enrolled enrolled;
         try {
-            LOGGER.log(Level.INFO, "Reading data for enrolled {0}", id);
-            enrolled = ejb.findEnrolledById(id);
+          //  LOGGER.log(Level.INFO, "Reading data for enrolled {0}", id);
+            enrolled = ejb.findEnrolledById(studentId, subjectId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -153,24 +153,5 @@ public class EnrolledFacadeREST {
         }
         return enrollments;
     }
-    /**
-     * GET method to find all matriculated enrollments for a given student. uses findMatriculatedbusiness logic method.
-     *
-     * @param studentId the studentId for the search
-     * @return a list of enrollments.
-     */
-    @GET
-    @Path(" findMatriculated/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Enrolled> findMatriculated(@PathParam("id") Integer studentId) {
-        List<Enrolled> enrollments;
-        try {
-            LOGGER.log(Level.INFO, "Reading all matriculated enrollments for the student with the id; .", studentId);
-            enrollments = ejb.findMatriculated(studentId);
-        } catch (FindErrorException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-        return enrollments;
-    }
+
 }

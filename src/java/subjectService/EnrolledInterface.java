@@ -69,17 +69,6 @@ public interface EnrolledInterface {
      * @throws FindErrorException If an error occurs while attempting to find
      * the enrollment.
      */
-    public Enrolled findEnrolledById(Integer id) throws FindErrorException;
-
-    /**
-     * Finds all matriculated enrollments for a given student.
-     *
-     * @param studentId The ID of the student for whom to find matriculated
-     * enrollments.
-     * @return A list of matriculated enrollments for the specified student.
-     * @throws FindErrorException If an error occurs while attempting to find
-     * matriculated enrollments.
-     */
-    public List<Enrolled> findMatriculated(Integer studentId) throws FindErrorException;
+    public Enrolled findEnrolledById(Integer studentId, Integer subjectId) throws FindErrorException;
 
 }

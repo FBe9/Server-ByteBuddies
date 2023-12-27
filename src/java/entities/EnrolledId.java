@@ -22,6 +22,12 @@ public class EnrolledId implements Serializable {
     public EnrolledId() {
     }
 
+    public EnrolledId(Integer studentId, Integer subjectId) {
+        this.studentId = studentId;
+        this.subjectId = subjectId;
+    }
+
+    
     public Integer getStudentId() {
         return studentId;
     }
@@ -37,6 +43,8 @@ public class EnrolledId implements Serializable {
     public void setSubjectId(Integer subjectId) {
         this.subjectId = subjectId;
     }
+
+    
 
     @Override
     public boolean equals(Object obj) {

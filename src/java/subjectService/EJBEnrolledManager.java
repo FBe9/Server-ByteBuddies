@@ -1,6 +1,8 @@
 package subjectService;
 
 import entities.Enrolled;
+import entities.EnrolledId;
+import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
@@ -101,8 +103,9 @@ public class EJBEnrolledManager implements EnrolledInterface {
      * the enrollment.
      */
     @Override
-    public Enrolled findEnrolledById(Integer id) throws FindErrorException {
+    public Enrolled findEnrolledById(Integer studentId, Integer subjectId) throws FindErrorException {
        Enrolled enrolled = null;
+       EnrolledId id = new EnrolledId(studentId, subjectId);
        try{
            enrolled = em.find(Enrolled.class, id);
        }catch(Exception ex){
@@ -110,27 +113,6 @@ public class EJBEnrolledManager implements EnrolledInterface {
        }
        return enrolled;
     }
-    /**
-     * Finds all matriculated enrollments for a given student.
-     *
-     * @param studentId The ID of the student for whom to find matriculated
-     * enrollments.
-     * @return A list of matriculated enrollments for the specified student.
-     * @throws FindErrorException If an error occurs while attempting to find
-     * matriculated enrollments.
-     */
-    @Override
-    public List<Enrolled> findMatriculated(Integer studentId) throws FindErrorException {
-        List<Enrolled> enrollments;
-        try {
-            enrollments = em.createNamedQuery("findMatriculated").setParameter("studentId", studentId).getResultList();
-           
-        } catch (Exception ex) {
-            throw new FindErrorException(ex.getMessage());
-        }
-        return enrollments;
-    }
-
 
 
 }

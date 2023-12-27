@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
@@ -18,10 +19,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati.
  */
 @NamedQueries({
-    @NamedQuery(
-            name = "findMatriculated", 
-            query = "SELECT e.subject FROM Enrolled e WHERE e.student.id = :studentId AND e.isMatriculate = true")
-    ,
     @NamedQuery(
             name = "findAllEnrollments",
             query = "Select e From Enrolled e")
@@ -42,24 +39,35 @@ public class Enrolled implements Serializable {
     private EnrolledId id;
 
     /**
-     * Reference to the associated subject.
-     */
-    @ManyToOne(targetEntity=Subject.class)
-    @MapsId("subjectId")
-    private Subject subject;
-
-    /**
      * Reference to the associated student.
      */
-    @ManyToOne(targetEntity=Student.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @MapsId("studentId")
     private Student student;
+
+    /**
+     * Reference to the associated subject.
+     */
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("subjectId")
+    private Subject subject;
 
     /**
      * Flag indicating whether the student is matriculated in the subject.
      */
     private Boolean isMatriculate;
 
+    public Enrolled() {
+    }
+
+    public Enrolled(EnrolledId id, Student student, Subject subject, Boolean isMatriculate) {
+        this.id = id;
+        this.student = student;
+        this.subject = subject;
+        this.isMatriculate = isMatriculate;
+    }
+
+    
     // Setters and Getters
     /**
      * Gets the composite key for the enrollment.
@@ -165,6 +173,7 @@ public class Enrolled implements Serializable {
         }
         return true;
     }
+
     /**
      * Converts this object to a string representation.
      *

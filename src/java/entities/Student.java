@@ -28,7 +28,7 @@ public class Student extends User {
     private LevelType levelType;
     @OneToMany(cascade=ALL,mappedBy="student",fetch=FetchType.EAGER)
     private Set<Mark> marks;
-    @OneToMany(cascade=ALL, mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     //Constructors
     public Student(Integer dni, String email, String name, String surname, String password, Date dateInit) {
@@ -52,7 +52,7 @@ public class Student extends User {
     public void setMarks(Set<Mark> marks) {
         this.marks = marks;
     }
-    @XmlTransient
+     @XmlTransient
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }
