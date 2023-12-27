@@ -36,10 +36,14 @@ public class EJBSubjectManager implements SubjectInterface {
      */
     @Override
     public void createSubject(Subject subject) throws CreateErrorException {
-        try{
+        try {
             em.createNamedQuery("findByName").setParameter("subjectName", subject.getName()).getSingleResult();
-        }catch(NoResultException ex){
-             try {
+        } catch (NoResultException ex) {
+            try {
+                if (!em.contains(subject)) {
+                    subject = em.merge(subject);
+                }
+
                 em.persist(subject);
             } catch (Exception e) {
                 throw new CreateErrorException(e.getMessage());
