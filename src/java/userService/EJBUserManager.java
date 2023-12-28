@@ -11,8 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
+ * EJB implementation of the UserInterface for managing user-related operations.
  *
- * @author irati
+ * @author Irati
  */
 @Stateless
 public class EJBUserManager implements UserInterface {
@@ -20,6 +21,12 @@ public class EJBUserManager implements UserInterface {
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
 
+    /**
+     * Creates a new user.
+     *
+     * @param user The User entity object containing new data.
+     * @throws CreateErrorException If there is an error during creation.
+     */
     @Override
     public void createUser(User user) throws CreateErrorException {
         try {
@@ -27,9 +34,14 @@ public class EJBUserManager implements UserInterface {
         } catch (Exception ex) {
             throw new CreateErrorException(ex.getMessage());
         }
-
     }
 
+    /**
+     * Updates an existing user.
+     *
+     * @param user The User entity object containing updated data.
+     * @throws UpdateErrorException If there is an error during the update.
+     */
     @Override
     public void updateUser(User user) throws UpdateErrorException {
         try {
@@ -42,6 +54,12 @@ public class EJBUserManager implements UserInterface {
         }
     }
 
+    /**
+     * Deletes a user.
+     *
+     * @param user The User entity to be deleted.
+     * @throws DeleteErrorException If there is an error during deletion.
+     */
     @Override
     public void deleteUser(User user) throws DeleteErrorException {
         try {
@@ -51,6 +69,13 @@ public class EJBUserManager implements UserInterface {
         }
     }
 
+    /**
+     * Finds a user by ID.
+     *
+     * @param id The ID used for the search.
+     * @return A User entity containing the user data.
+     * @throws FindErrorException If there is an error during reading.
+     */
     @Override
     public User findUserById(Integer id) throws FindErrorException {
         User user;
@@ -62,46 +87,68 @@ public class EJBUserManager implements UserInterface {
         return user;
     }
 
+    /**
+     * Finds all users.
+     *
+     * @return A collection of users.
+     * @throws FindErrorException If there is an error during reading.
+     */
     @Override
     public List<User> findAllUsers() throws FindErrorException {
         List<User> users;
         try {
             users = em.createNamedQuery("findAllUsers").getResultList();
-
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return users;
     }
 
+    /**
+     * Finds all teachers.
+     *
+     * @return A collection of teachers.
+     * @throws FindErrorException If there is an error during reading.
+     */
     @Override
     public List<User> findAllTeachers() throws FindErrorException {
         List<User> users;
         try {
             users = em.createNamedQuery("findTeachers").getResultList();
-
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return users;
     }
 
+    /**
+     * Finds all students.
+     *
+     * @return A collection of students.
+     * @throws FindErrorException If there is an error during reading.
+     */
     @Override
     public List<User> findAllStudents() throws FindErrorException {
         List<User> users;
         try {
             users = em.createNamedQuery("findStudents").getResultList();
-
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return users;
     }
 
+    /**
+     * Logs in a user.
+     *
+     * @param id The id of the user.
+     * @param passwordUser The user's password.
+     * @return The logged-in User entity.
+     * @throws FindErrorException If there is an error during login.
+     */
     @Override
-    public User logInUser(String dniUser, String passwordUser) throws FindErrorException {
-        User user = null;
+    public User logInUser(String id, String passwordUser) throws FindErrorException {
+        User user = null; 
         return user;
     }
-
 }

@@ -9,11 +9,13 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
+ * Local interface for user EJB.
  *
  * @author irati
  */
 @Local
 public interface UserInterface {
+
     /**
      * Method used to create a user.
      *
@@ -54,11 +56,31 @@ public interface UserInterface {
      * @throws FindErrorException if there is an error during reading.
      */
     public List<User> findAllUsers() throws FindErrorException;
-    
+
+    /**
+     * Finds all teachers.
+     *
+     * @return A collection of teachers.
+     * @throws FindErrorException If there is an error during reading.
+     */
     public List<User> findAllTeachers() throws FindErrorException;
+
+    /**
+     * Finds all students.
+     *
+     * @return A collection of students.
+     * @throws FindErrorException If there is an error during reading.
+     */
     public List<User> findAllStudents() throws FindErrorException;
-    
-    public User logInUser(String dniUser, String passwordUser) throws FindErrorException;
-    
-    
+
+    /**
+     * Logs in a user.
+     *
+     * @param id The id of the user.
+     * @param passwordUser The user's password.
+     * @return The logged-in User entity.
+     * @throws FindErrorException If there is an error during login.
+     */
+    public User logInUser(String id, String passwordUser) throws FindErrorException;
+
 }
