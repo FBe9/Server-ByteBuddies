@@ -13,13 +13,30 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Nerea
+ * @author Irati
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllUsers",
+            query = "Select u From User u"),
+     @NamedQuery(
+            name = "findStudents",
+            query = "SELECT u FROM User u WHERE TYPE(u) = Student"
+    ),
+    @NamedQuery(
+            name = "findTeachers",
+            query = "SELECT u FROM User u WHERE TYPE(u) = Teacher")
+    
+
+})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type",

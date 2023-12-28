@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati
  */
 @Entity
-@DiscriminatorValue("teacher")
+@DiscriminatorValue("Teacher")
 @XmlRootElement
 public class Teacher extends User {
     private static final long serialVersionUID = 1L;
