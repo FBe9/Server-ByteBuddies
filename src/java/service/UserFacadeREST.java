@@ -6,15 +6,15 @@ import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
+import exceptions.UserNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
@@ -67,7 +67,7 @@ public class UserFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateUser(User user) {
-        LOGGER.log(Level.INFO, "Updating account {0}", user.getId());
+        LOGGER.log(Level.INFO, "Updating user {0}", user.getId());
         try {
             ejb.updateUser(user);
         } catch (UpdateErrorException ex) {
@@ -87,7 +87,7 @@ public class UserFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeUser(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting account {0}", id);
+        LOGGER.log(Level.INFO, "Deleting user {0}", id);
         try {
             ejb.deleteUser(ejb.findUserById(id));
         } catch (FindErrorException | DeleteErrorException ex) {
@@ -109,7 +109,7 @@ public class UserFacadeREST {
     public User find(@PathParam("id") Integer id) {
         User user;
         try {
-            LOGGER.log(Level.INFO, "Reading data for account {0}", id);
+            LOGGER.log(Level.INFO, "Reading data for users {0}", id);
             user = ejb.findUserById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -175,5 +175,21 @@ public class UserFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
         return users;
+    }
+    @POST
+    @Path("login")
+    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public User login(User user) {
+        User loginUser;
+        try {
+            LOGGER.log(Level.INFO, "login of an user");
+            loginUser = ejb.logInUser(user.getEmail(), user.getPassword());
+          
+        } catch (UserNotFoundException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return loginUser;
     }
 }

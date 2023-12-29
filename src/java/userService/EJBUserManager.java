@@ -5,6 +5,7 @@ import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
+import exceptions.UserNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -141,14 +142,19 @@ public class EJBUserManager implements UserInterface {
     /**
      * Logs in a user.
      *
-     * @param id The id of the user.
+     * @param email The email of the user.
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
      * @throws FindErrorException If there is an error during login.
      */
     @Override
-    public User logInUser(String id, String passwordUser) throws FindErrorException {
-        User user = null; 
+    public User logInUser(String email, String passwordUser) throws UserNotFoundException {
+        User user;
+        try {
+            user = (User) em.createNamedQuery("login").setParameter("userEmail", email).setParameter("userPassword", passwordUser).getSingleResult();
+        } catch (Exception ex) {
+            throw new UserNotFoundException(ex.getMessage());
+        }
         return user;
     }
 }

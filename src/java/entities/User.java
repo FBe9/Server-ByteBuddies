@@ -26,15 +26,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(
             name = "findAllUsers",
-            query = "Select u From User u"),
+            query = "Select u From User u")
+    ,
      @NamedQuery(
             name = "findStudents",
             query = "SELECT u FROM User u WHERE TYPE(u) = Student"
-    ),
+    )
+    ,
     @NamedQuery(
             name = "findTeachers",
             query = "SELECT u FROM User u WHERE TYPE(u) = Teacher")
-    
+    ,
+   @NamedQuery(
+            name = "login",
+            query = "SELECT u FROM User u WHERE u.email = :userEmail AND u.password = :userPassword"
+    )
 
 })
 @Entity
@@ -66,7 +72,6 @@ public class User implements Serializable {
         this.id = id;
     }
 
-   
     public String getEmail() {
         return email;
     }
@@ -107,10 +112,9 @@ public class User implements Serializable {
         this.dateInit = dateInit;
     }
 
-
     //Constructors
     public User(Integer id, String email, String name, String surname, String password, Date dateInit) {
-        this.id= id;
+        this.id = id;
         this.email = email;
         this.name = name;
         this.surname = surname;

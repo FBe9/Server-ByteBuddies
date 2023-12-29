@@ -5,6 +5,7 @@ import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
+import exceptions.UserNotFoundException;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -79,8 +80,8 @@ public interface UserInterface {
      * @param id The id of the user.
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
-     * @throws FindErrorException If there is an error during login.
+     * @throws UserNotFoundException If there is an error during login.
      */
-    public User logInUser(String id, String passwordUser) throws FindErrorException;
+    public User logInUser(String email, String passwordUser) throws UserNotFoundException;
 
 }
