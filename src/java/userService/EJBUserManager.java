@@ -3,12 +3,14 @@ package userService;
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
+import exceptions.EmailAlreadyExistsException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -27,13 +29,23 @@ public class EJBUserManager implements UserInterface {
      *
      * @param user The User entity object containing new data.
      * @throws CreateErrorException If there is an error during creation.
+     * @throws EmailAlreadyExistsException if an user with that email already exits
      */
     @Override
-    public void createUser(User user) throws CreateErrorException {
+    public void createUser(User user) throws CreateErrorException, EmailAlreadyExistsException {
         try {
-            em.persist(user);
-        } catch (Exception ex) {
-            throw new CreateErrorException(ex.getMessage());
+            em.createNamedQuery("findByEmail").setParameter("userEmail", user.getEmail()).getSingleResult();
+            throw new EmailAlreadyExistsException("User with email already exists");
+
+        } catch (NoResultException ex) {
+            try {
+                if (!em.contains(user)) {
+                    user = em.merge(user);
+                }
+                em.persist(user);
+            } catch (Exception e) {
+                throw new CreateErrorException(e.getMessage());
+            }
         }
     }
 

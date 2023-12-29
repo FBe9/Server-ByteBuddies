@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Represents a teacher entity.
  *
  * @author Irati
  */
@@ -18,47 +19,101 @@ import javax.xml.bind.annotation.XmlTransient;
 @DiscriminatorValue("Teacher")
 @XmlRootElement
 public class Teacher extends User {
+
     private static final long serialVersionUID = 1L;
-    
+
+    /**
+     * The type of studies the teacher is qualified in (e.g., Bachelor's,
+     * Master's).
+     */
     @Enumerated(EnumType.STRING)
     private StudiesType studiesType;
+
+    /**
+     * Qualifications and additional information about the teacher.
+     */
     private String qualifications;
+
+    /**
+     * Set of subjects associated with the teacher. Mapped by the "teacher"
+     * field in the Subject entity.
+     */
     @OneToMany(mappedBy = "teacher")
     private Set<Subject> subjects;
 
-    //Constructors
+    /**
+     * Parameterized constructor for creating a Teacher object with specific
+     * attributes.
+     *
+     * @param dni The DNI (identification number) of the teacher.
+     * @param email The email address of the teacher.
+     * @param name The name of the teacher.
+     * @param surname The surname of the teacher.
+     * @param password The password for the teacher's account.
+     * @param dateInit The date of initiation for the teacher's account.
+     */
     public Teacher(Integer dni, String email, String name, String surname, String password, Date dateInit) {
         super(dni, email, name, surname, password, dateInit);
     }
 
+    /**
+     * Default constructor for creating a Teacher object.
+     */
     public Teacher() {
     }
-    //Setters and Getters
 
+    /**
+     * Gets the type of studies the teacher is qualified in.
+     *
+     * @return The studies type of the teacher.
+     */
     public StudiesType getStudiesType() {
         return studiesType;
     }
 
+    /**
+     * Sets the type of studies the teacher is qualified in.
+     *
+     * @param studiesType The studies type to set for the teacher.
+     */
     public void setStudiesType(StudiesType studiesType) {
         this.studiesType = studiesType;
     }
 
+    /**
+     * Gets the qualifications of the teacher.
+     *
+     * @return The qualifications of the teacher.
+     */
     public String getQualifications() {
         return qualifications;
     }
 
+    /**
+     * Sets the qualifications of  the teacher.
+     *
+     * @param qualifications The qualifications to set for the teacher.
+     */
     public void setQualifications(String qualifications) {
         this.qualifications = qualifications;
     }
 
+    /**
+     * Gets the set of subjects associated with the teacher.
+     *
+     * @return The set of subjects associated with the teacher.
+     */
     @XmlTransient
     public Set<Subject> getSubjects() {
         return subjects;
     }
 
+    /**
+     * Sets the set of subjects associated with the teacher.
+     *
+     * @param subjects The set of subjects to be associated with the teacher.
+     */
     public void setSubjects(Set<Subject> subjects) {
         this.subjects = subjects;
     }
-    
-
 }

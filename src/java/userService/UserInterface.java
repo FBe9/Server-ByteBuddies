@@ -3,6 +3,7 @@ package userService;
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
+import exceptions.EmailAlreadyExistsException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
@@ -23,7 +24,7 @@ public interface UserInterface {
      * @param user the User entity object containing new data.
      * @throws CreateErrorException if there is an error during creation.
      */
-    public void createUser(User user) throws CreateErrorException;
+    public void createUser(User user) throws CreateErrorException, EmailAlreadyExistsException;
 
     /**
      * Method to update a user.

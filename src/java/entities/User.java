@@ -41,6 +41,10 @@ import javax.xml.bind.annotation.XmlRootElement;
             name = "login",
             query = "SELECT u FROM User u WHERE u.email = :userEmail AND u.password = :userPassword"
     )
+    ,
+   @NamedQuery(
+            name = "findByEmail",
+            query = "SELECT u FROM User u WHERE u.email=:userEmail")
 
 })
 @Entity
