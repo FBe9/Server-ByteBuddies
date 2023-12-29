@@ -69,7 +69,7 @@ public class SubjectFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateSubject(Subject subject) {
-        LOGGER.log(Level.INFO, "Updating account {0}", subject.getId());
+        LOGGER.log(Level.INFO, "Updating subject {0}", subject.getId());
         try {
             ejb.updateSubject(subject);
         } catch (UpdateErrorException ex) {
@@ -246,7 +246,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsWithXUnits(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects by X number of units");
+            LOGGER.log(Level.INFO, "Reading subjects that have " + number + " number of units");
             subjects = ejb.findSubjectsWithXUnits(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -270,7 +270,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects by the amount of enrolledStudents");
+            LOGGER.log(Level.INFO, "Reading subjects that have " + number +  " of enrolledStudents");
             subjects = ejb.findSubjectsWithEnrolledStudentsCount(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -318,7 +318,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsByTeacherId(@PathParam("teacherId") Integer teacherId) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects for a teacher");
+            LOGGER.log(Level.INFO, "Reading subjects for a teacher by id ", teacherId);
             subjects = ejb.findSubjectsByTeacherId(teacherId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());

@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -26,10 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Entity representing subjects for a teacher and costumer. It has the following
- * fields: subject id, name, hours, level, language, init date and end date. It
- * also contains field for getting the students, units, exams and teacher
- * releated to it.
+ * Entity representing a subject.
  *
  * @author Irati
  */
@@ -121,10 +117,12 @@ public class Subject implements Serializable {
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateEnd;
-
+    /**
+     * Represents the set of teachers associated with this subject.
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "subject_teacher",schema="bytebuddiesbd",
+            name = "subject_teacher", schema = "bytebuddiesbd",
             joinColumns = @JoinColumn(name = "subject_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id")
     )
@@ -144,7 +142,7 @@ public class Subject implements Serializable {
      */
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Exam> exams;
-
+    
     //Setters and Getters
     /**
      * Gets the subject ID.
@@ -272,10 +270,20 @@ public class Subject implements Serializable {
         this.dateEnd = dateEnd;
     }
 
+    /**
+     * Gets the set of teachers associated with this entity.
+     *
+     * @return The set of teachers.
+     */
     public Set<Teacher> getTeachers() {
         return teachers;
     }
 
+    /**
+     * Sets the set of teachers associated with this entity.
+     *
+     * @param teachers The set of teachers to be associated with this entity.
+     */
     public void setTeachers(Set<Teacher> teachers) {
         this.teachers = teachers;
     }
@@ -298,6 +306,7 @@ public class Subject implements Serializable {
     public void setUnits(Set<Unit> units) {
         this.units = units;
     }
+
     @XmlTransient
     public Set<Enrolled> getEnrollments() {
         return enrollments;
@@ -342,7 +351,7 @@ public class Subject implements Serializable {
      * @param languageType the language type of the subject
      * @param dateInit the start date of the subject
      * @param dateEnd the end date of the subject
-     * @param teacher the teacher of the subject
+     * @param teachers the teachers of the subject
      * @param units the set of units related to the subject
      * @param enrollments the set of enrollments
      * @param exams the set of exams related to the subject

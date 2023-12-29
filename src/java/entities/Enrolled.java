@@ -12,7 +12,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing the enrollment of a student in a subject.
@@ -58,9 +57,21 @@ public class Enrolled implements Serializable {
      */
     private Boolean isMatriculate;
 
+    /**
+     * Default constructor for creating an Enrolled object.
+     */
     public Enrolled() {
     }
 
+    /**
+     * Parameterized constructor for creating an Enrolled object with specific
+     * attributes.
+     *
+     * @param id The unique identifier for the enrollment.
+     * @param student The student associated with the enrollment.
+     * @param subject The subject associated with the enrollment.
+     * @param isMatriculate A boolean indicating matriculation status.
+     */
     public Enrolled(EnrolledId id, Student student, Subject subject, Boolean isMatriculate) {
         this.id = id;
         this.student = student;
@@ -68,7 +79,6 @@ public class Enrolled implements Serializable {
         this.isMatriculate = isMatriculate;
     }
 
-    
     // Setters and Getters
     /**
      * Gets the composite key for the enrollment.
@@ -156,6 +166,13 @@ public class Enrolled implements Serializable {
         return hash;
     }
 
+    /**
+     * Checks if this Enrolled object is equal to another object. Equality is
+     * based on having the same class and equal 'id' fields.
+     *
+     * @param obj The object to compare with.
+     * @return True if equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

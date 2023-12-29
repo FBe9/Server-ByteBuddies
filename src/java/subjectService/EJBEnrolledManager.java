@@ -102,7 +102,8 @@ public class EJBEnrolledManager implements EnrolledInterface {
     /**
      * Finds an enrollment by its ID.
      *
-     * @param id The ID of the enrollment to find.
+     * @param studentId the id of the student.
+     * @param subjectId the id of the subject.
      * @return The enrolled entity with the specified ID.
      * @throws FindErrorException If an error occurs while attempting to find
      * the enrollment.
