@@ -59,12 +59,26 @@ public class ExamFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+    
+    @PUT
+    @Path("{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void updateNullSubject(@PathParam("id") Integer id){
+        try{
+            LOGGER.log(Level.INFO, "Setting subjeect_id to null");
+            ejb.updateNullSubject(id);
+        }catch(UpdateErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+    }
 
     @DELETE
     @Path("{id}")
     public void deleteExam(@PathParam("id") Integer id) {
         try{
             LOGGER.log(Level.INFO, "Deleting exam {0}", id);
+            updateNullSubject(id);
             ejb.deleteExam(ejb.findExamById(id));
         }catch(FindErrorException | DeleteErrorException ex){
             LOGGER.severe(ex.getMessage());

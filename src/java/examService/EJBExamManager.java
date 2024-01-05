@@ -40,12 +40,26 @@ public class EJBExamManager implements ExamInterface {
             throw new UpdateErrorException(ex.getMessage());
         }
     }
+    
+    @Override
+    public void updateNullSubject(Integer id) throws UpdateErrorException {
+        Exam exam;
+        try{
+            exam = findExamById(id);
+            if(!em.contains(exam)){
+                em.createNamedQuery("setNullSubject").setParameter("examId", "%" + id + "%");
+            }
+            em.flush();
+        } catch(Exception ex){
+            throw new UpdateErrorException(ex.getMessage());
+        }
+    }
 
     @Override
     public void deleteExam(Exam exam) throws DeleteErrorException {
         try {
-            em.remove(em.merge(exam));
-            em.flush();
+            exam = em.merge(exam);
+            em.remove(exam);
         } catch (Exception ex) {
             throw new DeleteErrorException(ex.getMessage());
         }

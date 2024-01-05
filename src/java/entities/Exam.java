@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-import static javax.persistence.CascadeType.ALL;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -46,6 +45,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(
             name = "findBySubject",
             query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")
+    ,
+    @NamedQuery(
+            name = "setNullSubject",
+            query = "UPDATE Exam SET subject.id = null WHERE id = :examId")
 
 })
 
@@ -67,7 +70,10 @@ public class Exam implements Serializable {
      * The description, title or name.
      */
     private String description;
-    
+
+    /**
+     * The enum that marks the call of the exam, First, Second, Third...
+     */
     @Enumerated(EnumType.STRING)
     private CallType callType;
 
@@ -101,7 +107,6 @@ public class Exam implements Serializable {
     @OneToMany(mappedBy = "exam", fetch = EAGER)
     private Set<Mark> marks;
 
-    //Setters and Getters
     /**
      * Gets the exam id.
      *
@@ -201,14 +206,24 @@ public class Exam implements Serializable {
         return subject;
     }
 
+    /**
+     * Gets the call type of the exam.
+     *
+     * @return The string value of the call type.
+     */
     public CallType getCallType() {
         return callType;
     }
 
+    /**
+     * Sets the call type.
+     *
+     * @param callType
+     */
     public void setCallType(CallType callType) {
         this.callType = callType;
     }
-    
+
     /**
      * Sets the subject the exam belongs to.
      *
@@ -237,7 +252,6 @@ public class Exam implements Serializable {
         this.marks = marks;
     }
 
-    //Constructor
     /**
      * Constructor with parameters for the Exam entity.
      *
@@ -305,7 +319,7 @@ public class Exam implements Serializable {
     /**
      * String representation of the exam entity.
      *
-     * @return
+     * @return the string value of the representation of the entity.
      */
     @Override
     public String toString() {

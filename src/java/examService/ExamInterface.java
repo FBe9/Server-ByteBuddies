@@ -19,6 +19,8 @@ public interface ExamInterface {
     
     public void updateExam(Exam exam) throws UpdateErrorException;
     
+    public void updateNullSubject (Integer id) throws UpdateErrorException;
+    
     public void deleteExam(Exam exam) throws DeleteErrorException;
     
     public List<Exam> findAllExams()throws FindErrorException;
