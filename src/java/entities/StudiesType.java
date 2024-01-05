@@ -1,7 +1,7 @@
 package entities;
 
 /**
- *
+ * This is an enumeration of the types of studies.
  * @author Nerea
  */
 public enum StudiesType {

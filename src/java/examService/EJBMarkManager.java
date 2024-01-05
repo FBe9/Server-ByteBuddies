@@ -2,11 +2,13 @@ package examService;
 
 import entities.Exam;
 import entities.Mark;
+import entities.MarkId;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -14,6 +16,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author Alex
  */
+@Stateless
 public class EJBMarkManager implements MarkInterface{
     
     @PersistenceContext(unitName = "WebBiteBuddys")
@@ -48,6 +51,31 @@ public class EJBMarkManager implements MarkInterface{
             throw new DeleteErrorException(ex.getMessage());
         }
     }
+    
+    @Override
+    public List<Mark> findAllMarks() throws FindErrorException {
+        List<Mark> marks;
+        try{
+            marks = em.createNamedQuery("findAllMarks").getResultList();
+            return marks;
+        }catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    public Mark findMarkById(Integer examId, Integer studentId) throws FindErrorException {
+        MarkId markId = new MarkId(examId, studentId);
+        Mark mark = null;
+        try{
+            mark = em.find(Mark.class, markId);
+        } catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+        return mark;
+    }
+    
+    
 
     @Override
     public List<Exam> findExamsByStudent(String userName) throws FindErrorException {
@@ -57,6 +85,18 @@ public class EJBMarkManager implements MarkInterface{
             exams = em.createNamedQuery("findExamsByStudent").setParameter("userName", "%" + userName + "%").getResultList();
             return exams;
         }catch(Exception ex){
+            throw new FindErrorException(ex.getMessage());
+        }
+    }
+    
+    @Override
+    public List<Mark> findMarkByExam(Integer examId) throws FindErrorException {
+        List<Mark> marks;
+        
+        try{
+            marks = em.createNamedQuery("findMarkByExam").setParameter("examid", examId).getResultList();
+            return marks;
+        } catch(Exception ex){
             throw new FindErrorException(ex.getMessage());
         }
     }
