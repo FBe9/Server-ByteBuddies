@@ -9,6 +9,7 @@ import entities.Subject;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
+import exceptions.SubjectNameAlreadyExistsException;
 import exceptions.UpdateErrorException;
 import java.util.Date;
 import java.util.List;
@@ -33,11 +34,13 @@ public class EJBSubjectManager implements SubjectInterface {
      *
      * @param subject the Subject entity object containing new data.
      * @throws CreateErrorException if there is an error during creation.
+     * @throws SubjectNameAlreadyExistsException Subject with the same name already exists
      */
     @Override
-    public void createSubject(Subject subject) throws CreateErrorException {
+    public void createSubject(Subject subject) throws CreateErrorException, SubjectNameAlreadyExistsException{
         try {
             em.createNamedQuery("findByName").setParameter("subjectName", subject.getName()).getSingleResult();
+            throw new SubjectNameAlreadyExistsException("Subject with the same name already exists");
         } catch (NoResultException ex) {
             try {
                 if (!em.contains(subject)) {

@@ -4,6 +4,7 @@ import entities.Subject;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
+import exceptions.SubjectNameAlreadyExistsException;
 import exceptions.UpdateErrorException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +56,7 @@ public class SubjectFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating subject {0}", subject.getId());
             ejb.createSubject(subject);
-        } catch (CreateErrorException ex) {
+        } catch (CreateErrorException | SubjectNameAlreadyExistsException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
@@ -270,7 +271,7 @@ public class SubjectFacadeREST {
     public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects that have " + number +  " of enrolledStudents");
+            LOGGER.log(Level.INFO, "Reading subjects that have " + number + " of enrolledStudents");
             subjects = ejb.findSubjectsWithEnrolledStudentsCount(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -280,8 +281,8 @@ public class SubjectFacadeREST {
     }
 
     /**
-     * GET method that retrieves a list of subjects based on the enrollments of a student
-     * identified by the provided student ID.
+     * GET method that retrieves a list of subjects based on the enrollments of
+     * a student identified by the provided student ID.
      *
      * @param studentId The unique identifier of the student for whom subjects
      * are to be retrieved.
@@ -304,8 +305,8 @@ public class SubjectFacadeREST {
     }
 
     /**
-     * GET method that retrieves a list of subjects taught by a teacher identified by the
-     * provided teacher ID.
+     * GET method that retrieves a list of subjects taught by a teacher
+     * identified by the provided teacher ID.
      *
      * @param teacherId The unique identifier of the teacher for whom subjects
      * are to be retrieved.

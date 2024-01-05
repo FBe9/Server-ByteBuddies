@@ -4,6 +4,7 @@ import entities.Subject;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
+import exceptions.SubjectNameAlreadyExistsException;
 import exceptions.UpdateErrorException;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface SubjectInterface {
      * @param subject the Subject entity object containing new data.
      * @throws CreateErrorException if there is an error during creation.
      */
-    public void createSubject(Subject subject) throws CreateErrorException;
+    public void createSubject(Subject subject) throws CreateErrorException, SubjectNameAlreadyExistsException;
 
     /**
      * Method to update a subject.
