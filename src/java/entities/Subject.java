@@ -125,7 +125,7 @@ public class Subject implements Serializable {
     /**
      * Relational field containing students of the subject.
      */
-    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
     private Set<Enrolled> enrollments;
     /**
      * Relational field containing exams of the subject.

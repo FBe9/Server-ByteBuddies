@@ -1,19 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
+import entities.Exam;
 import entities.Mark;
 import entities.MarkId;
+import examService.MarkInterface;
+import exceptions.CreateErrorException;
+import exceptions.DeleteErrorException;
+import exceptions.FindErrorException;
+import exceptions.UpdateErrorException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -28,10 +31,12 @@ import javax.ws.rs.core.PathSegment;
  */
 @Stateless
 @Path("entities.mark")
-public class MarkFacadeREST extends AbstractFacade<Mark> {
+public class MarkFacadeREST {
 
-    @PersistenceContext(unitName = "WebBiteBuddys")
-    private EntityManager em;
+    @EJB
+    private MarkInterface ejb;
+
+    private Logger LOGGER = Logger.getLogger(ExamFacadeREST.class.getName());
 
     private MarkId getPrimaryKey(PathSegment pathSegment) {
         /*
@@ -54,64 +59,98 @@ public class MarkFacadeREST extends AbstractFacade<Mark> {
         return key;
     }
 
-    public MarkFacadeREST() {
-        super(Mark.class);
-    }
-
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Mark entity) {
-        super.create(entity);
+    public void createMark(Mark mark) {
+        try {
+            LOGGER.log(Level.INFO, "Creating mark {0}", mark.getId());
+            ejb.createMark(mark);
+        } catch (CreateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") PathSegment id, Mark entity) {
-
-        super.edit(entity);
+    public void updateMark(Mark mark) {
+        try {
+            LOGGER.log(Level.INFO, "Updating info in mark {0}", mark.getId());
+            ejb.updateMark(mark);
+        } catch (UpdateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") PathSegment id) {
-        entities.MarkId key = getPrimaryKey(id);
-        super.remove(super.find(key));
+    @Path("{examId}/{studentId}")
+    public void deleteMark(@PathParam("examId") Integer examId, @PathParam("studentId") Integer studentId) {
+        try {
+            LOGGER.log(Level.INFO, "Deleting mark with exam {0} and student {1}", examId + studentId);
+            ejb.deleteMark(ejb.findMarkById(examId, studentId));
+        } catch (FindErrorException | DeleteErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
-    @Path("{id}")
+    @Path("{examId}/{studentId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Mark find(@PathParam("id") PathSegment id) {
-        entities.MarkId key = getPrimaryKey(id);
-        return super.find(key);
+    public Mark find(@PathParam("examId") Integer examId, @PathParam("studentId") Integer studentId) {
+        Mark mark = null;
+        try {
+            LOGGER.log(Level.INFO, "Finding mark with exam {0} and student {1}", examId + studentId);
+            mark = ejb.findMarkById(examId, studentId);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return mark;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mark> findAll() {
-        return super.findAll();
+        List<Mark> marks;
+        try{
+            LOGGER.log(Level.INFO, "Finding all marks");
+            marks = ejb.findAllMarks();
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return marks;
     }
 
     @GET
-    @Path("{from}/{to}")
+    @Path("findExamsByStudent/{userName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Mark> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+    public List<Exam> findExamsByStudent(@PathParam("userName") String userName) {
+        List<Exam> exams;
+        try{
+            LOGGER.log(Level.INFO, "Finding the exams of {0}", userName);
+            exams = ejb.findExamsByStudent(userName);
+        }catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return exams;
     }
     
+    @GET
+    @Path("findMarkByExam/{examId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Mark> findMarkByExam(@PathParam("examId") Integer examId){
+        List<Mark> marks;
+        try{
+            LOGGER.log(Level.INFO, "Finding all marks of exam with id {0}", examId);
+            marks = ejb.findMarkByExam(examId);
+        } catch(FindErrorException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return marks;
+    }
 }
