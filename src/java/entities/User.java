@@ -13,13 +13,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Nerea
+ * @author Irati
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllUsers",
+            query = "Select u From User u")
+    ,
+     @NamedQuery(
+            name = "findStudents",
+            query = "SELECT u FROM User u WHERE TYPE(u) = Student"
+    )
+    ,
+    @NamedQuery(
+            name = "findTeachers",
+            query = "SELECT u FROM User u WHERE TYPE(u) = Teacher")
+    ,
+   @NamedQuery(
+            name = "login",
+            query = "SELECT u FROM User u WHERE u.email = :userEmail AND u.password = :userPassword"
+    )
+    ,
+   @NamedQuery(
+            name = "findByEmail",
+            query = "SELECT u FROM User u WHERE u.email=:userEmail")
+
+})
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type",
@@ -49,7 +76,6 @@ public class User implements Serializable {
         this.id = id;
     }
 
-   
     public String getEmail() {
         return email;
     }
@@ -90,10 +116,9 @@ public class User implements Serializable {
         this.dateInit = dateInit;
     }
 
-
     //Constructors
     public User(Integer id, String email, String name, String surname, String password, Date dateInit) {
-        this.id= id;
+        this.id = id;
         this.email = email;
         this.name = name;
         this.surname = surname;
