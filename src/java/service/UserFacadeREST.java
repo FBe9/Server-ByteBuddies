@@ -4,6 +4,7 @@ package service;
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
+import exceptions.EmailAlreadyExistsException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
@@ -54,7 +55,7 @@ public class UserFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating user {0}", user.getId());
             ejb.createUser(user);
-        } catch (CreateErrorException ex) {
+        } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
