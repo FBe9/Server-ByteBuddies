@@ -4,6 +4,7 @@ import entities.Subject;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
+import exceptions.SubjectNameAlreadyExistsException;
 import exceptions.UpdateErrorException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -55,7 +56,7 @@ public class SubjectFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating subject {0}", subject.getId());
             ejb.createSubject(subject);
-        } catch (CreateErrorException ex) {
+        } catch (CreateErrorException | SubjectNameAlreadyExistsException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
@@ -69,7 +70,7 @@ public class SubjectFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateSubject(Subject subject) {
-        LOGGER.log(Level.INFO, "Updating account {0}", subject.getId());
+        LOGGER.log(Level.INFO, "Updating subject {0}", subject.getId());
         try {
             ejb.updateSubject(subject);
         } catch (UpdateErrorException ex) {
@@ -89,7 +90,7 @@ public class SubjectFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeSubject(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting account {0}", id);
+        LOGGER.log(Level.INFO, "Deleting subject {0}", id);
         try {
             ejb.deleteSubject(ejb.findSubjectById(id));
         } catch (FindErrorException | DeleteErrorException ex) {
@@ -112,7 +113,7 @@ public class SubjectFacadeREST {
     public Subject find(@PathParam("id") Integer id) {
         Subject subject;
         try {
-            LOGGER.log(Level.INFO, "Reading data for account {0}", id);
+            LOGGER.log(Level.INFO, "Reading data for subject {0}", id);
             subject = ejb.findSubjectById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -132,7 +133,7 @@ public class SubjectFacadeREST {
     public List<Subject> findAll() {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all accounts");
+            LOGGER.log(Level.INFO, "Reading data for all subjects");
             subjects = ejb.findAllSubjects();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -178,28 +179,6 @@ public class SubjectFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Reading subjects by teacher's name");
             subjects = ejb.findSubjectsByTeacher(name);
-        } catch (FindErrorException ex) {
-            LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
-        }
-        return subjects;
-    }
-
-    /**
-     * GET method to find subject by language: uses findSubjectsByLanguage
-     * business logic method.
-     *
-     * @param language the language of the subject.
-     * @return the subjects.
-     */
-    @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findSubjectsByLanguage/{language}")
-    public List<Subject> findSubjectsByLanguage(@PathParam("language") String language) {
-        List<Subject> subjects;
-        try {
-            LOGGER.log(Level.INFO, "Reading subjects by language");
-            subjects = ejb.findSubjectsByLanguage(language);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -265,10 +244,10 @@ public class SubjectFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithXUnits/{number}")
-    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Integer number) {
+    public List<Subject> findSubjectsWithXUnits(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects by X number of units");
+            LOGGER.log(Level.INFO, "Reading subjects that have " + number + " number of units");
             subjects = ejb.findSubjectsWithXUnits(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -289,10 +268,10 @@ public class SubjectFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findSubjectsWithEnrolledStudentsCount/{number}")
-    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Integer number) {
+    public List<Subject> findSubjectsWithEnrolledStudentsCount(@PathParam("number") Long number) {
         List<Subject> subjects;
         try {
-            LOGGER.log(Level.INFO, "Reading subjects by the amount of enrolledStudents");
+            LOGGER.log(Level.INFO, "Reading subjects that have " + number + " of enrolledStudents");
             subjects = ejb.findSubjectsWithEnrolledStudentsCount(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -301,14 +280,47 @@ public class SubjectFacadeREST {
         return subjects;
     }
 
+    /**
+     * GET method that retrieves a list of subjects based on the enrollments of
+     * a student identified by the provided student ID.
+     *
+     * @param studentId The unique identifier of the student for whom subjects
+     * are to be retrieved.
+     * @return A List of Subject objects representing the subjects associated
+     * with the specified student.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findByEnrollments/{studentId}")
-    public List<Subject> findByEnrollments(@PathParam("studentName") Integer studentId) {
+    public List<Subject> findByEnrollments(@PathParam("studentId") Integer studentId) {
         List<Subject> subjects;
         try {
             LOGGER.log(Level.INFO, "Reading subjects in which a student is enrolled");
             subjects = ejb.findByEnrollments(studentId);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
+        return subjects;
+    }
+
+    /**
+     * GET method that retrieves a list of subjects taught by a teacher
+     * identified by the provided teacher ID.
+     *
+     * @param teacherId The unique identifier of the teacher for whom subjects
+     * are to be retrieved.
+     * @return A List of Subject objects representing the subjects taught by the
+     * specified teacher.
+     */
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findSubjectsByTeacherId/{teacherId}")
+    public List<Subject> findSubjectsByTeacherId(@PathParam("teacherId") Integer teacherId) {
+        List<Subject> subjects;
+        try {
+            LOGGER.log(Level.INFO, "Reading subjects for a teacher by id ", teacherId);
+            subjects = ejb.findSubjectsByTeacherId(teacherId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

@@ -7,6 +7,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -38,7 +40,7 @@ public class Teacher extends User {
      * Set of subjects associated with the teacher. Mapped by the "teacher"
      * field in the Subject entity.
      */
-    @OneToMany(mappedBy = "teacher")
+    @ManyToMany(mappedBy = "teachers", fetch = FetchType.EAGER)
     private Set<Subject> subjects;
 
     /**

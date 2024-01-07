@@ -35,14 +35,14 @@ public class Student extends User {
      * Set of marks associated with the student. Mapped by the "student" field
      * in the Mark entity.
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
     private Set<Mark> marks;
-
     /**
      * Set of enrollments associated with the student. Mapped by the "student"
      * field in the Enrolled entity.
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", fetch = FetchType.EAGER)
+     @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
+
     private Set<Enrolled> enrollments;
 
     /**

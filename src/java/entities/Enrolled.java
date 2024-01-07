@@ -2,15 +2,16 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing the enrollment of a student in a subject.
@@ -18,10 +19,6 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Irati.
  */
 @NamedQueries({
-    @NamedQuery(
-            name = "findMatriculated", 
-            query = "SELECT e.subject FROM Enrolled e WHERE e.student.id = :studentId AND e.isMatriculate = true")
-    ,
     @NamedQuery(
             name = "findAllEnrollments",
             query = "Select e From Enrolled e")
@@ -42,23 +39,45 @@ public class Enrolled implements Serializable {
     private EnrolledId id;
 
     /**
-     * Reference to the associated subject.
-     */
-    @ManyToOne(targetEntity=Subject.class)
-    @MapsId("subjectId")
-    private Subject subject;
-
-    /**
      * Reference to the associated student.
      */
-    @ManyToOne(targetEntity=Student.class)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @MapsId("studentId")
     private Student student;
+
+    /**
+     * Reference to the associated subject.
+     */
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @MapsId("subjectId")
+    private Subject subject;
 
     /**
      * Flag indicating whether the student is matriculated in the subject.
      */
     private Boolean isMatriculate;
+
+    /**
+     * Default constructor for creating an Enrolled object.
+     */
+    public Enrolled() {
+    }
+
+    /**
+     * Parameterized constructor for creating an Enrolled object with specific
+     * attributes.
+     *
+     * @param id The unique identifier for the enrollment.
+     * @param student The student associated with the enrollment.
+     * @param subject The subject associated with the enrollment.
+     * @param isMatriculate A boolean indicating matriculation status.
+     */
+    public Enrolled(EnrolledId id, Student student, Subject subject, Boolean isMatriculate) {
+        this.id = id;
+        this.student = student;
+        this.subject = subject;
+        this.isMatriculate = isMatriculate;
+    }
 
     // Setters and Getters
     /**
@@ -84,7 +103,6 @@ public class Enrolled implements Serializable {
      *
      * @return the subject
      */
-    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
@@ -148,6 +166,13 @@ public class Enrolled implements Serializable {
         return hash;
     }
 
+    /**
+     * Checks if this Enrolled object is equal to another object. Equality is
+     * based on having the same class and equal 'id' fields.
+     *
+     * @param obj The object to compare with.
+     * @return True if equal, false otherwise.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -165,6 +190,7 @@ public class Enrolled implements Serializable {
         }
         return true;
     }
+
     /**
      * Converts this object to a string representation.
      *

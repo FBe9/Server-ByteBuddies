@@ -1,6 +1,8 @@
 package subjectService;
 
 import entities.Enrolled;
+import entities.EnrolledId;
+import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
@@ -12,6 +14,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * This is the stateless EJB that implements the EnrolledInterface.
+ *
  * @author Irati
  */
 @Stateless
@@ -30,6 +33,9 @@ public class EJBEnrolledManager implements EnrolledInterface {
     @Override
     public void createEnrolled(Enrolled enrolled) throws CreateErrorException {
         try {
+            if (!em.contains(enrolled)) {
+                enrolled = em.merge(enrolled);
+            }
             em.persist(enrolled);
         } catch (Exception ex) {
             throw new CreateErrorException(ex.getMessage());
@@ -86,51 +92,32 @@ public class EJBEnrolledManager implements EnrolledInterface {
         List<Enrolled> enrollments;
         try {
             enrollments = em.createNamedQuery("findAllEnrollments").getResultList();
-           
+
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
         return enrollments;
     }
+
     /**
      * Finds an enrollment by its ID.
      *
-     * @param id The ID of the enrollment to find.
+     * @param studentId the id of the student.
+     * @param subjectId the id of the subject.
      * @return The enrolled entity with the specified ID.
      * @throws FindErrorException If an error occurs while attempting to find
      * the enrollment.
      */
     @Override
-    public Enrolled findEnrolledById(Integer id) throws FindErrorException {
-       Enrolled enrolled = null;
-       try{
-           enrolled = em.find(Enrolled.class, id);
-       }catch(Exception ex){
-           throw new FindErrorException(ex.getMessage());
-       }
-       return enrolled;
-    }
-    /**
-     * Finds all matriculated enrollments for a given student.
-     *
-     * @param studentId The ID of the student for whom to find matriculated
-     * enrollments.
-     * @return A list of matriculated enrollments for the specified student.
-     * @throws FindErrorException If an error occurs while attempting to find
-     * matriculated enrollments.
-     */
-    @Override
-    public List<Enrolled> findMatriculated(Integer studentId) throws FindErrorException {
-        List<Enrolled> enrollments;
+    public Enrolled findEnrolledById(Integer studentId, Integer subjectId) throws FindErrorException {
+        Enrolled enrolled = null;
+        EnrolledId id = new EnrolledId(studentId, subjectId);
         try {
-            enrollments = em.createNamedQuery("findMatriculated").setParameter("studentId", studentId).getResultList();
-           
+            enrolled = em.find(Enrolled.class, id);
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
         }
-        return enrollments;
+        return enrolled;
     }
-
-
 
 }
