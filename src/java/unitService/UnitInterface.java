@@ -4,11 +4,13 @@ import entities.Unit;
 import exceptions.*;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  *
  * @author Nerea
  */
+@Local
 public interface UnitInterface {
 
     /**

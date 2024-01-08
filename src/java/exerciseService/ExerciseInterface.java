@@ -8,12 +8,14 @@ import exceptions.ExerciseErrorException;
 import exceptions.UpdateErrorException;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * Local interface for Exercise EJB.
  *
  * @author Leire
  */
+@Local
 public interface ExerciseInterface {
 
     /**

@@ -291,9 +291,8 @@ public class EJBUnitManager implements UnitInterface {
         List<Subject> subjects;
         List<Unit> AllUnits = new ArrayList<>();
         try {
-            User user = em.find(User.class, userId);
 
-            subjects = (ArrayList<Subject>) ejbS.findSubjectsByTeacher(user.getName());
+            subjects = (ArrayList<Subject>) ejbS.findSubjectsByTeacherId(userId);
 
             for (int i = 0; i < subjects.size(); i++) {
                 String subjectName = subjects.get(i).getName();
