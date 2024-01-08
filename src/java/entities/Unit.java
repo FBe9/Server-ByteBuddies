@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -108,7 +109,7 @@ public class Unit implements Serializable {
     /**
      * Relational field containing exercises of the unit.
      */
-    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "unit", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Exercise> exercises;
     /**
      * Relational field containing subject of a unit.

@@ -130,7 +130,7 @@ public class Subject implements Serializable {
     /**
      * Relational field containing units of the subject.
      */
-    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Unit> units;
     /**
      * Relational field containing students of the subject.
@@ -140,7 +140,7 @@ public class Subject implements Serializable {
     /**
      * Relational field containing exams of the subject.
      */
-    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Exam> exams;
     
     //Setters and Getters
