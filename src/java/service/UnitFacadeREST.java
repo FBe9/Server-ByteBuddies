@@ -84,7 +84,6 @@ public class UnitFacadeREST {
     public void removeUnit(@PathParam("id") Integer id) {
         Unit unit;
         try {
-
             LOGGER.log(Level.INFO, "Deleting the unit  id= {0}", id);
             unit = ejbU.findUnitByID(id);
             ejbU.removeUnit(unit);
