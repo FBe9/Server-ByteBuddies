@@ -141,15 +141,15 @@ public class Exercise implements Serializable {
     /**
      * Constructor with parameters
      *
-     * @param id
-     * @param unit
-     * @param number
-     * @param description
-     * @param levelType
-     * @param file
-     * @param fileSolution
-     * @param deadline
-     * @param hours
+     * @param id ID of the exercise.
+     * @param unit Unit of the exercise.
+     * @param number Number of the exercise.
+     * @param description Description of the exercise.
+     * @param levelType Level type of the exercise.
+     * @param file File with the exercise.
+     * @param fileSolution File with the exercise solution.
+     * @param deadline Deadline of the exercise.
+     * @param hours Hours  of the exercise.
      */
     public Exercise(Integer id, Unit unit, Integer number, String description, LevelType levelType, String file, String fileSolution, Date deadline, Integer hours) {
         this.id = id;
@@ -167,7 +167,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the id
      *
-     * @return
+     * @return The ID of the exercise.
      */
     public Integer getId() {
         return id;
@@ -176,7 +176,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the id
      *
-     * @param id
+     * @param id The ID to be set.
      */
     public void setId(Integer id) {
         this.id = id;
@@ -185,7 +185,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the unit
      *
-     * @return
+     * @return The unit of the exercise.
      */
     public Unit getUnit() {
         return unit;
@@ -194,7 +194,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the unit
      *
-     * @param unit
+     * @param unit The unit to be set.
      */
     public void setUnit(Unit unit) {
         this.unit = unit;
@@ -203,7 +203,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the number
      *
-     * @return
+     * @return The number of the exercise.
      */
     public Integer getNumber() {
         return number;
@@ -212,7 +212,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the number
      *
-     * @param number
+     * @param number The number to be set.
      */
     public void setNumber(Integer number) {
         this.number = number;
@@ -221,7 +221,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the description
      *
-     * @return
+     * @return The description of the exercise.
      */
     public String getDescription() {
         return description;
@@ -230,7 +230,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the description
      *
-     * @param description
+     * @param description The description to be set.
      */
     public void setDescription(String description) {
         this.description = description;
@@ -239,7 +239,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the level type
      *
-     * @return
+     * @return The level type of the exercise.
      */
     public LevelType getLevelType() {
         return levelType;
@@ -248,7 +248,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the level type
      *
-     * @param levelType
+     * @param levelType The level type to be set.
      */
     public void setLevelType(LevelType levelType) {
         this.levelType = levelType;
@@ -257,7 +257,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the file
      *
-     * @return
+     * @return The file with the exercise.
      */
     public String getFile() {
         return file;
@@ -266,7 +266,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the file
      *
-     * @param file
+     * @param file The file to be set.
      */
     public void setFile(String file) {
         this.file = file;
@@ -275,7 +275,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the file solution
      *
-     * @return
+     * @return The file with the exercise solution.
      */
     public String getFileSolution() {
         return fileSolution;
@@ -284,7 +284,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the file solution
      *
-     * @param fileSolution
+     * @param fileSolution The file with the solution to be set.
      */
     public void setFileSolution(String fileSolution) {
         this.fileSolution = fileSolution;
@@ -293,7 +293,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the deadline
      *
-     * @return
+     * @return The deadline of the exercise.
      */
     public Date getDeadline() {
         return deadline;
@@ -302,7 +302,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the deadline
      *
-     * @param deadline
+     * @param deadline The deadline to be set.
      */
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
@@ -311,7 +311,7 @@ public class Exercise implements Serializable {
     /**
      * Gets the hours
      *
-     * @return
+     * @return The hours of the exercise.
      */
     public Integer getHours() {
         return hours;
@@ -320,7 +320,7 @@ public class Exercise implements Serializable {
     /**
      * Sets the hours
      *
-     * @param hours
+     * @param hours The hours to be set.
      */
     public void setHours(Integer hours) {
         this.hours = hours;
