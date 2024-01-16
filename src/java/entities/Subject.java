@@ -21,6 +21,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -142,7 +144,7 @@ public class Subject implements Serializable {
      */
     @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Exam> exams;
-    
+
     //Setters and Getters
     /**
      * Gets the subject ID.
@@ -275,6 +277,8 @@ public class Subject implements Serializable {
      *
      * @return The set of teachers.
      */
+    @XmlElementWrapper(name = "teachers")
+    @XmlElement(name = "teacher")
     public Set<Teacher> getTeachers() {
         return teachers;
     }

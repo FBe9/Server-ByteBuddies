@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -44,7 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
    
     @NamedQuery(
             name = "findBySubject",
-            query = "SELECT e FROM Exam e WHERE e.subject.name LIKE :subjectName")
+            query = "SELECT e FROM Exam e WHERE e.subject.id = :subjectId")
     ,
     @NamedQuery(
             name = "setNullSubject",
@@ -202,6 +203,8 @@ public class Exam implements Serializable {
      *
      * @return Subject object of the subject field.
      */
+    @XmlElement(name = "subject")
+    //@XmlTransient
     public Subject getSubject() {
         return subject;
     }

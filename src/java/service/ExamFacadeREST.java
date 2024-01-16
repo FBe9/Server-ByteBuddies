@@ -148,11 +148,11 @@ public class ExamFacadeREST {
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findBySubject/{subject}")
-    public List<Exam> findBySubject(@PathParam("subject") String subject) {
+    public List<Exam> findBySubject(@PathParam("subject") Integer subjectId) {
         List<Exam> exams;
         try{
-            LOGGER.log(Level.INFO, "Searching for exam with desc {0}", subject);
-            exams = ejb.findBySubject(subject);
+            LOGGER.log(Level.INFO, "Searching for exam with desc {0}", subjectId);
+            exams = ejb.findBySubject(subjectId);
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

@@ -31,5 +31,5 @@ public interface ExamInterface {
     
     public List<Exam> findBySolution(String solutionFilePath) throws FindErrorException;
     
-    public List<Exam> findBySubject(String subject) throws FindErrorException;
+    public List<Exam> findBySubject(Integer subjectId) throws FindErrorException;
 }
