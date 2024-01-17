@@ -112,11 +112,11 @@ public class EJBExamManager implements ExamInterface {
     }
 
     @Override
-    public List<Exam> findBySubject(String subject) throws FindErrorException {
+    public List<Exam> findBySubject(Integer subjectId) throws FindErrorException {
         List<Exam> exams;
 
         try {
-            exams = em.createNamedQuery("findBySubject").setParameter("subjectName", "%" + subject + "%").getResultList();
+            exams = em.createNamedQuery("findBySubject").setParameter("subjectId", subjectId).getResultList();
             return exams;
         } catch (Exception ex) {
             throw new FindErrorException(ex.getMessage());
