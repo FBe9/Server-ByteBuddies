@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
-import entities.Student;
+import entities.Teacher;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
@@ -16,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -29,25 +23,28 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import studentService.StudentInterface;
+import teacherService.TeacherInterface;
+
 
 /**
  *
  * @author irati
  */
-@Path("entities.student")
-public class StudentFacadeREST {
+@Stateless
+@Path("entities.teacher")
+public class TeacherFacadeREST{
 
+    
     @EJB
-    private StudentInterface ejb;
-    private Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.getName());
+    private TeacherInterface ejb;
+    private Logger LOGGER = Logger.getLogger(TeacherFacadeREST.class.getName());
 
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void createStudent(Student student) {
+    public void createTeacher(Teacher teacher) {
         try {
-            LOGGER.log(Level.INFO, "Creating user {0}", student.getId());
-            ejb.createStudent(student);
+            LOGGER.log(Level.INFO, "Creating user {0}", teacher.getId());
+            ejb.createTeacher(teacher);
         } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -56,10 +53,10 @@ public class StudentFacadeREST {
 
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateStudent(Student student) {
-        LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
+    public void updateTeacher(Teacher teacher) {
+        LOGGER.log(Level.INFO, "Updating teacher {0}", teacher.getId());
         try {
-            ejb.updateStudent(student);
+            ejb.updateTeacher(teacher);
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -70,9 +67,9 @@ public class StudentFacadeREST {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting student {0}", id);
+        LOGGER.log(Level.INFO, "Deleting teacher {0}", id);
         try {
-            ejb.deleteStudent(ejb.findStudentById(id));
+            ejb.deleteTeacher(ejb.findTeacherById(id));
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -82,30 +79,31 @@ public class StudentFacadeREST {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Student find(@PathParam("id") Integer id) {
-        Student student;
+    public Teacher find(@PathParam("id") Integer id) {
+        Teacher teacher;
         try {
-            LOGGER.log(Level.INFO, "Reading data of student {0}", id);
-            student = ejb.findStudentById(id);
+            LOGGER.log(Level.INFO, "Reading data of teacher {0}", id);
+            teacher = ejb.findTeacherById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NotFoundException(ex.getMessage());
         }
-        return student;
+        return teacher;
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Student> findAll() {
-        List<Student> students;
+    public List<Teacher> findAll() {
+        List<Teacher> teachers;
         try {
             LOGGER.log(Level.INFO, "Reading data for all users");
-            students = ejb.findAllStudents();
+            teachers = ejb.findAllTeachers();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NotFoundException(ex.getMessage());
         }
-        return students;
+        return teachers;
     }
 
+    
 }

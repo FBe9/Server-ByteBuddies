@@ -19,6 +19,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -70,7 +71,7 @@ public class UserFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateUser(User user) {
-        LOGGER.log(Level.INFO, "Updating user {0}", user.getId());
+        LOGGER.log(Level.INFO, "Updating user", user.getId());
         try {
             ejb.updateUser(user);
         } catch (UpdateErrorException ex) {
@@ -78,6 +79,7 @@ public class UserFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
 
         }
+        LOGGER.log(Level.INFO, "User updated");
 
     }
 
@@ -89,7 +91,7 @@ public class UserFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeUser(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting user {0}", id);
+        LOGGER.log(Level.INFO, "Deleting user", id);
         try {
             ejb.deleteUser(ejb.findUserById(id));
         } catch (FindErrorException | DeleteErrorException ex) {
@@ -111,11 +113,11 @@ public class UserFacadeREST {
     public User find(@PathParam("id") Integer id) {
         User user;
         try {
-            LOGGER.log(Level.INFO, "Reading data for users {0}", id);
+            LOGGER.log(Level.INFO, "Reading data for user", id);
             user = ejb.findUserById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return user;
     }
@@ -134,7 +136,7 @@ public class UserFacadeREST {
             users = ejb.findAllUsers();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return users;
     }
@@ -155,7 +157,7 @@ public class UserFacadeREST {
             users = ejb.findAllTeachers();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return users;
     }
@@ -176,7 +178,7 @@ public class UserFacadeREST {
             users = ejb.findAllStudents();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return users;
     }
@@ -197,7 +199,7 @@ public class UserFacadeREST {
             userNew.setSurname(user.getSurname());
             userNew.setDateInit(user.getDateInit());
             userNew.setUser_type(user.getUser_type());
-            LOGGER.log(Level.INFO, "Type of user: " + user.getClass().getTypeName());
+            
         } catch (UserNotFoundException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NotAuthorizedException(ex.getMessage());
@@ -208,6 +210,7 @@ public class UserFacadeREST {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
+        LOGGER.log(Level.INFO, "Login correct for user" + user.getEmail());
         return userNew;
     }
 }
