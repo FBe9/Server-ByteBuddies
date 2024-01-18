@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
@@ -59,6 +60,8 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(insertable = false , updatable  = false)
+    private String user_type;
     private String email;
     private String name;
     private String surname;
@@ -67,6 +70,14 @@ public class User implements Serializable {
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
+
+    public String getUser_type() {
+        return user_type;
+    }
+
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
+    }
 
     public Integer getId() {
         return id;

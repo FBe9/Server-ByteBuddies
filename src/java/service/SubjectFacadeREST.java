@@ -31,7 +31,6 @@ import subjectService.SubjectInterface;
  *
  * @author irati
  */
-@Stateless
 @Path("entities.subject")
 public class SubjectFacadeREST {
 

@@ -1,6 +1,5 @@
 package service;
 
-
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
@@ -13,11 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -30,21 +31,21 @@ import userService.UserInterface;
  *
  * @author Irati
  */
-@Stateless
 @Path("entities.user")
 public class UserFacadeREST {
+
     /**
      * EJB object implementing business logic.
      */
     @EJB
     private UserInterface ejb;
-    
+
     /**
      * Logger for this class.
      */
     private Logger LOGGER = Logger.getLogger(UserFacadeREST.class.getName());
 
-   /**
+    /**
      * POST method to create users: uses createUser business logic method.
      *
      * @param user The user object containing data.
@@ -60,6 +61,7 @@ public class UserFacadeREST {
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
+
     /**
      * PUT method to update user: uses updateUser business logic method.
      *
@@ -80,8 +82,7 @@ public class UserFacadeREST {
     }
 
     /**
-     * DELETE method to delete users: uses deleteUser business logic
-     * method.
+     * DELETE method to delete users: uses deleteUser business logic method.
      *
      * @param id the id of the user.
      */
@@ -97,9 +98,9 @@ public class UserFacadeREST {
         }
 
     }
-     /**
-     * GET method to find a user by id: uses findUserById business logic
-     * method.
+
+    /**
+     * GET method to find a user by id: uses findUserById business logic method.
      *
      * @param id the id of the user.
      * @return the user containing data.
@@ -118,9 +119,9 @@ public class UserFacadeREST {
         }
         return user;
     }
+
     /**
-     * GET method to find all users: uses findAllUsers business logic
-     * method.
+     * GET method to find all users: uses findAllUsers business logic method.
      *
      * @return the users.
      */
@@ -137,6 +138,7 @@ public class UserFacadeREST {
         }
         return users;
     }
+
     /**
      * GET method to find all teachers: uses findAllTeachers business logic
      * method.
@@ -157,6 +159,7 @@ public class UserFacadeREST {
         }
         return users;
     }
+
     /**
      * GET method to find all students: uses findAllTeachers business logic
      * method.
@@ -177,20 +180,34 @@ public class UserFacadeREST {
         }
         return users;
     }
+
     @POST
     @Path("login")
-    @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML})
     public User login(User user) {
-        User loginUser;
+        User userNew = null;
         try {
             LOGGER.log(Level.INFO, "login of an user");
-            loginUser = ejb.logInUser(user.getEmail(), user.getPassword());
-          
+
+            user = ejb.logInUser(user.getEmail(), user.getPassword());
+            userNew = new User();
+            userNew.setId(user.getId());
+            userNew.setName(user.getName());
+            userNew.setSurname(user.getSurname());
+            userNew.setDateInit(user.getDateInit());
+            userNew.setUser_type(user.getUser_type());
+            LOGGER.log(Level.INFO, "Type of user: " + user.getClass().getTypeName());
         } catch (UserNotFoundException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotAuthorizedException(ex.getMessage());
+        } catch (BadRequestException e) {
+            LOGGER.severe(e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
         }
-        return loginUser;
+        return userNew;
     }
 }

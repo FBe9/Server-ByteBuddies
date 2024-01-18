@@ -27,7 +27,6 @@ import unitService.UnitInterface;
  *
  * @author Nerea
  */
-@Stateless
 @Path("entities.unit")
 public class UnitFacadeREST {
 

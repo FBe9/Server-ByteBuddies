@@ -1,5 +1,6 @@
 package userService;
 
+import encrypt.AsimetricaServer;
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
@@ -29,7 +30,8 @@ public class EJBUserManager implements UserInterface {
      *
      * @param user The User entity object containing new data.
      * @throws CreateErrorException If there is an error during creation.
-     * @throws EmailAlreadyExistsException if an user with that email already exits
+     * @throws EmailAlreadyExistsException if an user with that email already
+     * exits
      */
     @Override
     public void createUser(User user) throws CreateErrorException, EmailAlreadyExistsException {
@@ -157,16 +159,21 @@ public class EJBUserManager implements UserInterface {
      * @param email The email of the user.
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
+     * @throws exceptions.UserNotFoundException
      * @throws FindErrorException If there is an error during login.
      */
     @Override
     public User logInUser(String email, String passwordUser) throws UserNotFoundException {
         User user;
+        String passwordClient = AsimetricaServer.decryptData(passwordUser);
+        String hash = AsimetricaServer.hashText(passwordClient);
+
         try {
-            user = (User) em.createNamedQuery("login").setParameter("userEmail", email).setParameter("userPassword", passwordUser).getSingleResult();
+            user = (User) em.createNamedQuery("login").setParameter("userEmail", email).setParameter("userPassword", hash).getSingleResult();
         } catch (Exception ex) {
             throw new UserNotFoundException(ex.getMessage());
         }
+
         return user;
     }
 }
