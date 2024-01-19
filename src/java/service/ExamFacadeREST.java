@@ -26,7 +26,6 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Alex
  */
-@Stateless
 @Path("entities.exam")
 public class ExamFacadeREST {
 

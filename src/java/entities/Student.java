@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -18,6 +20,16 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Olivia
  * @author Irati
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllStudents",
+            query = "Select s From Student s")
+    ,
+   @NamedQuery(
+            name = "findByEmailStudent",
+            query = "SELECT s FROM Student s WHERE s.email=:userEmail")
+
+})
 @Entity
 @DiscriminatorValue("Student")
 @XmlRootElement
@@ -41,7 +53,7 @@ public class Student extends User {
      * Set of enrollments associated with the student. Mapped by the "student"
      * field in the Enrolled entity.
      */
-     @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "student", fetch = FetchType.EAGER)
 
     private Set<Enrolled> enrollments;
 

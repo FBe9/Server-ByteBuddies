@@ -29,7 +29,6 @@ import javax.ws.rs.core.PathSegment;
  *
  * @author Alex
  */
-@Stateless
 @Path("entities.mark")
 public class MarkFacadeREST {
 

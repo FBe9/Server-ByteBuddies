@@ -29,7 +29,6 @@ import subjectService.EnrolledInterface;
  *
  * @author irati
  */
-@Stateless
 @Path("entities.enrolled")
 public class EnrolledFacadeREST {
 

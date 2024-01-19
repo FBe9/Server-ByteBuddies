@@ -18,6 +18,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -31,7 +32,6 @@ import subjectService.SubjectInterface;
  *
  * @author irati
  */
-@Stateless
 @Path("entities.subject")
 public class SubjectFacadeREST {
 
@@ -117,7 +117,7 @@ public class SubjectFacadeREST {
             subject = ejb.findSubjectById(id);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subject;
     }
@@ -137,7 +137,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findAllSubjects();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -159,7 +159,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsByName(name);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -181,7 +181,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsByTeacher(name);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -205,7 +205,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsByInitDate(date);
         } catch (FindErrorException | ParseException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -229,7 +229,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsByEndDate(date);
         } catch (FindErrorException | ParseException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -251,7 +251,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsWithXUnits(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -275,7 +275,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsWithEnrolledStudentsCount(number);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -299,7 +299,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findByEnrollments(studentId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }
@@ -323,7 +323,7 @@ public class SubjectFacadeREST {
             subjects = ejb.findSubjectsByTeacherId(teacherId);
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return subjects;
     }

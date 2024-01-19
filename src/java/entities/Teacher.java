@@ -9,6 +9,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -17,13 +19,23 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  * @author Irati
  */
+@NamedQueries({
+    @NamedQuery(
+            name = "findAllTeachers",
+            query = "Select t From Teacher t")
+    ,
+   @NamedQuery(
+            name = "findByEmailTeacher",
+            query = "SELECT t FROM Teacher t WHERE t.email=:userEmail")
+
+})
 @Entity
 @DiscriminatorValue("Teacher")
 @XmlRootElement
 public class Teacher extends User {
 
     private static final long serialVersionUID = 1L;
-
+    
     /**
      * The type of studies the teacher is qualified in (e.g., Bachelor's,
      * Master's).
@@ -54,8 +66,8 @@ public class Teacher extends User {
      * @param password The password for the teacher's account.
      * @param dateInit The date of initiation for the teacher's account.
      */
-    public Teacher(Integer dni, String email, String name, String surname, String password, Date dateInit) {
-        super(dni, email, name, surname, password, dateInit);
+    public Teacher(Integer id, String email, String name, String surname, String password, Date dateInit) {
+        super(id, email, name, surname, password, dateInit);
     }
 
     /**

@@ -6,86 +6,106 @@
 package service;
 
 import entities.Student;
+import exceptions.CreateErrorException;
+import exceptions.DeleteErrorException;
+import exceptions.EmailAlreadyExistsException;
+import exceptions.FindErrorException;
+import exceptions.UpdateErrorException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import studentService.StudentInterface;
 
 /**
  *
  * @author irati
  */
-@Stateless
 @Path("entities.student")
-public class StudentFacadeREST extends AbstractFacade<Student> {
+public class StudentFacadeREST {
 
-    @PersistenceContext(unitName = "WebBiteBuddys")
-    private EntityManager em;
-
-    public StudentFacadeREST() {
-        super(Student.class);
-    }
+    @EJB
+    private StudentInterface ejb;
+    private Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.getName());
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Student entity) {
-        super.create(entity);
+    public void createStudent(Student student) {
+        try {
+            LOGGER.log(Level.INFO, "Creating user {0}", student.getId());
+            ejb.createStudent(student);
+        } catch (EmailAlreadyExistsException | CreateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @PUT
-    @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, Student entity) {
-        super.edit(entity);
+    public void updateStudent(Student student) {
+        LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
+        try {
+            ejb.updateStudent(student);
+        } catch (UpdateErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+
+        }
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        LOGGER.log(Level.INFO, "Deleting student {0}", id);
+        try {
+            ejb.deleteStudent(ejb.findStudentById(id));
+        } catch (FindErrorException | DeleteErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
+        }
     }
 
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Student find(@PathParam("id") Integer id) {
-        return super.find(id);
+        Student student;
+        try {
+            LOGGER.log(Level.INFO, "Reading data of student {0}", id);
+            student = ejb.findStudentById(id);
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
+        }
+        return student;
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Student> findAll() {
-        return super.findAll();
+        List<Student> students;
+        try {
+            LOGGER.log(Level.INFO, "Reading data for all users");
+            students = ejb.findAllStudents();
+        } catch (FindErrorException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
+        }
+        return students;
     }
 
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Student> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }
