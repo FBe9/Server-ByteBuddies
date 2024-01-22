@@ -15,14 +15,21 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
+ * Local interface for student EJB.
  * @author irati
  */
 @Local
 public interface StudentInterface {
-    
+
+    /* Method to create a Student.
+     *
+     * @param student the Student entity object containing new data.
+     * @throws CreateErrorException if there is an error duting create.
+     * @throws EmailAlreadyExistsException if there email already exists.
+     */
     public void createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException;
-     /**
+
+    /**
      * Method to update a student.
      *
      * @param student the Student entity object containing new data.

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Student;
@@ -32,6 +27,8 @@ import javax.ws.rs.core.MediaType;
 import studentService.StudentInterface;
 
 /**
+ * RESTful web service for managing student entities.
+ *
  *
  * @author irati
  */
@@ -42,11 +39,17 @@ public class StudentFacadeREST {
     private StudentInterface ejb;
     private Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.getName());
 
+    /**
+     * Creates a new student entity.
+     *
+     * @param student The student entity to be created.
+     * @throws InternalServerErrorException If an error occurs during creation.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createStudent(Student student) {
         try {
-            LOGGER.log(Level.INFO, "Creating user {0}", student.getId());
+            LOGGER.log(Level.INFO, "Creating student {0}", student.getId());
             ejb.createStudent(student);
         } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -54,6 +57,12 @@ public class StudentFacadeREST {
         }
     }
 
+    /**
+     * Updates an existing student entity.
+     *
+     * @param student The updated student entity.
+     * @throws InternalServerErrorException If an error occurs during update.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateStudent(Student student) {
@@ -63,10 +72,15 @@ public class StudentFacadeREST {
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
-
         }
     }
 
+    /**
+     * Deletes a student entity by its identifier.
+     *
+     * @param id The identifier.
+     * @throws InternalServerErrorException If an error occurs during deletion.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -79,6 +93,13 @@ public class StudentFacadeREST {
         }
     }
 
+    /**
+     * Retrieves a student entity by its identifier.
+     *
+     * @param id The identifier.
+     * @return The retrieved student entity.
+     * @throws NotFoundException If the student is not found.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -94,12 +115,18 @@ public class StudentFacadeREST {
         return student;
     }
 
+    /**
+     * Retrieves all student entities.
+     *
+     * @return List of all student entities.
+     * @throws NotFoundException If no students are found.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Student> findAll() {
         List<Student> students;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all users");
+            LOGGER.log(Level.INFO, "Reading data for all students");
             students = ejb.findAllStudents();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -107,5 +134,4 @@ public class StudentFacadeREST {
         }
         return students;
     }
-
 }

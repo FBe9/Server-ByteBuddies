@@ -19,7 +19,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * Local interface for teacher EJB.
  * @author irati
  */
 @Stateless
@@ -28,6 +28,12 @@ public class EJBTeacherManager implements TeacherInterface {
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
 
+    /* Method to create a teacher.
+     *
+     * @param teacher the Teacher entity object containing new data.
+     * @throws CreateErrorException if there is an error duting create.
+     * @throws EmailAlreadyExistsException if there email already exists.
+     */
     @Override
     public void createTeacher(Teacher teacher) throws CreateErrorException, EmailAlreadyExistsException {
         try {
@@ -51,6 +57,12 @@ public class EJBTeacherManager implements TeacherInterface {
         }
     }
 
+    /**
+     * Method to update a teacher.
+     *
+     * @param teacher the Teacher entity object containing new data.
+     * @throws UpdateErrorException if there is an error duting update.
+     */
     @Override
     public void updateTeacher(Teacher teacher) throws UpdateErrorException {
         try {
@@ -63,6 +75,12 @@ public class EJBTeacherManager implements TeacherInterface {
         }
     }
 
+    /**
+     * Method to delete a teacher.
+     *
+     * @param teacher the Teacher entity to be deleted.
+     * @throws DeleteErrorException if there is an error during delete.
+     */
     @Override
     public void deleteTeacher(Teacher teacher) throws DeleteErrorException {
         try {
@@ -72,6 +90,13 @@ public class EJBTeacherManager implements TeacherInterface {
         }
     }
 
+    /**
+     * Method to search for a teacher by id.
+     *
+     * @param id the id to make the search.
+     * @return a Teacher entity containing the teacher data.
+     * @throws FindErrorException if there is an error during reading.
+     */
     @Override
     public Teacher findTeacherById(Integer id) throws FindErrorException {
         Teacher teacher;
@@ -83,6 +108,12 @@ public class EJBTeacherManager implements TeacherInterface {
         return teacher;
     }
 
+    /**
+     * Method to search for all teachers.
+     *
+     * @return a collection of teachers.
+     * @throws FindErrorException if there is an error during reading.
+     */
     @Override
     public List<Teacher> findAllTeachers() throws FindErrorException {
         List<Teacher> teachers;
@@ -93,6 +124,5 @@ public class EJBTeacherManager implements TeacherInterface {
         }
         return teachers;
     }
-
 
 }

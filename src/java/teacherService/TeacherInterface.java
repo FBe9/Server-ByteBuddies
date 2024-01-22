@@ -18,6 +18,13 @@ import java.util.List;
  * @author irati
  */
 public interface TeacherInterface {
+      /**
+     * Method to create a teacher.
+     *
+     * @param teacher the Teacher entity object containing new data.
+     * @throws CreateErrorException if there is an error duting create.
+     * @throws EmailAlreadyExistsException if there email already exists.
+     */
      public void createTeacher(Teacher teacher) throws CreateErrorException, EmailAlreadyExistsException;
      /**
      * Method to update a teacher.

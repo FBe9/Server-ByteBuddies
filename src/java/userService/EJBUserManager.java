@@ -159,8 +159,7 @@ public class EJBUserManager implements UserInterface {
      * @param email The email of the user.
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
-     * @throws exceptions.UserNotFoundException
-     * @throws FindErrorException If there is an error during login.
+     * @throws UserNotFoundException if user isn't
      */
     @Override
     public User logInUser(String email, String passwordUser) throws UserNotFoundException {

@@ -37,12 +37,18 @@ import subjectService.SubjectInterface;
 public class EnrolledFacadeREST {
 
     /**
-     * EJB object implementing business logic.
+     * EJB object implementing enrolled business logic.
      */
     @EJB
     private EnrolledInterface ejb;
+    /**
+     * EJB object implementing student business logic.
+     */
     @EJB
     private StudentInterface ejbS;
+    /**
+     * EJB object implementing subject business logic.
+     */
     @EJB
     private SubjectInterface ejbSu;
     /**
@@ -80,6 +86,14 @@ public class EnrolledFacadeREST {
         return key;
     }
 
+    /**
+     * Creates a new enrollment for a student in a subject.
+     *
+     *
+     * @param enrolled The enrollment details to be created.
+     * @throws InternalServerErrorException If an error occurs during enrollment
+     * creation.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createEnrolled(Enrolled enrolled) {
@@ -87,15 +101,21 @@ public class EnrolledFacadeREST {
         Student student = null;
         try {
             try {
+                // Retrieve subject and student details by their identifiers
                 subject = ejbSu.findSubjectById(enrolled.getId().getSubjectId());
                 student = ejbS.findStudentById(enrolled.getId().getStudentId());
             } catch (FindErrorException ex) {
                 Logger.getLogger(EnrolledFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+            // Set the retrieved subject and student in the enrollment
             enrolled.setStudent(student);
             enrolled.setSubject(subject);
+
+            // Log and create the enrollment
             LOGGER.log(Level.INFO, "Creating enrolled {0}", enrolled.getId());
             ejb.createEnrolled(enrolled);
+
         } catch (CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

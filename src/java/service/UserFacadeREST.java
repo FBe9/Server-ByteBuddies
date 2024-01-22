@@ -188,7 +188,6 @@ public class UserFacadeREST {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public User login(User user) {
-        User userNew = null;
         try {
             LOGGER.log(Level.INFO, "login of an user");
 
