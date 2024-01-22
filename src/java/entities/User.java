@@ -221,7 +221,6 @@ public class User implements Serializable {
      *
      * @return The user's password.
      */
-    @XmlTransient
     public String getPassword() {
         return password;
     }
