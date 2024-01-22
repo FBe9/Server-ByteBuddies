@@ -2,6 +2,8 @@ package service;
 
 import entities.Enrolled;
 import entities.EnrolledId;
+import entities.Student;
+import entities.Subject;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
@@ -22,7 +24,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
+import studentService.StudentInterface;
 import subjectService.EnrolledInterface;
+import subjectService.SubjectInterface;
 
 /**
  * RESTful web service for managing enrollments.
@@ -37,6 +41,10 @@ public class EnrolledFacadeREST {
      */
     @EJB
     private EnrolledInterface ejb;
+    @EJB
+    private StudentInterface ejbS;
+    @EJB
+    private SubjectInterface ejbSu;
     /**
      * Logger for this class.
      */
@@ -75,7 +83,17 @@ public class EnrolledFacadeREST {
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createEnrolled(Enrolled enrolled) {
+        Subject subject = null;
+        Student student = null;
         try {
+            try {
+                subject = ejbSu.findSubjectById(enrolled.getId().getSubjectId());
+                student = ejbS.findStudentById(enrolled.getId().getStudentId());
+            } catch (FindErrorException ex) {
+                Logger.getLogger(EnrolledFacadeREST.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            enrolled.setStudent(student);
+            enrolled.setSubject(subject);
             LOGGER.log(Level.INFO, "Creating enrolled {0}", enrolled.getId());
             ejb.createEnrolled(enrolled);
         } catch (CreateErrorException ex) {

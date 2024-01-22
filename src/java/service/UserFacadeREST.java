@@ -185,21 +185,15 @@ public class UserFacadeREST {
 
     @POST
     @Path("login")
-    @Consumes({MediaType.APPLICATION_XML})
-    @Produces({MediaType.APPLICATION_XML})
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public User login(User user) {
         User userNew = null;
         try {
             LOGGER.log(Level.INFO, "login of an user");
 
             user = ejb.logInUser(user.getEmail(), user.getPassword());
-            userNew = new User();
-            userNew.setId(user.getId());
-            userNew.setName(user.getName());
-            userNew.setSurname(user.getSurname());
-            userNew.setDateInit(user.getDateInit());
-            userNew.setUser_type(user.getUser_type());
-            
+
         } catch (UserNotFoundException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NotAuthorizedException(ex.getMessage());
@@ -211,6 +205,6 @@ public class UserFacadeREST {
             throw new InternalServerErrorException(e.getMessage());
         }
         LOGGER.log(Level.INFO, "Login correct for user" + user.getEmail());
-        return userNew;
+        return user;
     }
 }
