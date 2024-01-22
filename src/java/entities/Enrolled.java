@@ -12,6 +12,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Entity representing the enrollment of a student in a subject.
@@ -103,6 +104,7 @@ public class Enrolled implements Serializable {
      *
      * @return the subject
      */
+    @XmlTransient
     public Subject getSubject() {
         return subject;
     }
@@ -121,6 +123,7 @@ public class Enrolled implements Serializable {
      *
      * @return the student
      */
+    @XmlTransient
     public Student getStudent() {
         return student;
     }

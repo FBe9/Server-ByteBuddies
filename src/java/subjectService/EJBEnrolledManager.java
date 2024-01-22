@@ -32,6 +32,8 @@ public class EJBEnrolledManager implements EnrolledInterface {
      */
     @Override
     public void createEnrolled(Enrolled enrolled) throws CreateErrorException {
+        
+        
         try {
             if (!em.contains(enrolled)) {
                 enrolled = em.merge(enrolled);

@@ -120,7 +120,6 @@ public class Student extends User {
      *
      * @return The set of enrollments associated with the student.
      */
-    @XmlTransient
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }
