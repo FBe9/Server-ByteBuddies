@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -126,7 +125,7 @@ public class TeacherFacadeREST {
     public List<Teacher> findAll() {
         List<Teacher> teachers;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all users");
+            LOGGER.log(Level.INFO, "Reading data for all teachers");
             teachers = ejb.findAllTeachers();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());

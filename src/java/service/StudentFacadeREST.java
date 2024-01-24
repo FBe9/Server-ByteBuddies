@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -51,6 +48,7 @@ public class StudentFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating student {0}", student.getId());
             ejb.createStudent(student);
+             LOGGER.log(Level.INFO, "Created student {0} successfully", student.getId());
         } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -66,9 +64,10 @@ public class StudentFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateStudent(Student student) {
-        LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
         try {
+            LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
             ejb.updateStudent(student);
+            LOGGER.log(Level.INFO, "Updated student {0} successfully", student.getId());
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -84,9 +83,11 @@ public class StudentFacadeREST {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting student {0}", id);
+       
         try {
+            LOGGER.log(Level.INFO, "Deleting student {0}", id);
             ejb.deleteStudent(ejb.findStudentById(id));
+            LOGGER.log(Level.INFO, "Student deleted successfully {0}", id);
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

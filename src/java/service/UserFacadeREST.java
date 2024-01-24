@@ -57,6 +57,7 @@ public class UserFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating user {0}", user.getId());
             ejb.createUser(user);
+            LOGGER.log(Level.INFO, "Creating user {0} successfully", user.getId());
         } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -71,15 +72,16 @@ public class UserFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateUser(User user) {
-        LOGGER.log(Level.INFO, "Updating user", user.getId());
+
         try {
+            LOGGER.log(Level.INFO, "Updating user", user.getId());
             ejb.updateUser(user);
+            LOGGER.log(Level.INFO, "Updated user successfully", user.getId());
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
 
         }
-        LOGGER.log(Level.INFO, "User updated");
 
     }
 
@@ -91,9 +93,11 @@ public class UserFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeUser(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting user", id);
+
         try {
+            LOGGER.log(Level.INFO, "Deleting user", id);
             ejb.deleteUser(ejb.findUserById(id));
+            LOGGER.log(Level.INFO, "Deleted user successfully", id);
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
