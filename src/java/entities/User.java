@@ -18,8 +18,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
+ * Represents a user entity in the system.
  *
  * @author Nerea
  * @author Irati
@@ -29,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
             name = "findAllUsers",
             query = "Select u From User u")
     ,
-     @NamedQuery(
+    @NamedQuery(
             name = "findStudents",
             query = "SELECT u FROM User u WHERE TYPE(u) = Student"
     )
@@ -50,84 +52,65 @@ import javax.xml.bind.annotation.XmlRootElement;
 })
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user_type",
-        discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "user", schema = "bytebuddiesbd")
 @XmlRootElement
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    /**
+     * The unique identifier for the user.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(insertable = false , updatable  = false)
+
+    /**
+     * The type of the user (e.g., Student, Teacher). Note: This field is not
+     * insertable or updatable.
+     */
+    @Column(insertable = false, updatable = false)
     private String user_type;
+
+    /**
+     * The email address of the user.
+     */
     private String email;
+
+    /**
+     * The first name of the user.
+     */
     private String name;
+
+    /**
+     * The last name of the user.
+     */
     private String surname;
+
+    /**
+     * The password associated with the user. Note: For security reasons, avoid
+     * exposing or storing plain passwords.
+     */
     private String password;
+
+    /**
+     * The date and time when the user was initialized or created.
+     */
     @Temporal(javax.persistence.TemporalType.DATE)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
 
-    public String getUser_type() {
-        return user_type;
-    }
-
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getDateInit() {
-        return dateInit;
-    }
-
-    public void setDateInit(Date dateInit) {
-        this.dateInit = dateInit;
-    }
-
-    //Constructors
+    /**
+     * Constructs a user with the specified parameters.
+     *
+     * @param id The user's ID.
+     * @param email The user's email.
+     * @param name The user's name.
+     * @param surname The user's surname.
+     * @param password The user's password.
+     * @param dateInit The date of user initialization.
+     */
     public User(Integer id, String email, String name, String surname, String password, Date dateInit) {
         this.id = id;
         this.email = email;
@@ -137,7 +120,135 @@ public class User implements Serializable {
         this.dateInit = dateInit;
     }
 
+    /**
+     * Default constructor for a user.
+     */
     public User() {
     }
 
+    /**
+     * Gets the user type.
+     *
+     * @return The user type.
+     */
+    public String getUser_type() {
+        return user_type;
+    }
+
+    /**
+     * Sets the user type.
+     *
+     * @param user_type The user type to set.
+     */
+    public void setUser_type(String user_type) {
+        this.user_type = user_type;
+    }
+
+    /**
+     * Gets the user's ID.
+     *
+     * @return The user's ID.
+     */
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * Sets the user's ID.
+     *
+     * @param id The user's ID to set.
+     */
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets the user's email.
+     *
+     * @return The user's email.
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Sets the user's email.
+     *
+     * @param email The user's email to set.
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Gets the user's name.
+     *
+     * @return The user's name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the user's name.
+     *
+     * @param name The user's name to set.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Gets the user's surname.
+     *
+     * @return The user's surname.
+     */
+    public String getSurname() {
+        return surname;
+    }
+
+    /**
+     * Sets the user's surname.
+     *
+     * @param surname The user's surname to set.
+     */
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    /**
+     * Gets the user's password.
+     *
+     * @return The user's password.
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Sets the user's password.
+     *
+     * @param password The user's password to set.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Gets the date of user initialization.
+     *
+     * @return The date of user initialization.
+     */
+    public Date getDateInit() {
+        return dateInit;
+    }
+
+    /**
+     * Sets the date of user initialization.
+     *
+     * @param dateInit The date of user initialization to set.
+     */
+    public void setDateInit(Date dateInit) {
+        this.dateInit = dateInit;
+    }
 }

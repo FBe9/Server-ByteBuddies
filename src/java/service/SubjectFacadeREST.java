@@ -56,6 +56,7 @@ public class SubjectFacadeREST {
         try {
             LOGGER.log(Level.INFO, "Creating subject {0}", subject.getId());
             ejb.createSubject(subject);
+            LOGGER.log(Level.INFO, "Created subject {0} successfully", subject.getId());
         } catch (CreateErrorException | SubjectNameAlreadyExistsException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -70,9 +71,11 @@ public class SubjectFacadeREST {
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateSubject(Subject subject) {
-        LOGGER.log(Level.INFO, "Updating subject {0}", subject.getId());
+       
         try {
+             LOGGER.log(Level.INFO, "Updating subject {0}", subject.getId());
             ejb.updateSubject(subject);
+             LOGGER.log(Level.INFO, "Updated subject {0} successfully", subject.getId());
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
@@ -90,9 +93,11 @@ public class SubjectFacadeREST {
     @DELETE
     @Path("{id}")
     public void removeSubject(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting subject {0}", id);
+        
         try {
+            LOGGER.log(Level.INFO, "Deleting subject {0}", id);
             ejb.deleteSubject(ejb.findSubjectById(id));
+             LOGGER.log(Level.INFO, "Deleting subject {0} successfully", id);
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());

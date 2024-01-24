@@ -1,33 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package encrypt;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.logging.Logger;
 import javax.crypto.Cipher;
 
 /**
+ * The Asymmetric Server class for decrypting data and performing hash
+ * operations.
  *
  * @author irati
  */
 public class AsimetricaServer {
 
+    private static Logger LOGGER = Logger.getLogger(AsimetricaServer.class.getName());
+
+    /**
+     * Decrypts encrypted data using RSA private key.
+     *
+     * @param password The encrypted password to decrypt.
+     * @return The decrypted password.
+     */
     public static String decryptData(String password) {
         byte[] decryptedData = null;
         String passwordReceived = null;
         try {
-
-            FileInputStream fis = new FileInputStream("C:\\Server\\privateKey.der");
+            Path workingDirectory = Paths.get(System.getProperty("user.home") + "/ByteBuddies/security/asymmetric/privatekey.der");
+            FileInputStream fis = new FileInputStream(workingDirectory.toFile());
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
@@ -43,14 +51,19 @@ public class AsimetricaServer {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             decryptedData = cipher.doFinal(encryptedData);
             passwordReceived = new String(decryptedData);
-            System.out.println("Received from client: " + new String(decryptedData));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info("Error during decryptData" + e.getMessage());
         }
         return passwordReceived;
     }
 
+    /**
+     * Hashes the input text using the MD5 algorithm.
+     *
+     * @param text The text to be hashed.
+     * @return The hexadecimal representation of the hashed text.
+     */
     public static String hashText(String text) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -70,17 +83,12 @@ public class AsimetricaServer {
         }
     }
 
-    public static byte[] fileReader(String path) {
-        byte ret[] = null;
-        File file = new File(path);
-        try {
-            ret = Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
-
+    /**
+     * Converts a hexadecimal string to a byte array.
+     *
+     * @param hexString The hexadecimal string to convert.
+     * @return The byte array representing the hexadecimal string.
+     */
     public static byte[] dehexadecimal(String hexString) {
         int len = hexString.length();
         byte[] result = new byte[len / 2];
@@ -90,5 +98,4 @@ public class AsimetricaServer {
         }
         return result;
     }
-
 }

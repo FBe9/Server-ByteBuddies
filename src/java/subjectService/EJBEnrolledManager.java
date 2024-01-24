@@ -2,7 +2,6 @@ package subjectService;
 
 import entities.Enrolled;
 import entities.EnrolledId;
-import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;

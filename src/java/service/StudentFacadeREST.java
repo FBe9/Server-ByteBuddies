@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import entities.Student;
@@ -15,9 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,6 +24,8 @@ import javax.ws.rs.core.MediaType;
 import studentService.StudentInterface;
 
 /**
+ * RESTful web service for managing student entities.
+ *
  *
  * @author irati
  */
@@ -42,43 +36,71 @@ public class StudentFacadeREST {
     private StudentInterface ejb;
     private Logger LOGGER = Logger.getLogger(StudentFacadeREST.class.getName());
 
+    /**
+     * Creates a new student entity.
+     *
+     * @param student The student entity to be created.
+     * @throws InternalServerErrorException If an error occurs during creation.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createStudent(Student student) {
         try {
-            LOGGER.log(Level.INFO, "Creating user {0}", student.getId());
+            LOGGER.log(Level.INFO, "Creating student {0}", student.getId());
             ejb.createStudent(student);
+             LOGGER.log(Level.INFO, "Created student {0} successfully", student.getId());
         } catch (EmailAlreadyExistsException | CreateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
+    /**
+     * Updates an existing student entity.
+     *
+     * @param student The updated student entity.
+     * @throws InternalServerErrorException If an error occurs during update.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateStudent(Student student) {
-        LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
         try {
+            LOGGER.log(Level.INFO, "Updating student {0}", student.getId());
             ejb.updateStudent(student);
+            LOGGER.log(Level.INFO, "Updated student {0} successfully", student.getId());
         } catch (UpdateErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
-
         }
     }
 
+    /**
+     * Deletes a student entity by its identifier.
+     *
+     * @param id The identifier.
+     * @throws InternalServerErrorException If an error occurs during deletion.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        LOGGER.log(Level.INFO, "Deleting student {0}", id);
+       
         try {
+            LOGGER.log(Level.INFO, "Deleting student {0}", id);
             ejb.deleteStudent(ejb.findStudentById(id));
+            LOGGER.log(Level.INFO, "Student deleted successfully {0}", id);
         } catch (FindErrorException | DeleteErrorException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
         }
     }
 
+    /**
+     * Retrieves a student entity by its identifier.
+     *
+     * @param id The identifier.
+     * @return The retrieved student entity.
+     * @throws NotFoundException If the student is not found.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -94,12 +116,18 @@ public class StudentFacadeREST {
         return student;
     }
 
+    /**
+     * Retrieves all student entities.
+     *
+     * @return List of all student entities.
+     * @throws NotFoundException If no students are found.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Student> findAll() {
         List<Student> students;
         try {
-            LOGGER.log(Level.INFO, "Reading data for all users");
+            LOGGER.log(Level.INFO, "Reading data for all students");
             students = ejb.findAllStudents();
         } catch (FindErrorException ex) {
             LOGGER.severe(ex.getMessage());
@@ -107,5 +135,4 @@ public class StudentFacadeREST {
         }
         return students;
     }
-
 }

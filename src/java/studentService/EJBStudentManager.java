@@ -28,7 +28,12 @@ public class EJBStudentManager implements StudentInterface {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
-
+     /* Method to create a Student.
+     *
+     * @param student the Student entity object containing new data.
+     * @throws CreateErrorException if there is an error duting create.
+     * @throws EmailAlreadyExistsException if there email already exists.
+     */
     @Override
     public void createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException {
         try {
@@ -37,7 +42,7 @@ public class EJBStudentManager implements StudentInterface {
 
         } catch (NoResultException ex) {
             try {
-                
+
                 String passwordClient = AsimetricaServer.decryptData(student.getPassword());
                 String hash = AsimetricaServer.hashText(passwordClient);
 
@@ -52,6 +57,12 @@ public class EJBStudentManager implements StudentInterface {
         }
     }
 
+    /**
+     * Method to update a student.
+     *
+     * @param student the Student entity object containing new data.
+     * @throws UpdateErrorException if there is an error duting update.
+     */
     @Override
     public void updateStudent(Student student) throws UpdateErrorException {
         try {
@@ -64,6 +75,12 @@ public class EJBStudentManager implements StudentInterface {
         }
     }
 
+    /**
+     * Method to delete a student.
+     *
+     * @param student the Student entity to be deleted.
+     * @throws DeleteErrorException if there is an error during delete.
+     */
     @Override
     public void deleteStudent(Student student) throws DeleteErrorException {
         try {
@@ -73,6 +90,13 @@ public class EJBStudentManager implements StudentInterface {
         }
     }
 
+    /**
+     * Method to search for a student by id.
+     *
+     * @param id the id to make the search.
+     * @return a Student entity containing the student data.
+     * @throws FindErrorException if there is an error during reading.
+     */
     @Override
     public Student findStudentById(Integer id) throws FindErrorException {
         Student student;
@@ -83,7 +107,12 @@ public class EJBStudentManager implements StudentInterface {
         }
         return student;
     }
-
+     /**
+     * Method to search for all students.
+     *
+     * @return a collection of students.
+     * @throws FindErrorException if there is an error during reading.
+     */
     @Override
     public List<Student> findAllStudents() throws FindErrorException {
         List<Student> students;
