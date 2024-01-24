@@ -5,7 +5,6 @@
  */
 package unitService;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import entities.*;
 import exceptions.*;
 import java.util.ArrayList;
@@ -48,10 +47,8 @@ public class EJBUnitManager implements UnitInterface {
      */
     @Override
     public void createUnit(Unit unit) throws CreateErrorException {
-        Unit bdUnit;
-
         try {
-            em.createNamedQuery("findOneUnitByName").setParameter("name", unit.getName()).getSingleResult();
+            em.createNamedQuery("findOneSubjectUnitByName").setParameter("name", unit.getName()).setParameter("subjectName", unit.getSubject().getName()).getSingleResult();
             throw new CreateErrorException("You already have a Unit with that name");
 
         } catch (NoResultException n) {
