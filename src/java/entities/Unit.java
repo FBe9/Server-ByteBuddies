@@ -64,7 +64,7 @@ import javax.xml.bind.annotation.XmlTransient;
     ,
     //Find Units by Hours from a Subject
     @NamedQuery(
-            name = "findSubjectUnitsByHours", query = "SELECT u FROM Unit u WHERE u.hours = :hours"
+            name = "findSubjectUnitsByHours", query = "SELECT u FROM Unit u WHERE u.hours = :hours AND u.subject.name = :subjectName"
     )
 })
 

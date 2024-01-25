@@ -7,6 +7,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 /**
+ * This class is the Interface for the Unit entity.
  *
  * @author Nerea
  */
@@ -132,7 +133,7 @@ public interface UnitInterface {
      * during reading.
      */
     public List<Unit> findSubjectUnitsByHours(Integer hours, String subject) throws FindErrorException;
-    
+
     /**
      * This method finds all the units from the subjects where the Teacher
      * teachs.
