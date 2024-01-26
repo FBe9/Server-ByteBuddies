@@ -10,9 +10,11 @@ import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.logging.Logger;
 import javax.crypto.Cipher;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 /**
  * The Asymmetric Server class for decrypting data and performing hash
@@ -24,8 +26,13 @@ public class AsimetricaServer {
 
     private static Logger LOGGER = Logger.getLogger(AsimetricaServer.class.getName());
 
+    static {
+        // Add Bouncy Castle as a security provider
+        Security.addProvider(new BouncyCastleProvider());
+    }
+
     /**
-     * Decrypts encrypted data using RSA private key.
+     * Decrypts encrypted data using EC private key.
      *
      * @param password The encrypted password to decrypt.
      * @return The decrypted password.
@@ -34,20 +41,21 @@ public class AsimetricaServer {
         byte[] decryptedData = null;
         String passwordReceived = null;
         try {
+            // Load ECC Private Key
             Path workingDirectory = Paths.get(System.getProperty("user.home") + "/ByteBuddies/security/asymmetric/privatekey.der");
             FileInputStream fis = new FileInputStream(workingDirectory.toFile());
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
 
-            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            KeyFactory keyFactory = KeyFactory.getInstance("EC");
             PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
             PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
             // Convert hex string to bytes
             byte[] encryptedData = dehexadecimal(password);
 
-            Cipher cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("ECIES");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             decryptedData = cipher.doFinal(encryptedData);
             passwordReceived = new String(decryptedData);
