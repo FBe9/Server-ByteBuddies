@@ -15,6 +15,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -77,7 +78,7 @@ public class ExamFacadeREST {
     public void deleteExam(@PathParam("id") Integer id) {
         try{
             LOGGER.log(Level.INFO, "Deleting exam {0}", id);
-            updateNullSubject(id);
+            //updateNullSubject(id);
             ejb.deleteExam(ejb.findExamById(id));
         }catch(FindErrorException | DeleteErrorException ex){
             LOGGER.severe(ex.getMessage());
@@ -95,7 +96,7 @@ public class ExamFacadeREST {
             exam = ejb.findExamById(id);
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return exam;
     }
@@ -109,7 +110,7 @@ public class ExamFacadeREST {
             exams = ejb.findAllExams();
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return exams;
     }
@@ -124,7 +125,7 @@ public class ExamFacadeREST {
             exams = ejb.findByDescription(description);
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return exams;
     }
@@ -139,7 +140,7 @@ public class ExamFacadeREST {
             exams = ejb.findBySolution(solutionFilePath);
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return exams;
     }
@@ -154,7 +155,7 @@ public class ExamFacadeREST {
             exams = ejb.findBySubject(subjectId);
         }catch(FindErrorException ex){
             LOGGER.severe(ex.getMessage());
-            throw new InternalServerErrorException(ex.getMessage());
+            throw new NotFoundException(ex.getMessage());
         }
         return exams;
     }

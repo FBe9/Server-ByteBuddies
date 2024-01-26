@@ -2,8 +2,10 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.NamedQueries;
@@ -48,7 +50,7 @@ public class Mark implements Serializable {
     /**
      * The exam id the mark is assigned to.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @MapsId("examId")
     private Exam exam;
 

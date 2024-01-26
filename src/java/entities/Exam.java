@@ -6,9 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -105,7 +107,7 @@ public class Exam implements Serializable {
     /**
      * Relational field for the grades or marks assigned to an exam.
      */
-    @OneToMany(mappedBy = "exam", fetch = EAGER)
+    @OneToMany(mappedBy = "exam", fetch = EAGER, cascade = CascadeType.ALL)
     private Set<Mark> marks;
 
     /**

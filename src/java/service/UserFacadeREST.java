@@ -210,4 +210,10 @@ public class UserFacadeREST {
         LOGGER.log(Level.INFO, "Login correct for user" + user.getEmail());
         return user;
     }
+    
+    @POST
+    @Path("{email}")
+    public void resetPassword(@PathParam("email") String email){
+        ejb.resetPassword(email);
+    }
 }
