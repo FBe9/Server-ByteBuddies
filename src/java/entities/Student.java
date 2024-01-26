@@ -2,6 +2,7 @@ package entities;
 
 import java.util.Date;
 import java.util.Set;
+import entities.User;
 import javax.persistence.CascadeType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;

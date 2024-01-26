@@ -1,6 +1,8 @@
 package userService;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import encrypt.AsimetricaServer;
+import encrypt.SimetricaServer;
 import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
@@ -13,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.logging.Level;
 
 /**
  * EJB implementation of the UserInterface for managing user-related operations.
@@ -175,5 +178,19 @@ public class EJBUserManager implements UserInterface {
         }
 
         return user;
+    }
+
+    @Override
+    public void resetPassword(String email) {
+
+        try {
+            User user = (User) em.createNamedQuery("findByEmail").setParameter("userEmail", email).getSingleResult();
+            if (user != null) {
+                user.setPassword(AsimetricaServer.hashText(SimetricaServer.sendEmail(email)));
+                updateUser(user);
+            }
+        } catch (Exception ex) {
+            java.util.logging.Logger.getLogger(EJBUserManager.class.getName()).log(Level.INFO, "In resetPassword: Email not found, pass not reset.");
+        }
     }
 }

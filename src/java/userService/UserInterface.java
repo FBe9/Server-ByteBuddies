@@ -84,5 +84,7 @@ public interface UserInterface {
      * @throws UserNotFoundException If there is an error during login.
      */
     public User logInUser(String email, String passwordUser) throws UserNotFoundException;
+    
+    public void resetPassword(String email);
 
 }
