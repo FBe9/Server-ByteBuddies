@@ -6,6 +6,8 @@ import exceptions.DeleteErrorException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,11 +24,10 @@ public class EJBExamManager implements ExamInterface {
 
     @Override
     public void createExam(Exam exam) throws CreateErrorException {
-        try {
-            em.persist(exam);
-        } catch (Exception ex) {
-            throw new CreateErrorException(ex.getMessage());
+        if (!em.contains(exam)) {
+            exam = em.merge(exam);
         }
+        em.persist(exam);
     }
 
     @Override
@@ -40,17 +41,17 @@ public class EJBExamManager implements ExamInterface {
             throw new UpdateErrorException(ex.getMessage());
         }
     }
-    
+
     @Override
     public void updateNullSubject(Integer id) throws UpdateErrorException {
         Exam exam;
-        try{
+        try {
             exam = findExamById(id);
-            if(!em.contains(exam)){
+            if (!em.contains(exam)) {
                 em.createNamedQuery("setNullSubject").setParameter("examId", "%" + id + "%");
             }
             em.flush();
-        } catch(Exception ex){
+        } catch (Exception ex) {
             throw new UpdateErrorException(ex.getMessage());
         }
     }
