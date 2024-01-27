@@ -50,14 +50,14 @@ public class Mark implements Serializable {
     /**
      * The exam id the mark is assigned to.
      */
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @MapsId("examId")
     private Exam exam;
 
     /**
      * The student id the mark is assigned to.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @MapsId("studentId")
     private Student student;
 

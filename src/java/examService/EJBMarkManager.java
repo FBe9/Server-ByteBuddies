@@ -25,6 +25,9 @@ public class EJBMarkManager implements MarkInterface{
     @Override
     public void createMark(Mark mark) throws CreateErrorException {
         try{
+            if (!em.contains(mark)) {
+                mark = em.merge(mark);
+            }
             em.persist(mark);
         }catch (Exception ex){
             throw new CreateErrorException(ex.getMessage());
@@ -46,7 +49,8 @@ public class EJBMarkManager implements MarkInterface{
     @Override
     public void deleteMark(Mark mark) throws DeleteErrorException {
         try{
-            em.remove(em.merge(mark));
+            mark = em.merge(mark);
+            em.remove(mark);
         }catch(Exception ex){
             throw new DeleteErrorException(ex.getMessage());
         }
@@ -65,8 +69,8 @@ public class EJBMarkManager implements MarkInterface{
     
     @Override
     public Mark findMarkById(Integer examId, Integer studentId) throws FindErrorException {
-        MarkId markId = new MarkId(examId, studentId);
         Mark mark = null;
+        MarkId markId = new MarkId(examId, studentId);
         try{
             mark = em.find(Mark.class, markId);
         } catch(Exception ex){
