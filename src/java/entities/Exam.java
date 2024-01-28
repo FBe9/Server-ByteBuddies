@@ -107,7 +107,7 @@ public class Exam implements Serializable {
     /**
      * Relational field for the grades or marks assigned to an exam.
      */
-    @OneToMany(mappedBy = "exam", fetch = EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exam", fetch = EAGER, cascade = CascadeType.REMOVE)
     private Set<Mark> marks;
 
     /**
