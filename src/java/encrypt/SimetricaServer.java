@@ -38,6 +38,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
+ * Class for symmetric encryption and management of password recovery email.
  *
  * @author Alex
  */
@@ -45,13 +46,28 @@ import javax.mail.internet.MimeMessage;
 @Startup
 public class SimetricaServer {
 
-    // Directories
+    /**
+     * The working directory of the server application for encryption purposes.
+     */
     private static Path workingDirectory;
+
+    /**
+     * The security directory inside the working directory used for encryption.
+     */
     private static Path secureDir;
 
-    // Encription salt
+    /**
+     * The salt used for the creation of a new encryption key.
+     */
     private static byte[] salt = new byte[16];
 
+    /**
+     * This method is run whenever the server starts up or the server
+     * application is started or deployed. It check the working directory for
+     * the necessary credentials to use to send the recovery email. If the
+     * credentials aren't installed, it encrypts and writes them to the
+     * directory they belong to.
+     */
     @PostConstruct
     public void onStartup() {
         try {
@@ -80,6 +96,14 @@ public class SimetricaServer {
 
     }
 
+    /**
+     * Method to send the email. It recovers the credentials from the encrypted
+     * file, calls for unencryption and send the new password to the
+     * correspondent user.
+     *
+     * @param emailReceiver The email address to send the new password to.
+     * @return The new password.
+     */
     public static String sendEmail(String emailReceiver) {
         String generatedUserClave;
         try {
@@ -143,6 +167,14 @@ public class SimetricaServer {
         return generatedUserClave;
     }
 
+    /**
+     * Actual method used to encrypt the data.
+     *
+     * @param clave A random string used to encode with the different
+     * algorithms.
+     * @param mensaje The message to encrypt.
+     * @return The encrypted message.
+     */
     public String encryptData(String clave, String mensaje) {
         String ret = null;
         KeySpec derivedKey = null;
@@ -175,6 +207,15 @@ public class SimetricaServer {
         return ret;
     }
 
+    /**
+     * Actual method used to unencrypt the data.
+     *
+     * @param clave Part of the key necessary to unencrypt the data. Using the
+     * same algorithm used during encryption, it regenerates the key and
+     * unencrypts the data.
+     * @param content The data to unencrypt.
+     * @return The unencrypted data.
+     */
     private String unencryptData(byte[] clave, byte[] content) {
         String ret = null;
         try {
@@ -191,6 +232,13 @@ public class SimetricaServer {
         return ret;
     }
 
+    /**
+     * Concatenates to arrays.
+     * 
+     * @param array1 FIrst array to concatenate.
+     * @param array2 Second array to concatenate.
+     * @return The array of bytes containing the combination of the first and second arrays.
+     */
     private byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
         System.arraycopy(array1, 0, ret, 0, array1.length);
@@ -198,6 +246,12 @@ public class SimetricaServer {
         return ret;
     }
 
+    /**
+     * Writes an array of bytes into a file with a specified path.
+     * 
+     * @param path The path used to save the file.
+     * @param text The data to save in the file.
+     */
     private void fileWriter(String path, byte[] text) {
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(text);
@@ -206,6 +260,12 @@ public class SimetricaServer {
         }
     }
 
+    /**
+     * Reads from a file in a given path.
+     * 
+     * @param path The given path to read from.
+     * @return The data read from the file.
+     */
     private static byte[] fileReader(String path) {
         byte ret[] = null;
         File file = new File(path);
