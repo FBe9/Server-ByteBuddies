@@ -12,11 +12,13 @@ import exceptions.EmailAlreadyExistsException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
- *
+ * Local interface for Teacher EJB.
  * @author irati
  */
+@Local
 public interface TeacherInterface {
       /**
      * Method to create a teacher.

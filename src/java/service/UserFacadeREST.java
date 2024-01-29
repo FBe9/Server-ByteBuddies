@@ -29,6 +29,7 @@ import javax.ws.rs.core.MediaType;
 import userService.UserInterface;
 
 /**
+ * RESTful web service for managing users.
  *
  * @author Irati
  */
@@ -187,14 +188,28 @@ public class UserFacadeREST {
         return users;
     }
 
+    /**
+     * Validates user credentials and performs user login.
+     *
+     * @param user The user object containing email and password for
+     * authentication.
+     * @return The authenticated user information.
+     * @throws NotAuthorizedException If the user is not authorized (invalid
+     * credentials).
+     * @throws BadRequestException If there is a bad request, such as missing or
+     * invalid parameters.
+     * @throws InternalServerErrorException If an unexpected server error
+     * occurs.
+     */
     @POST
     @Path("login")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public User login(User user) {
         try {
-            LOGGER.log(Level.INFO, "login of an user");
+            LOGGER.log(Level.INFO, "Login attempt for user: " + user.getEmail());
 
+            // Perform user login
             user = ejb.logInUser(user.getEmail(), user.getPassword());
 
         } catch (UserNotFoundException ex) {
@@ -207,13 +222,20 @@ public class UserFacadeREST {
             LOGGER.severe(e.getMessage());
             throw new InternalServerErrorException(e.getMessage());
         }
-        LOGGER.log(Level.INFO, "Login correct for user" + user.getEmail());
+
+        LOGGER.log(Level.INFO, "Login successful for user: " + user.getEmail());
         return user;
     }
-    
+
+    /**
+     * Initiates the process of resetting the user's password.
+     *
+     * @param email The email of the user whose password needs to be reset.
+     */
     @POST
     @Path("{email}")
-    public void resetPassword(@PathParam("email") String email){
+    public void resetPassword(@PathParam("email") String email) {
+        // Perform password reset
         ejb.resetPassword(email);
     }
 }

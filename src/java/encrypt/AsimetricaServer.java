@@ -3,6 +3,7 @@ package encrypt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,9 +42,9 @@ public class AsimetricaServer {
         byte[] decryptedData = null;
         String passwordReceived = null;
         try {
-            // Load ECC Private Key
-            Path workingDirectory = Paths.get(System.getProperty("user.home") + "/ByteBuddies/security/asymmetric/privatekey.der");
-            FileInputStream fis = new FileInputStream(workingDirectory.toFile());
+          
+           InputStream fis = AsimetricaServer.class.getResourceAsStream("privatekey.der");
+
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
