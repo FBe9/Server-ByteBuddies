@@ -83,7 +83,7 @@ public class Mark implements Serializable {
     /**
      * Sets the id of the mark.
      *
-     * @param id
+     * @param id The ID of the mark
      */
     public void setId(MarkId id) {
         this.id = id;
@@ -101,7 +101,7 @@ public class Mark implements Serializable {
     /**
      * Sets the exam the mark is assigned to.
      *
-     * @param Exam
+     * @param Exam The exam.
      */
     public void setExam(Exam Exam) {
         this.exam = Exam;
@@ -119,7 +119,7 @@ public class Mark implements Serializable {
     /**
      * Sets the student the mark is assigned to.
      *
-     * @param student
+     * @param student The student.
      */
     public void setStudent(Student student) {
         this.student = student;
@@ -137,7 +137,7 @@ public class Mark implements Serializable {
     /**
      * Sets the student's score in the exam.
      *
-     * @param markValue
+     * @param markValue The value of the mark.
      */
     public void setMarkValue(Float markValue) {
         this.markValue = markValue;
@@ -157,7 +157,7 @@ public class Mark implements Serializable {
     /**
      * Sets the solutionFilePath
      *
-     * @param solutionFilePath
+     * @param solutionFilePath The path.
      */
     public void setSolutionFilePath(String solutionFilePath) {
         this.solutionFilePath = solutionFilePath;
@@ -166,10 +166,10 @@ public class Mark implements Serializable {
     /**
      * Default constructor with parameters.
      *
-     * @param exam
-     * @param student
-     * @param markValue
-     * @param solutionFilePath
+     * @param exam The exam it belongs to.
+     * @param student The student it belongs to.
+     * @param markValue The value of the mark.
+     * @param solutionFilePath The path.
      */
     public Mark(Exam exam, Student student, Float markValue, String solutionFilePath) {
         this.exam = exam;
@@ -187,7 +187,7 @@ public class Mark implements Serializable {
     /**
      * Computes the hash code for the mark.
      *
-     * @return
+     * @return The hashed code of the mark.
      */
     @Override
     public int hashCode() {
@@ -199,7 +199,7 @@ public class Mark implements Serializable {
     /**
      * Checks for other Mark objects equal to this one.
      *
-     * @param obj
+     * @param obj The object to check
      * @return boolean value, true if it's equal to any other mark, false if
      * opposite.
      */
@@ -219,15 +219,5 @@ public class Mark implements Serializable {
             return false;
         }
         return true;
-    }
-
-    /**
-     * String representation of the mark entity.
-     *
-     * @return the string value of the representation of the entity.
-     */
-    @Override
-    public String toString() {
-        return "Mark{" + "Exam=" + exam + ", student=" + student + ", markValue=" + markValue + ", solutionFilePath=" + solutionFilePath + '}';
     }
 }

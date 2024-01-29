@@ -26,17 +26,30 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.PathSegment;
 
 /**
- *
+ * RESTful web service for managing marks.
+ * 
  * @author Alex
  */
 @Path("entities.mark")
 public class MarkFacadeREST {
 
+    /**
+     * EJB object for business logic.
+     */
     @EJB
     private MarkInterface ejb;
 
+    /**
+     * Logger for MarkFacadeREST class
+     */
     private Logger LOGGER = Logger.getLogger(ExamFacadeREST.class.getName());
 
+    /**
+     * Extracts and constructs the primary key (MarkId) from a URI path segment.
+     * 
+     * @param pathSegment The path segment containing the MarkId.
+     * @return The primary key MarkId.
+     */
     private MarkId getPrimaryKey(PathSegment pathSegment) {
         /*
          * pathSemgent represents a URI path segment and any associated matrix parameters.
@@ -58,6 +71,11 @@ public class MarkFacadeREST {
         return key;
     }
 
+    /**
+     * POST method to create marks.
+     * 
+     * @param mark The mark to create.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void createMark(Mark mark) {
@@ -70,6 +88,11 @@ public class MarkFacadeREST {
         }
     }
 
+    /**
+     * PUT method to update an existing mark.
+     * 
+     * @param mark The mark to update.
+     */
     @PUT
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateMark(Mark mark) {
@@ -82,6 +105,12 @@ public class MarkFacadeREST {
         }
     }
 
+    /**
+     * DELETE by examId and studentId to remove a mark of an exam and a student.
+     * 
+     * @param examId Used to create the MarkId primary key. Assigned to an exam.
+     * @param studentId Used to create the MarkId primary key. Assigned to a student.
+     */
     @DELETE
     @Path("{examId}/{studentId}")
     public void deleteMark(@PathParam("examId") Integer examId, @PathParam("studentId") Integer studentId) {
@@ -94,6 +123,13 @@ public class MarkFacadeREST {
         }
     }
 
+    /**
+     * GET method to find a specific mark by its MarkId.
+     * 
+     * @param examId Used to create the MarkId primary key. Assigned to an exam.
+     * @param studentId Used to create the MarkId primary key. Assigned to a student.
+     * @return The found mark of the given (and constructed) examId, studentId (and MarkId).
+     */
     @GET
     @Path("{examId}/{studentId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -109,6 +145,11 @@ public class MarkFacadeREST {
         return mark;
     }
 
+    /**
+     * GET method to find all the marks.
+     * 
+     * @return A List collection containing all found marks.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Mark> findAll() {
@@ -123,6 +164,12 @@ public class MarkFacadeREST {
         return marks;
     }
 
+    /**
+     * GET method to find all exams belonging to a student, searched by their name.
+     * 
+     * @param userName The user's name to search for.
+     * @return A List collection containing all found marks.
+     */
     @GET
     @Path("findExamsByStudent/{userName}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -138,6 +185,12 @@ public class MarkFacadeREST {
         return exams;
     }
     
+    /**
+     * GET method to find all exams belonging to an exam, searched by the exam ID.
+     * 
+     * @param examId The parameter used to search an exam, it's the ID of an exam.
+     * @return A List containing all found marks.
+     */
     @GET
     @Path("findMarkByExam/{examId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
