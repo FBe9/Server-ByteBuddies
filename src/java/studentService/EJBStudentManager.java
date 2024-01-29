@@ -20,7 +20,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 /**
- *
+ * This is the stateless EJB that implements the StudentInterface.
  * @author irati
  */
 @Stateless
@@ -42,7 +42,6 @@ public class EJBStudentManager implements StudentInterface {
 
         } catch (NoResultException ex) {
             try {
-
                 String passwordClient = AsimetricaServer.decryptData(student.getPassword());
                 String hash = AsimetricaServer.hashText(passwordClient);
 

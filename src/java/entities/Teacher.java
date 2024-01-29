@@ -2,11 +2,9 @@ package entities;
 
 import java.util.Date;
 import java.util.Set;
-import entities.User;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
