@@ -4,41 +4,82 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Embeddable;
 
-
 /**
+ * Embeddable class representing the ID of the entity Mark.
  *
  * @author Alex
  */
 @Embeddable
-public class MarkId implements Serializable{
+public class MarkId implements Serializable {
 
+    /**
+     * The exam ID the mark belongs to.
+     */
     private Integer examId;
+
+    /**
+     * The student ID the mark belongs to.
+     */
     private Integer studentId;
 
+    /**
+     * Default empty constructor for Mark ID.
+     */
     public MarkId() {
     }
 
+    /**
+     * Default constructor with params.
+     *
+     * @param examId The ID of the exam the mark belongs to.
+     * @param studentId The ID of the student the mark belongs to.
+     */
     public MarkId(Integer examId, Integer studentId) {
         this.examId = examId;
         this.studentId = studentId;
     }
 
+    /**
+     * Returns the ID of the exam.
+     *
+     * @return The integer value of the ID.
+     */
     public Integer getExamId() {
         return examId;
     }
 
+    /**
+     * Sets the ID of the exam.
+     *
+     * @param examId The ID of the exam.
+     */
     public void setExamId(Integer examId) {
         this.examId = examId;
     }
 
+    /**
+     * Returns the ID of the student.
+     *
+     * @return The integer value of the ID.
+     */
     public Integer getStudentId() {
         return studentId;
     }
 
+    /**
+     * Sets the ID of the student.
+     *
+     * @param studentId The ID of the student.
+     */
     public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 
+    /**
+     * Computes the hash code for the Mark ID.
+     *
+     * @return The hashed code of the Mark ID.
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -47,6 +88,13 @@ public class MarkId implements Serializable{
         return hash;
     }
 
+    /**
+     * Checks for other MarkId objects equal to this one.
+     *
+     * @param obj
+     * @return boolean value, true if it's equal to any other mark, false if
+     * opposite.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -67,12 +115,4 @@ public class MarkId implements Serializable{
         }
         return true;
     }
-
-    
-    
-    @Override
-    public String toString() {
-        return "MarkId{" + "examId=" + examId + ", studentId=" + studentId + '}';
-    }
-
 }

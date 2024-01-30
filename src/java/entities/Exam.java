@@ -10,7 +10,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import static javax.persistence.FetchType.EAGER;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -83,7 +83,7 @@ public class Exam implements Serializable {
     /**
      * The date when the exam is programmed.
      */
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @JsonSerialize(as = Date.class)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private Date dateInit;
@@ -122,7 +122,7 @@ public class Exam implements Serializable {
     /**
      * Sets the exam id
      *
-     * @param id
+     * @param id The ID of the exam.
      */
     public void setId(Integer id) {
         this.id = id;
@@ -140,7 +140,7 @@ public class Exam implements Serializable {
     /**
      * Sets the name of the exam.
      *
-     * @param description
+     * @param description The description of the exam.
      */
     public void setDescription(String description) {
         this.description = description;
@@ -158,7 +158,7 @@ public class Exam implements Serializable {
     /**
      * Sets the date of the exam.
      *
-     * @param dateInit
+     * @param dateInit The date the exam takes place.
      */
     public void setDateInit(Date dateInit) {
         this.dateInit = dateInit;
@@ -176,7 +176,7 @@ public class Exam implements Serializable {
     /**
      * Sets the duration of the exam (in minutes).
      *
-     * @param duration
+     * @param duration The duration of the exam.
      */
     public void setDuration(Integer duration) {
         this.duration = duration;
@@ -194,7 +194,7 @@ public class Exam implements Serializable {
     /**
      * Sets the path to where the exam heading is stored.
      *
-     * @param filePath
+     * @param filePath The path.
      */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
@@ -206,7 +206,6 @@ public class Exam implements Serializable {
      * @return Subject object of the subject field.
      */
     @XmlElement(name = "subject")
-    //@XmlTransient
     public Subject getSubject() {
         return subject;
     }
@@ -223,7 +222,7 @@ public class Exam implements Serializable {
     /**
      * Sets the call type.
      *
-     * @param callType
+     * @param callType The call type (enum value).
      */
     public void setCallType(CallType callType) {
         this.callType = callType;
@@ -232,7 +231,7 @@ public class Exam implements Serializable {
     /**
      * Sets the subject the exam belongs to.
      *
-     * @param subject
+     * @param subject The subject.
      */
     public void setSubject(Subject subject) {
         this.subject = subject;
@@ -251,7 +250,7 @@ public class Exam implements Serializable {
     /**
      * Sets the marks collection with the marks related to the exam.
      *
-     * @param marks
+     * @param marks The marks.
      */
     public void setMarks(Set<Mark> marks) {
         this.marks = marks;
@@ -260,13 +259,13 @@ public class Exam implements Serializable {
     /**
      * Constructor with parameters for the Exam entity.
      *
-     * @param id
-     * @param description
-     * @param dateInit
-     * @param duration
-     * @param filePath
-     * @param subject
-     * @param marks
+     * @param id The exam ID.
+     * @param description The description
+     * @param dateInit The date of the exam.
+     * @param duration The duration of the exam.
+     * @param filePath The path.
+     * @param subject The subject.
+     * @param marks The marks belonging to the exam.
      */
     public Exam(Integer id, String description, Date dateInit, Integer duration, String filePath, Subject subject, Set<Mark> marks) {
         this.id = id;
@@ -299,7 +298,7 @@ public class Exam implements Serializable {
     /**
      * Checks if this exam is equal to any other exam.
      *
-     * @param obj
+     * @param obj The object to check.
      * @return boolean value, true if it's equal to any other exam, false if
      * opposite.
      */
