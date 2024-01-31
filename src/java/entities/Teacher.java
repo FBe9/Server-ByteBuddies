@@ -58,7 +58,7 @@ public class Teacher extends User {
      * Parameterized constructor for creating a Teacher object with specific
      * attributes.
      *
-     * @param dni The DNI (identification number) of the teacher.
+     * @param id The ID of the teacher.
      * @param email The email address of the teacher.
      * @param name The name of the teacher.
      * @param surname The surname of the teacher.

@@ -318,7 +318,7 @@ public class Subject implements Serializable {
     /**
      * Gets the students related to the subject.
      *
-     * @param enrollments
+     * @param enrollments The enrollments to set.
      */
     public void setEnrollments(Set<Enrolled> enrollments) {
         this.enrollments = enrollments;

@@ -91,7 +91,7 @@ public class MarkId implements Serializable {
     /**
      * Checks for other MarkId objects equal to this one.
      *
-     * @param obj
+     * @param obj The object to check for equality.
      * @return boolean value, true if it's equal to any other mark, false if
      * opposite.
      */

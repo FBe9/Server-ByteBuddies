@@ -12,6 +12,8 @@ public class EmailAlreadyExistsException extends Exception {
     }
     /**
      * Creates a new instance with message.
+     * 
+     * @param message The message of the error.
      */
     public EmailAlreadyExistsException(String message) {
         super(message);
