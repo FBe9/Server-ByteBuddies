@@ -27,10 +27,6 @@ public class AsimetricaServer {
 
     private static Logger LOGGER = Logger.getLogger(AsimetricaServer.class.getName());
 
-    static {
-        // Add Bouncy Castle as a security provider
-        Security.addProvider(new BouncyCastleProvider());
-    }
 
     /**
      * Decrypts encrypted data using EC private key.
@@ -43,23 +39,25 @@ public class AsimetricaServer {
         String passwordReceived = null;
         try {
           
-           InputStream fis = AsimetricaServer.class.getResourceAsStream("privatekey.der");
+           InputStream fis = AsimetricaServer.class.getResourceAsStream("privateKey.der");
 
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
 
-            KeyFactory keyFactory = KeyFactory.getInstance("EC");
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
             PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 
             // Convert hex string to bytes
+            LOGGER.info("Received password: " + password);
             byte[] encryptedData = dehexadecimal(password);
 
-            Cipher cipher = Cipher.getInstance("ECIES");
+            Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             decryptedData = cipher.doFinal(encryptedData);
             passwordReceived = new String(decryptedData);
+            LOGGER.info("La password real: " + password);
 
         } catch (Exception e) {
             LOGGER.info("Error during decryptData" + e.getMessage());
