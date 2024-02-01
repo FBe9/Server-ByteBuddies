@@ -10,4 +10,4 @@
          <property name="hibernate.transaction.jta.platform" value="org.hibernate.service.jta.platform.internal.SunOneJtaPlatform"></property> 
       </properties> 
    </persistence-unit> 
-</persistence> 
+</persistence>

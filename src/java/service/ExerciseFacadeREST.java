@@ -2,21 +2,17 @@ package service;
 
 import entities.Exercise;
 import entities.LevelType;
-
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.ExerciseErrorException;
 import exceptions.UpdateErrorException;
-
 import exerciseService.ExerciseInterface;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -47,6 +43,11 @@ public class ExerciseFacadeREST {
 
     private static final Logger LOGGER = Logger.getLogger(ExerciseFacadeREST.class.getName());
 
+    /**
+     * POST method to create exercises..
+     * 
+     * @param entity The exercise to post.
+     */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(Exercise entity) {
@@ -59,6 +60,12 @@ public class ExerciseFacadeREST {
         }
     }
 
+    /**
+     * PUT method to update an exercise.
+     * 
+     * @param id The id of the exercise.
+     * @param entity The exercise to post.
+     */
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -72,6 +79,11 @@ public class ExerciseFacadeREST {
         }
     }
 
+    /**
+     * DELETE method to remove an exercise.
+     * 
+     * @param id The id of the exercise to remove.
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -84,6 +96,12 @@ public class ExerciseFacadeREST {
         }
     }
 
+    /**
+     * GET method by ID to find an exercise with a given ID.
+     * 
+     * @param id The id of the exercise.
+     * @return The exercise found.
+     */
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -99,6 +117,11 @@ public class ExerciseFacadeREST {
         return exercise;
     }
 
+    /**
+     * GET method to find all exercises.
+     * 
+     * @return Collection of all exercises.
+     */
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Exercise> getAllExercises() {
@@ -113,6 +136,12 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by its number.
+     * 
+     * @param number The number to look for.
+     * @return Collection of all found exercises.
+     */
     @GET
     @Path("getByNumber/{number}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -128,6 +157,12 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by its date.
+     * 
+     * @param date The date to search.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByDate/{date}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -144,6 +179,12 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by its level type.
+     * 
+     * @param levelType The level type to search.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByLevelType/{levelType}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -160,6 +201,12 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by the name of unit.
+     * 
+     * @param name The name of the unit.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByUnitName/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -175,6 +222,13 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by its number and name of unit.
+     * 
+     * @param number The number.
+     * @param name The name of the unit.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByNumberAndUnitName/{number}/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -190,6 +244,14 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    
+    /**
+     * GET method to find an exercise by its date and name of unit.
+     * 
+     * @param date The date.
+     * @param name The name of the unit.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByDateAndUnitName/{date}/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -207,6 +269,13 @@ public class ExerciseFacadeREST {
         return exercises;
     }
 
+    /**
+     * GET method to find an exercise by its level type and name of unit.
+     * 
+     * @param levelType The level type.
+     * @param name The name of the unit.
+     * @return A collection of all found exercises.
+     */
     @GET
     @Path("getByLevelTypeAndUnitName/{levelType}/{name}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -221,5 +290,4 @@ public class ExerciseFacadeREST {
         }
         return exercises;
     }
-
 }

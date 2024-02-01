@@ -1,6 +1,5 @@
 package userService;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import encrypt.AsimetricaServer;
 import encrypt.SimetricaServer;
 import entities.User;
