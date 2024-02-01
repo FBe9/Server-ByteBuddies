@@ -12,6 +12,8 @@ public class UserNotFoundException extends Exception {
     }
     /**
      * Creates a new instance with message.
+     * 
+     * @param message The message of the error.
      */
     public UserNotFoundException(String message) {
         super(message);

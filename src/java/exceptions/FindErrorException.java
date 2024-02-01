@@ -12,6 +12,8 @@ public class FindErrorException extends Exception {
     }
     /**
      * Creates a new instance with message.
+     * 
+     * @param message The message of the error.
      */
     public FindErrorException(String message) {
         super(message);

@@ -2,7 +2,6 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -15,7 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -326,6 +324,11 @@ public class Exercise implements Serializable {
         this.hours = hours;
     }
 
+    /**
+     * Generates the hashed code for this entity.
+     * 
+     * @return The hashed code.
+     */
     @Override
     public int hashCode() {
         int hash = 0;
@@ -333,6 +336,12 @@ public class Exercise implements Serializable {
         return hash;
     }
 
+    /**
+     * Compares current object to verify if it is equal to the given object.
+     * 
+     * @param object The given object to verify.
+     * @return boolean value, true if it's equal to any other exam, false if opposite.
+     */
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

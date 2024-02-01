@@ -23,6 +23,7 @@ public interface SubjectInterface {
      *
      * @param subject the Subject entity object containing new data.
      * @throws CreateErrorException if there is an error during creation.
+     * @throws SubjectNameAlreadyExistsException if the subject already exists.
      */
     public void createSubject(Subject subject) throws CreateErrorException, SubjectNameAlreadyExistsException;
 

@@ -311,14 +311,19 @@ public class Subject implements Serializable {
         this.units = units;
     }
 
+    /**
+     * Gets the enrollments related to the subject.
+     * 
+     * @return The set of enrollments.
+     */
     public Set<Enrolled> getEnrollments() {
         return enrollments;
     }
 
     /**
-     * Gets the students related to the subject.
+     * Sets the students related to the subject.
      *
-     * @param enrollments
+     * @param enrollments The enrollments to set.
      */
     public void setEnrollments(Set<Enrolled> enrollments) {
         this.enrollments = enrollments;

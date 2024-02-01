@@ -12,6 +12,8 @@ public class CreateErrorException extends Exception {
     }
     /**
      * Creates a new instance with message.
+     * 
+     * @param message The message of the error.
      */
     public CreateErrorException(String message) {
         super(message);

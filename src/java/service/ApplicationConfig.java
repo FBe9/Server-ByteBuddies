@@ -1,20 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
+ * Saves all the classes for server application usage.
+ * 
  * @author Alex
  */
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
 
+    /**
+     * Gets all the classes of the server application.
+     * 
+     * @return A collection containing all classes.
+     */
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();

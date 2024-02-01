@@ -23,6 +23,7 @@ public interface UserInterface {
      *
      * @param user the User entity object containing new data.
      * @throws CreateErrorException if there is an error during creation.
+     * @throws EmailAlreadyExistsException if the email already exists.
      */
     public void createUser(User user) throws CreateErrorException, EmailAlreadyExistsException;
 
@@ -78,7 +79,7 @@ public interface UserInterface {
     /**
      * Logs in a user.
      *
-     * @param id The id of the user.
+     * @param email The id of the user.
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
      * @throws UserNotFoundException If there is an error during login.
