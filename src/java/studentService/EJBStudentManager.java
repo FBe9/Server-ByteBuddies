@@ -5,6 +5,7 @@ import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  * This is the stateless EJB that implements the StudentInterface.
+ *
  * @author irati
  */
 @Stateless
@@ -22,21 +24,29 @@ public class EJBStudentManager implements StudentInterface {
 
     @PersistenceContext(unitName = "WebBiteBuddys")
     private EntityManager em;
-     /**
-      * Method to create a Student.
+
+    /**
+     * Method to create a Student.
      *
      * @param student the Student entity object containing new data.
+     * @return a student.
      * @throws CreateErrorException if there is an error duting create.
      * @throws EmailAlreadyExistsException if there email already exists.
+     * @throws EncryptException error during encryption.
      */
     @Override
-    public void createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException {
+    public Student createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException, EncryptException {
         try {
-            em.createNamedQuery("findByEmailStudent").setParameter("userEmail", student.getEmail()).getSingleResult();
-            throw new EmailAlreadyExistsException("User with email already exists");
+            // Check if the email already exists using EntityManager
+            em.createNamedQuery("findByEmailStudent", Student.class)
+                    .setParameter("userEmail", student.getEmail())
+                    .getSingleResult();
 
+            // If the email exists, throw an exception
+            throw new EmailAlreadyExistsException("User with email already exists");
         } catch (NoResultException ex) {
             try {
+                // Continue with the student creation process
                 String passwordClient = AsimetricaServer.decryptData(student.getPassword());
                 String hash = AsimetricaServer.hashText(passwordClient);
 
@@ -45,10 +55,14 @@ public class EJBStudentManager implements StudentInterface {
                     student = em.merge(student);
                 }
                 em.persist(student);
+                return student;
+            } catch (EncryptException et) {
+                throw new EncryptException(et.getMessage());
             } catch (Exception e) {
                 throw new CreateErrorException(e.getMessage());
             }
         }
+
     }
 
     /**
@@ -101,7 +115,8 @@ public class EJBStudentManager implements StudentInterface {
         }
         return student;
     }
-     /**
+
+    /**
      * Method to search for all students.
      *
      * @return a collection of students.
@@ -116,6 +131,15 @@ public class EJBStudentManager implements StudentInterface {
             throw new FindErrorException(ex.getMessage());
         }
         return students;
+    }
+
+    public Student findStudentByEmail(String email) {
+        Student student;
+        student = em.createNamedQuery("findByEmailStudent", Student.class)
+                .setParameter("userEmail", email)
+                .getSingleResult();
+
+        return student;
     }
 
 }

@@ -1,5 +1,6 @@
 package encrypt;
 
+import exceptions.EncryptException;
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
@@ -25,11 +26,11 @@ public class AsimetricaServer {
      * @param password The encrypted password to decrypt.
      * @return The decrypted password.
      */
-    public static String decryptData(String password) {
+    public static String decryptData(String password) throws EncryptException {
         byte[] decryptedData = null;
         String passwordReceived = null;
         try {
-            InputStream fis = AsimetricaServer.class.getResourceAsStream("private.der");
+            InputStream fis = AsimetricaServer.class.getResourceAsStream("");
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
@@ -45,9 +46,11 @@ public class AsimetricaServer {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             decryptedData = cipher.doFinal(encryptedData);
             passwordReceived = new String(decryptedData);
-
+            if (passwordReceived == null) {
+                throw new EncryptException();
+            }
         } catch (Exception e) {
-            LOGGER.info("Error during decryptData" + e.getMessage());
+            throw new EncryptException(e.getMessage());
         }
         return passwordReceived;
     }
@@ -58,7 +61,7 @@ public class AsimetricaServer {
      * @param text The text to be hashed.
      * @return The hexadecimal representation of the hashed text.
      */
-    public static String hashText(String text) {
+    public static String hashText(String text) throws EncryptException {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] hashBytes = md5.digest(text.getBytes());
@@ -72,8 +75,8 @@ public class AsimetricaServer {
 
             return hexStringBuilder.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
+            throw new EncryptException(e.getMessage());
+
         }
     }
 

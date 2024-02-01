@@ -4,16 +4,20 @@ import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
+import exceptions.UserNotFoundException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -40,19 +44,34 @@ public class StudentFacadeREST {
      * Creates a new student entity.
      *
      * @param student The student entity to be created.
+     * @return 
      * @throws InternalServerErrorException If an error occurs during creation.
      */
     @POST
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void createStudent(Student student) {
+    public Student createStudent(Student student) {
         try {
             LOGGER.log(Level.INFO, "Creating student {0}", student.getId());
             ejb.createStudent(student);
-             LOGGER.log(Level.INFO, "Created student {0} successfully", student.getId());
-        } catch (EmailAlreadyExistsException | CreateErrorException ex) {
+
+        } catch (EncryptException ex) {
             LOGGER.severe(ex.getMessage());
             throw new InternalServerErrorException(ex.getMessage());
+        } catch (EmailAlreadyExistsException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new NotAuthorizedException(ex.getMessage());
+        } catch (BadRequestException e) {
+            LOGGER.severe(e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            LOGGER.severe(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+
         }
+        //return the student without password
+        student.setPassword(null);
+        LOGGER.log(Level.INFO, "Created student {0} successfully", student.getId());
+        return student;
     }
 
     /**
@@ -83,7 +102,7 @@ public class StudentFacadeREST {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-       
+
         try {
             LOGGER.log(Level.INFO, "Deleting student {0}", id);
             ejb.deleteStudent(ejb.findStudentById(id));
