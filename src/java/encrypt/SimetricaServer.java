@@ -16,8 +16,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -71,27 +69,32 @@ public class SimetricaServer {
     @PostConstruct
     public void onStartup() {
         try {
-            workingDirectory = Files.createDirectories(Paths.get(System.getProperty("user.home") + "/ByteBuddies/security"));
-            secureDir = Files.createDirectories(Paths.get(workingDirectory + "/7072697661746531"));
-            if (!new File(System.getProperty("user.home") + "/ByteBuddies/security/7072697661746531/6B657931.dat").exists()) {
-
-                // Random salt
-                new Random().nextBytes(salt);
-                byte[] array = new byte[16];
-                new Random().nextBytes(array);
-                String generatedEncryptClave = new String(array, Charset.forName("UTF-8"));
-                // Encrypts credentials into a file
-                encryptData(generatedEncryptClave, "bytebuddies.sup@gmail.com,tdbj eyaj hmtn fqcz");
-
-                // SimetricaServer symmetric = new SimetricaServer();
-                // byte[] foundKey = fileReader(secureDir + "\\6B657931.dat");
-                // System.out.println("Cifrado! -> " + mensajeCifrado);
-                // System.out.println("-----------");
-                // System.out.println("Descifrado! -> " + symmetric.unencryptData(foundKey, fileContent));
-                // System.out.println("-----------");
+            try {
+                workingDirectory = Files.createDirectories(Paths.get(System.getProperty("user.home") + "/ByteBuddies/security"));
+                secureDir = Files.createDirectories(Paths.get(workingDirectory + "/7072697661746531"));
+            } catch (IOException ex) {
+                workingDirectory = Files.createDirectories(Paths.get("/ByteBuddies/security"));
+                secureDir = Files.createDirectories(Paths.get(workingDirectory + "/7072697661746531"));
             }
         } catch (IOException ex) {
-            Logger.getLogger(SimetricaServer.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        if (!new File(workingDirectory + "/7072697661746531/6B657931.dat").exists()) {
+
+            // Random salt
+            new Random().nextBytes(salt);
+            byte[] array = new byte[16];
+            new Random().nextBytes(array);
+            String generatedEncryptClave = new String(array, Charset.forName("UTF-8"));
+            // Encrypts credentials into a file
+            encryptData(generatedEncryptClave, "bytebuddies.sup@gmail.com,tdbj eyaj hmtn fqcz");
+
+            // SimetricaServer symmetric = new SimetricaServer();
+            // byte[] foundKey = fileReader(secureDir + "\\6B657931.dat");
+            // System.out.println("Cifrado! -> " + mensajeCifrado);
+            // System.out.println("-----------");
+            // System.out.println("Descifrado! -> " + symmetric.unencryptData(foundKey, fileContent));
+            // System.out.println("-----------");
         }
 
     }
@@ -234,10 +237,11 @@ public class SimetricaServer {
 
     /**
      * Concatenates to arrays.
-     * 
+     *
      * @param array1 FIrst array to concatenate.
      * @param array2 Second array to concatenate.
-     * @return The array of bytes containing the combination of the first and second arrays.
+     * @return The array of bytes containing the combination of the first and
+     * second arrays.
      */
     private byte[] concatArrays(byte[] array1, byte[] array2) {
         byte[] ret = new byte[array1.length + array2.length];
@@ -248,7 +252,7 @@ public class SimetricaServer {
 
     /**
      * Writes an array of bytes into a file with a specified path.
-     * 
+     *
      * @param path The path used to save the file.
      * @param text The data to save in the file.
      */
@@ -262,7 +266,7 @@ public class SimetricaServer {
 
     /**
      * Reads from a file in a given path.
-     * 
+     *
      * @param path The given path to read from.
      * @return The data read from the file.
      */
