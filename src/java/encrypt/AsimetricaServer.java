@@ -25,12 +25,13 @@ public class AsimetricaServer {
      *
      * @param password The encrypted password to decrypt.
      * @return The decrypted password.
+     * @throws EncryptException the encryptd exception
      */
     public static String decryptData(String password) throws EncryptException {
         byte[] decryptedData = null;
         String passwordReceived = null;
         try {
-            InputStream fis = AsimetricaServer.class.getResourceAsStream("");
+            InputStream fis = AsimetricaServer.class.getResourceAsStream("private.der");
 
             byte[] privateKeyBytes = new byte[fis.available()];
             fis.read(privateKeyBytes);
