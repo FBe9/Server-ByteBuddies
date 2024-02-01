@@ -4,6 +4,7 @@ import entities.Student;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.ejb.Local;
 
 /**
  * Local interface for student EJB.
+ *
  * @author irati
  */
 @Local
@@ -22,7 +24,7 @@ public interface StudentInterface {
      * @throws CreateErrorException if there is an error duting create.
      * @throws EmailAlreadyExistsException if there email already exists.
      */
-    public void createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException;
+    public Student createStudent(Student student) throws CreateErrorException, EmailAlreadyExistsException, EncryptException;
 
     /**
      * Method to update a student.

@@ -4,6 +4,7 @@ import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
@@ -210,6 +211,9 @@ public class UserFacadeREST {
             // Perform user login
             user = ejb.logInUser(user.getEmail(), user.getPassword());
 
+        } catch (EncryptException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new InternalServerErrorException(ex.getMessage());
         } catch (UserNotFoundException ex) {
             LOGGER.severe(ex.getMessage());
             throw new NotAuthorizedException(ex.getMessage());

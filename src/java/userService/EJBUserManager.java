@@ -6,6 +6,7 @@ import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
@@ -15,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * EJB implementation of the UserInterface for managing user-related operations.
@@ -164,10 +166,16 @@ public class EJBUserManager implements UserInterface {
      * @throws UserNotFoundException if user isn't
      */
     @Override
-    public User logInUser(String email, String passwordUser) throws UserNotFoundException {
+    public User logInUser(String email, String passwordUser) throws UserNotFoundException, EncryptException {
         User user;
-        String passwordClient = AsimetricaServer.decryptData(passwordUser);
-        String hash = AsimetricaServer.hashText(passwordClient);
+        String passwordClient = null;
+        String hash = null;
+        try {
+            passwordClient = AsimetricaServer.decryptData(passwordUser);
+            hash = AsimetricaServer.hashText(passwordClient);
+        } catch (EncryptException ex) {
+            throw new EncryptException();
+        }
 
         try {
             user = (User) em.createNamedQuery("login").setParameter("userEmail", email).setParameter("userPassword", hash).getSingleResult();

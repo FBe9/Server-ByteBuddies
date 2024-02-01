@@ -4,6 +4,7 @@ import entities.User;
 import exceptions.CreateErrorException;
 import exceptions.DeleteErrorException;
 import exceptions.EmailAlreadyExistsException;
+import exceptions.EncryptException;
 import exceptions.FindErrorException;
 import exceptions.UpdateErrorException;
 import exceptions.UserNotFoundException;
@@ -83,8 +84,9 @@ public interface UserInterface {
      * @param passwordUser The user's password.
      * @return The logged-in User entity.
      * @throws UserNotFoundException If there is an error during login.
+     * @throws exceptions.EncryptException
      */
-    public User logInUser(String email, String passwordUser) throws UserNotFoundException;
+    public User logInUser(String email, String passwordUser) throws UserNotFoundException, EncryptException;
     
     public void resetPassword(String email);
 
